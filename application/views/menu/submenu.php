@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-lg">
             <?php if (validation_errors()) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= validation_errors(); ?>
-            </div>
+                <div class="alert alert-danger" role="alert">
+                    <?= validation_errors(); ?>
+                </div>
             <?php endif; ?>
 
             <?= $this->session->flashdata('message'); ?>
 
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
 
-            <table class="table table-hover">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -33,19 +33,19 @@
                 <tbody>
                     <?php $i = 1; ?>
                     <?php foreach ($subMenu as $sm) : ?>
-                    <tr>
-                        <th scope="row"><?= $i; ?></th>
-                        <td><?= $sm['title']; ?></td>
-                        <td><?= $sm['menu']; ?></td>
-                        <td><?= $sm['url']; ?></td>
-                        <td><?= $sm['icon']; ?></td>
-                        <td><?= $sm['is_active']; ?></td>
-                        <td>
-                            <a href="" class="badge badge-success">edit</a>
-                            <a href="" class="badge badge-danger">delete</a>
-                        </td>
-                    </tr>
-                    <?php $i++; ?>
+                        <tr>
+                            <th scope="row"><?= $i; ?></th>
+                            <td><?= $sm['title']; ?></td>
+                            <td><?= $sm['menu']; ?></td>
+                            <td><?= $sm['url']; ?></td>
+                            <td><?= $sm['icon']; ?></td>
+                            <td><?= $sm['is_active']; ?></td>
+                            <td>
+                                <a href="" class="badge badge-success">edit</a>
+                                <a href="" class="badge badge-danger">delete</a>
+                            </td>
+                        </tr>
+                        <?php $i++; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -83,7 +83,7 @@
                         <select name="menu_id" id="menu_id" class="form-control">
                             <option value="">Select Menu</option>
                             <?php foreach ($menu as $m) : ?>
-                            <option value="<?= $m['id']; ?>"><?= $m['menu']; ?></option>
+                                <option value="<?= $m['id']; ?>"><?= $m['menu']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -109,4 +109,4 @@
             </form>
         </div>
     </div>
-</div> 
+</div>
