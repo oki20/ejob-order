@@ -2,7 +2,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Web Programming UNPAS <?= date('Y'); ?></span>
+                        <span>Copyright &copy; Tim IT Dept. Instalasi <?= date('Y'); ?></span>
                     </div>
                 </div>
             </footer>
@@ -77,4 +77,4 @@
 
             </body>
 
-            </html> 
+            </html>
