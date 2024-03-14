@@ -50,8 +50,20 @@ class Auth extends CI_Controller
                     $this->session->set_userdata($data);
                     if ($user['role_id'] == 1) {
                         redirect('admin');
-                    } else {
+                    } elseif ($user['role_id'] == 2) {
                         redirect('user');
+                    } elseif ($user['role_id'] == 3) {
+                        redirect('dhead');
+                    } elseif ($user['role_id'] == 4) {
+                        redirect('phead');
+                    } elseif ($user['role_id'] == 5) {
+                        redirect('fhead');
+                    } elseif ($user['role_id'] == 6) {
+                        redirect('edhead');
+                    } elseif ($user['role_id'] == 7) {
+                        redirect('receive');
+                    } elseif ($user['role_id'] == 8) {
+                        redirect('member');
                     }
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
@@ -116,7 +128,9 @@ class Auth extends CI_Controller
                 'date_created' => time()
             ];
 
+            //script untuk simpan data ke table user
             $this->db->insert('user', $data);
+            //script untuk simpan token ke table user_token
             $this->db->insert('user_token', $user_token);
 
             $this->_sendEmail($token, 'verify');
