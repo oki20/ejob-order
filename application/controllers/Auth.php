@@ -83,6 +83,10 @@ class Auth extends CI_Controller
             'min_length' => 'Password too short!'
         ]);
         $this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
+        $this->form_validation->set_rules('nim', 'NIP', 'required|trim');
+        $this->form_validation->set_rules('departemen', 'Departemen', 'required|trim');
+        $this->form_validation->set_rules('plant', 'Plant', 'required|trim');
+        $this->form_validation->set_rules('role_id', 'Role', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'e-JOB Order User Registration';
@@ -96,9 +100,12 @@ class Auth extends CI_Controller
                 'email' => htmlspecialchars($email),
                 'image' => 'default.jpg',
                 'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
-                'role_id' => 2,
+                'role_id' => htmlspecialchars($this->input->post('role_id', true)),
                 'is_active' => 0,
-                'date_created' => time()
+                'date_created' => time(),
+                'nim' => htmlspecialchars($this->input->post('nim', true)),
+                'plant' => htmlspecialchars($this->input->post('plant', true)),
+                'departemen' => htmlspecialchars($this->input->post('departemen', true))
             ];
 
             // siapkan token

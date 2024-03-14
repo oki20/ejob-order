@@ -39,7 +39,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <select class="form-control form-control" aria-label="Default select example">
+                                    <select class="form-control" id="plant" name="plant" aria-label="Default select example" style="font-size: 13px;">
                                         <option selected>Select Your Plant</option>
                                         <option value="A">Plant A</option>
                                         <option value="B">Plant B</option>
@@ -55,17 +55,17 @@
                                         <option value="R">Plant R</option>
                                         <option value="T">Plant T</option>
                                     </select>
-                                    <?= form_error('nim', '<small class="text-danger pl-3">', '</small>'); ?>
+                                    <?= form_error('plant', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
                                 <div class="col-sm-6">
-                                    <select class="form-control form-control" aria-label="Default select example">
+                                    <select class="form-control" id="role_id" name="role_id" aria-label="Default select example" style="font-size: 13px;">
                                         <option selected>Select User</option>
-                                        <option value="2">Plant Head</option>
+                                        <option value="2">User</option>
                                         <option value="3">Dept. Head</option>
-                                        <option value="4">User</option>
-                                        <option value="5">Member Installation</option>
+                                        <option value="4">Plant Head</option>
+                                        <option value="8">Member Installation</option>
                                     </select>
-                                    <?= form_error('departemen', '<small class="text-danger pl-3">', '</small>'); ?>
+                                    <?= form_error('role_id', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">
