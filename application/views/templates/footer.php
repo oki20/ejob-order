@@ -56,6 +56,12 @@
             <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
 
             <script>
+                $(document).ready(function() {
+                    $('#myTable').DataTable();
+                });
+            </script>
+
+            <script>
                 $('.custom-file-input').on('change', function() {
                     let fileName = $(this).val().split('\\').pop();
                     $(this).next('.custom-file-label').addClass("selected").html(fileName);
