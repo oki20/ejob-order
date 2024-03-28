@@ -7,6 +7,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('menu_model', 'model');
     }
 
     public function index()
@@ -45,7 +46,8 @@ class Auth extends CI_Controller
                 if (password_verify($password, $user['password'])) {
                     $data = [
                         'email' => $user['email'],
-                        'role_id' => $user['role_id']
+                        'role_id' => $user['role_id'],
+                        'id_plant' => $user['id_plant']
                     ];
                     $this->session->set_userdata($data);
                     if ($user['role_id'] == 1) {
@@ -86,6 +88,9 @@ class Auth extends CI_Controller
             redirect('user');
         }
 
+        //get Data Plant
+        $data['plants'] = $this->model->getPlant();
+
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
             'is_unique' => 'This email has already registered!'
@@ -116,7 +121,7 @@ class Auth extends CI_Controller
                 'is_active' => 0,
                 'date_created' => time(),
                 'nim' => htmlspecialchars($this->input->post('nim', true)),
-                'plant' => htmlspecialchars($this->input->post('plant', true)),
+                'id_plant' => htmlspecialchars($this->input->post('plant', true)),
                 'departemen' => htmlspecialchars($this->input->post('departemen', true))
             ];
 

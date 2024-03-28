@@ -117,6 +117,41 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Perkiraan Budget Proyek</label>
+                        <div class="col-md-10">
+                            <select id="cep_no" name="cep_no" class="form-control custom-select" value="">
+                                <option selected disabled>Select one</option>
+                                <option value="M&R">
+                                    < 100 Juta</option>
+                                <option value="Capex">> 100 Juta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Drawing Number</label>
+                        <div class="col-md-10">
+                            <input type="text" name="dwg_no" id="dwg_no" class="form-control" placeholder="Masukkan CC Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Mesin Number</label>
+                        <div class="col-md-10">
+                            <input type="text" name="mesin_no" id="mesin_no" class="form-control" placeholder="Masukkan CC Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">File PDF</label>
+                        <div class="col-md-10">
+                            <input type="file" name="fpdf" id="fpdf" class="form-control-file">
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="col">
+                            <div id="pdfObject" style="max-width: 100%; max-height: 300px; overflow: auto;">
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -166,5 +201,73 @@
                 }
             });
         }
+    });
+</script>
+
+<script>
+    // Function to handle PDF file selection
+    function choosePDF() {
+        document.getElementById('fpdf').click();
+    }
+
+    // Function to render the PDF file
+    function renderPDF(url, canvasContainer) {
+        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+            var totalPages = pdf.numPages;
+
+            for (var i = 1; i <= totalPages; i++) {
+                pdf.getPage(i).then(function(page) {
+                    var scale = 1.5;
+                    var viewport = page.getViewport({
+                        scale: scale
+                    });
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    canvasContainer.appendChild(canvas);
+
+                    page.render(renderContext);
+                });
+            }
+        });
+    }
+
+    // Function to display the PDF file
+    function displayPDF(pdfUrl) {
+        console.log("PDF URL:", pdfUrl); // Log PDF URL for debugging
+
+        var pdfObject = document.getElementById('pdfObject');
+        var canvasContainer = document.createElement('div');
+        canvasContainer.setAttribute('style', 'max-width: 100%; max-height: 300px; overflow: auto;');
+
+        // Render PDF and handle errors
+        try {
+            renderPDF(pdfUrl, canvasContainer);
+        } catch (error) {
+            console.error("Error rendering PDF:", error); // Log error message
+            pdfObject.innerHTML = '<p>Error rendering PDF</p>'; // Display error message in case of failure
+        }
+
+        pdfObject.innerHTML = ''; // Clear previous content
+        pdfObject.appendChild(canvasContainer);
+    }
+
+    // Event listener for file input change
+    $('#fpdf').change(function() {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            displayPDF(e.target.result);
+        };
+
+        reader.readAsDataURL(file);
     });
 </script>

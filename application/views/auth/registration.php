@@ -41,19 +41,9 @@
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <select class="form-control" id="plant" name="plant" aria-label="Default select example" style="font-size: 13px;">
                                         <option selected>Select Your Plant</option>
-                                        <option value="A">Plant A</option>
-                                        <option value="B">Plant B</option>
-                                        <option value="C">Plant C</option>
-                                        <option value="D">Plant D</option>
-                                        <option value="E">Plant E</option>
-                                        <option value="F">Plant F</option>
-                                        <option value="H">Plant H</option>
-                                        <option value="I">Plant I</option>
-                                        <option value="J">Plant J</option>
-                                        <option value="K">Plant K</option>
-                                        <option value="M">Plant M</option>
-                                        <option value="R">Plant R</option>
-                                        <option value="T">Plant T</option>
+                                        <?php foreach ($plants as $plant) : ?>
+                                            <option value="<?php echo $plant['id_plant']; ?>"><?php echo $plant['nama']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                     <?= form_error('plant', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
