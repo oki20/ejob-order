@@ -49,4 +49,11 @@ class Menu_model extends CI_Model
     {
         return $this->db->get_where('user')->result_array();
     }
+
+
+    //Model untuk menampilkan request Job Order (User)
+    public function getRequestJo()
+    {
+        return $this->db->get_where('pengajuan_job_order')->result_array();
+    }
 }

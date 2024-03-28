@@ -12,7 +12,7 @@ class Master extends CI_Controller
 
     public function plant()
     {
-        $data['title'] = 'Daftar Plant';
+        $data['title'] = 'Data Plant';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('templates/header', $data);
@@ -80,7 +80,7 @@ class Master extends CI_Controller
     //controller untuk tampil user
     public function user()
     {
-        $data['title'] = 'Daftar User';
+        $data['title'] = 'Data User';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('templates/header', $data);

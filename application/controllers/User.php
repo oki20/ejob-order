@@ -110,4 +110,23 @@ class User extends CI_Controller
             }
         }
     }
+
+    //Request Job Order
+    public function request()
+    {
+        $data['title'] = 'Request Job Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/request', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampilrequest()
+    {
+        $dataAll = $this->model->getRequestJo();
+        echo json_encode($dataAll);
+    }
 }
