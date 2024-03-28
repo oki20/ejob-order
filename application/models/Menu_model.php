@@ -56,4 +56,27 @@ class Menu_model extends CI_Model
     {
         return $this->db->get_where('pengajuan_job_order')->result_array();
     }
+
+    public function getDeptHeadid($plantId)
+    {
+        $this->db->select('*');
+        $this->db->where('id_plant', $plantId);
+        $this->db->where('role_id', 3); // Mengambil hanya user dengan role_id 3 (Departemen Head)
+        $query = $this->db->get('user');
+        return $query->result();
+    }
+
+    public function getPlantHeadid($plantId)
+    {
+        $this->db->select('*');
+        $this->db->where('id_plant', $plantId);
+        $this->db->where('role_id', 4); // Mengambil hanya user dengan role_id 3 (Departemen Head)
+        $query = $this->db->get('user');
+        return $query->result();
+    }
+
+    public function save_data($data)
+    {
+        return $this->db->insert("pengajuan_job_order", $data);
+    }
 }

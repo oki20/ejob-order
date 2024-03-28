@@ -131,19 +131,19 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Drawing Number</label>
                         <div class="col-md-10">
-                            <input type="text" name="dwg_no" id="dwg_no" class="form-control" placeholder="Masukkan CC Number">
+                            <input type="text" name="dwg_no" id="dwg_no" class="form-control" placeholder="Masukkan Drawing Number">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Mesin Number</label>
                         <div class="col-md-10">
-                            <input type="text" name="mesin_no" id="mesin_no" class="form-control" placeholder="Masukkan CC Number">
+                            <input type="text" name="mesin_no" id="mesin_no" class="form-control" placeholder="Masukkan Mesin Number">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">File PDF</label>
+                        <label class="col-md-2 col-form-label">Lampiran</label>
                         <div class="col-md-10">
-                            <input type="file" name="fpdf" id="fpdf" class="form-control-file">
+                            <input type="file" name="lampiran" id="lampiran" class="form-control-file">
                         </div>
                     </div>
                     <div class="mt-2">
@@ -152,11 +152,42 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Pilih Plant</label>
+                        <div class="col-md-10">
+                            <select class="form-control custom-select" id="plant" name="plant">
+                                <option selected>Select Your Plant</option>
+                                <?php foreach ($plants as $plant) : ?>
+                                    <option value="<?php echo $plant['id_plant']; ?>"><?php echo $plant['nama']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Departemen Head</label>
+                        <div class="col-md-10">
+                            <select id="dept_head" class="form-control custom-select">
+                                <option selected disabled>Select one</option>
+                                <!-- Options will be populated dynamically via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Plant Head</label>
+                        <div class="col-md-10">
+                            <select id="plant_head" class="form-control custom-select">
+                                <option selected disabled>Select one</option>
+                                <!-- Options will be populated dynamically via JavaScript -->
+                            </select>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -164,7 +195,7 @@
 </form>
 <!--END MODAL ADD-->
 
-<!-- Script -->
+<!-- Script CRUD -->
 <script type="text/javascript">
     $(document).ready(function() {
         tampildata();
@@ -174,7 +205,7 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('master/tampilrequest') ?>',
+                url: '<?php echo site_url('user/tampilrequest') ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -201,13 +232,162 @@
                 }
             });
         }
+
+        // Save product
+        $('#btn_save').on('click', function() {
+            var no_jo = $('#no_jo').val();
+            var tgl_jo = $('#tgl_jo').val();
+            var cc_no = $('#cc_no').val();
+            var pekerjaan = $('#pekerjaan').val();
+            var tujuan = $('#tujuan').val();
+            var pelaksana = $('#pelaksana').val();
+            var rencana = $('#rencana').val();
+            var cep_no = $('#cep_no').val();
+            var dwg_no = $('#dwg_no').val();
+            var mesin_no = $('#mesin_no').val();
+            var id_plant = $('#id_plant').val();
+            var id_depthead = $('#id_depthead').val();
+            var id_planthead = $('#id_planthead').val();
+            var lampiran = $('#lampiran')[0].files[0];
+
+            if (no_jo.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Nomor Job Order Wajib Di Pilih !'
+                });
+
+            } else if (tgl_jo.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Tanggal Job Order Wajib Diisi !'
+                });
+
+            } else if (cc_no.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Cost Centre Wajib Diisi !'
+                });
+
+            } else if (pekerjaan.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Detail Pekerjaan Wajib Diisi !'
+                });
+
+            } else if (tujuan.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Tujuan Wajib Diisi !'
+                });
+
+            } else if (pelaksana.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Pelaksana Wajib Diisi !'
+                });
+
+            } else if (cep_no.length == "") {
+
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'CEP Nomer Wajib Diisi !'
+                });
+
+            } else {
+                // Form data untuk mengirimkan file
+                var formData = new FormData();
+                formData.append('no_jo', no_jo);
+                formData.append('tgl_jo', tgl_jo);
+                formData.append('cc_no', cc_no);
+                formData.append('pekerjaan', pekerjaan);
+                formData.append('tujuan', tujuan);
+                formData.append('pelaksana', pelaksana);
+                formData.append('rencana', rencana);
+                formData.append('cep_no', cep_no);
+                formData.append('dwg_no', dwg_no);
+                formData.append('mesin_no', mesin_no);
+                formData.append('id_plant', id_plant);
+                formData.append('id_depthead', id_depthead);
+                formData.append('id_planthead', id_planthead);
+                formData.append('lampiran', lampiran);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url() ?>/user/simpandata",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        try {
+                            var jsonResponse = JSON.parse(response);
+                            if (jsonResponse.status === "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: 'Simpan Data Berhasil!'
+                                });
+
+                                $('[name="no_jo"]').val("");
+                                $('[name="tgl_jo"]').val("");
+                                $('[name="cc_no"]').val("");
+                                $('[name="pekerjaan"]').val("");
+                                $('[name="tujuan"]').val("");
+                                $('[name="pelaksana"]').val("");
+                                $('[name="rencana"]').val("");
+                                $('[name="cep_no"]').val("");
+                                $('[name="dwg_no"]').val("");
+                                $('[name="mesin_no"]').val("");
+                                $('#Modal_Add').modal('hide');
+
+                                tampildata();
+                            } else {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Simpan data Gagal!',
+                                    text: 'silahkan coba lagi!'
+                                });
+
+                            }
+                        } catch (e) {
+                            console.error('Error parsing server response:', e);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oppss!',
+                                text: 'Error parsing server response!!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Opps!',
+                            text: 'server error!'
+                        });
+                    }
+                });
+            }
+        });
     });
 </script>
 
 <script>
     // Function to handle PDF file selection
     function choosePDF() {
-        document.getElementById('fpdf').click();
+        document.getElementById('lampiran').click();
     }
 
     // Function to render the PDF file
@@ -260,7 +440,7 @@
     }
 
     // Event listener for file input change
-    $('#fpdf').change(function() {
+    $('#lampiran').change(function() {
         var file = this.files[0];
         var reader = new FileReader();
 
@@ -269,5 +449,58 @@
         };
 
         reader.readAsDataURL(file);
+    });
+</script>
+
+<!-- Script Select Bertingkat -->
+<script>
+    $(document).ready(function() {
+        $('#plant').change(function() {
+            // Mendapatkan nilai id_plant dari option yang dipilih
+            var id_plant = $("#plant").val();
+            // Menggunakan nilai plantId sesuai kebutuhan, misalnya, untuk menampilkan dalam konsol
+            console.log("Selected Plant ID:", id_plant);
+            // Lanjutkan dengan melakukan operasi yang diperlukan, misalnya, pengiriman AJAX
+            $.ajax({
+                url: "<?php echo base_url(); ?>/user/getdepthead",
+                method: "POST",
+                data: {
+                    id_plant: id_plant
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            html += '<option value=' + data[i].id + '>' + data[i].name + '</option>';
+                        }
+                    } else {
+                        html += '<option value="" disabled selected>Dept Head not available</option>';
+                    }
+                    $('#dept_head').html(html);
+                    $.ajax({
+                        url: "<?php echo base_url(); ?>/user/getplanthead",
+                        method: "POST",
+                        data: {
+                            id_plant: id_plant
+                        },
+                        async: false,
+                        dataType: 'json',
+                        success: function(data) {
+                            var html = '';
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    html += '<option value=' + data[i].id + '>' + data[i].name + '</option>';
+                                }
+                            } else {
+                                html += '<option value="" disabled selected>Plant Head not available</option>';
+                            }
+                            $('#plant_head').html(html);
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>

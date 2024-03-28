@@ -117,6 +117,8 @@ class User extends CI_Controller
     {
         $data['title'] = 'Request Job Order';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        //get Data Plant
+        $data['plants'] = $this->model->getPlant();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -129,5 +131,70 @@ class User extends CI_Controller
     {
         $dataAll = $this->model->getRequestJo();
         echo json_encode($dataAll);
+    }
+
+    public function getdepthead()
+    {
+        $plantId = $this->input->post('id_plant');
+        $dept_head = $this->model->getDeptHeadid($plantId);
+        echo json_encode($dept_head);
+    }
+
+    public function getplanthead()
+    {
+        $plantId = $this->input->post('id_plant');
+        $dept_head = $this->model->getPlantHeadid($plantId);
+        echo json_encode($dept_head);
+    }
+
+    public function simpandata()
+    {
+        $no_jo = $this->input->post('no_jo');
+        $id_pemesan = $this->session->userdata('id');
+        $lampiran = isset($_FILES['lampiran']['name']) ? $_FILES['lampiran']['name'] : null;
+
+        if (!empty($lampiran)) {
+            // Specify the destination directory with spaces in the path
+            $destinationPath = './assets/lampiran/';
+            // Ensure the destination directory exists; create it if not
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $newImagePath = $destinationPath . $lampiran;
+            move_uploaded_file($_FILES['lampiran']['tmp_name'], $newImagePath);
+        } else {
+            // Jika tidak ada PDF yang diunggah, atur path PDF ke null
+            $lampiran = "";
+        }
+
+        $data = array(
+            'no_jo' => $no_jo,
+            'tgl_jo' => $this->input->post('tgl_jo'),
+            'cc_no' => $this->input->post('cc_no'),
+            'pekerjaan' => $this->input->post('pekerjaan'),
+            'tujuan' => $this->input->post('tujuan'),
+            'pelaksana' => $this->input->post('pelaksana'),
+            'rencana' => $this->input->post('rencana'),
+            'cep_no' => $this->input->post('cep_no'),
+            'dwg_no' => $this->input->post('dwg_no'),
+            'mesin_no' => $this->input->post('mesin_no'),
+            'id_plant' => $this->input->post('id_plant'),
+            'id_depthead' => $this->input->post('id_depthead'),
+            'id_planthead' => $this->input->post('id_planthead'),
+            'lampiran' => $lampiran,
+            'id_pemesan' => $id_pemesan,
+            'status' => 1
+        );
+
+        // Insert data via model
+        $simpanData = $this->model->save_data($data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
     }
 }
