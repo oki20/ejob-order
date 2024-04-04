@@ -7,6 +7,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
+        $this->load->model('menu_model', 'model');
     }
 
     public function index()
@@ -19,6 +20,27 @@ class Admin extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('admin/index', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function tampilrole()
+    {
+        $dataAll = $this->model->getRole();
+        echo json_encode($dataAll);
+    }
+
+    public function simpandata()
+    {
+        $data = array(
+            'role' => $this->input->post('role')
+        );
+
+        $simpantData = $this->model->saveRole($data);
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
     }
 
 

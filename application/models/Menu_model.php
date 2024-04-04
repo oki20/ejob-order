@@ -50,6 +50,12 @@ class Menu_model extends CI_Model
         return $this->db->get_where('user')->result_array();
     }
 
+    //Model untuk menampilkan role
+    public function getRole()
+    {
+        return $this->db->get_where('user_role')->result_array();
+    }
+
 
     // Model untuk menampilkan request Job Order (User)
     public function getRequestJo()
@@ -139,5 +145,10 @@ class Menu_model extends CI_Model
             ->where('pengajuan_job_order.id_pemesan', $id)
             ->get()
             ->result_array();
+    }
+
+    public function saveRole($data)
+    {
+        return $this->db->insert("user_role", $data);
     }
 }

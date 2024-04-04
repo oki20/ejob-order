@@ -85,7 +85,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="id_plant_edit" id="id_plant_edit" class="form-control">
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">Nomor Transaksi</label>
+                        <label class="col-md-2 col-form-label">Nama Plant</label>
                         <div class="col-md-10">
                             <input type="text" name="nama_edit" id="nama_edit" class="form-control" placeholder="Nomor Transaksi">
                         </div>
