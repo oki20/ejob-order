@@ -25,6 +25,19 @@
                                     </tr>
                                 </thead>
                                 <tbody id="show_data">
+                                    <!--<?php $i = 1; ?>
+                                    <?php foreach ($role as $r) : ?>
+                                        <tr>
+                                            <th scope="row"><?= $i; ?></th>
+                                            <td><?= $r['role']; ?></td>
+                                            <td>
+                                                <a href="<?= base_url('admin/roleaccess/') . $r['id']; ?>" class="badge badge-warning">access</a>
+                                                <a href="" class="badge badge-success">edit</a>
+                                                <a href="" class="badge badge-danger">delete</a>
+                                            </td>
+                                        </tr>
+                                        <?php $i++; ?>
+                                    <?php endforeach; ?>-->
                                 </tbody>
                             </table>
                         </div>
@@ -128,9 +141,11 @@
                             '<td>' + data[i].role + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
-                            '" data-role="' + data[i].role + '">Edit</a>' +
+                            '" data-role="' + data[i].role + '">Edit</a>' + ' ' +
+                            '<a href="<?= base_url('admin/roleaccess/') ?>' + data[i].id + '" class="btn btn-info btn-sm item_edit">Access</a>' +
                             '</td>' +
                             '</tr>';
+
                     }
                     $('#show_data').html(html);
                 }
@@ -207,6 +222,55 @@
             $('#Modal_Edit').modal('show');
             $('[name="id_edit"]').val(id);
             $('[name="role_edit"]').val(role);
+        });
+
+        // Edit product
+        $('#btn_edit').on('click', function() {
+            // Form data
+            var id = $('#id_edit').val();
+            var role = $('#role_edit').val();
+
+            // Form data untuk mengirimkan file
+            var formData = new FormData();
+            formData.append('id_edit', id);
+            formData.append('role_edit', role);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url() ?>/admin/editdata",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response == "success") {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil!',
+                            text: 'Update Data Berhasil!'
+                        });
+
+                        // Clear form fields and hide modal
+                        $('[name="role_edit"]').val("");
+                        $('#Modal_Edit').modal('hide');
+
+                        // Reload or update data in your table
+                        tampildata();
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Update data Gagal!',
+                            text: 'Silahkan coba lagi!'
+                        });
+                    }
+                },
+                error: function(response) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops!',
+                        text: 'Server error!'
+                    });
+                }
+            });
         });
     });
 </script>

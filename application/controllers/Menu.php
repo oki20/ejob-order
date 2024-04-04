@@ -7,6 +7,7 @@ class Menu extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
+        $this->load->model('menu_model', 'model');
     }
 
     public function index()
@@ -16,19 +17,26 @@ class Menu extends CI_Controller
 
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
-        $this->form_validation->set_rules('menu', 'Menu', 'required');
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/index', $data);
+        $this->load->view('templates/footer');
 
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('menu/index', $data);
-            $this->load->view('templates/footer');
-        } else {
-            $this->db->insert('user_menu', ['menu' => $this->input->post('menu')]);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
-            redirect('menu');
-        }
+        /*$this->form_validation->set_rules('menu', 'Menu', 'required');
+
+        //if ($this->form_validation->run() == false) {
+        //} else {
+        //$this->db->insert('user_menu', ['menu' => $this->input->post('menu')]);
+        //$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New menu added!</div>');
+        //redirect('menu');
+        //}*/
+    }
+
+    public function tampilmenu()
+    {
+        $dataAll = $this->model->getMenu();
+        echo json_encode($dataAll);
     }
 
 

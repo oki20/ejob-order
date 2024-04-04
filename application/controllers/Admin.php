@@ -43,6 +43,25 @@ class Admin extends CI_Controller
         }
     }
 
+    public function editdata()
+    {
+        $id = $this->input->post('id_edit');
+        $data = array(
+            'id' => $id,
+            'role' => $this->input->post('role_edit')
+        );
+
+        $this->db->where('id', $id);
+        $this->db->update('user_role', $data);
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
+
 
     public function role()
     {
