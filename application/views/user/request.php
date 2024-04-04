@@ -167,7 +167,7 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Departemen Head</label>
                         <div class="col-md-10">
-                            <select id="dept_head" class="form-control custom-select">
+                            <select id="dept_head" name="dept_head" class="form-control custom-select">
                                 <option selected disabled>Select one</option>
                                 <!-- Options will be populated dynamically via JavaScript -->
                             </select>
@@ -177,7 +177,7 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Plant Head</label>
                         <div class="col-md-10">
-                            <select id="plant_head" class="form-control custom-select">
+                            <select id="plant_head" name="plant_head" class="form-control custom-select">
                                 <option selected disabled>Select one</option>
                                 <!-- Options will be populated dynamically via JavaScript -->
                             </select>
@@ -216,15 +216,15 @@
                         var nomor = i + 1;
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
-                            '<td> Plant ' + data[i].no_jo + '</td>' +
-                            '<td> Plant ' + data[i].pekerjaan + '</td>' +
-                            '<td> Plant ' + data[i].pelaksana + '</td>' +
-                            '<td> Plant ' + data[i].id_plant + '</td>' +
-                            '<td> Plant ' + data[i].status + '</td>' +
+                            '<td>' + data[i].no_jo + '</td>' +
+                            '<td>' + data[i].pekerjaan + '</td>' +
+                            '<td>' + data[i].pelaksana + '</td>' +
+                            '<td> Plant ' + data[i].nama + '</td>' +
+                            '<td>' + data[i].status + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
                             '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id_plant + '">Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '">Delete</a>' +
                             '</td>' +
                             '</tr>';
                     }
@@ -245,9 +245,9 @@
             var cep_no = $('#cep_no').val();
             var dwg_no = $('#dwg_no').val();
             var mesin_no = $('#mesin_no').val();
-            var id_plant = $('#id_plant').val();
-            var id_depthead = $('#id_depthead').val();
-            var id_planthead = $('#id_planthead').val();
+            var id_plant = $('#plant').val();
+            var id_depthead = $('#dept_head').val();
+            var id_planthead = $('#plant_head').val();
             var lampiran = $('#lampiran')[0].files[0];
 
             if (no_jo.length == "") {
@@ -319,9 +319,9 @@
                 formData.append('cep_no', cep_no);
                 formData.append('dwg_no', dwg_no);
                 formData.append('mesin_no', mesin_no);
-                formData.append('id_plant', id_plant);
-                formData.append('id_depthead', id_depthead);
-                formData.append('id_planthead', id_planthead);
+                formData.append('plant', id_plant);
+                formData.append('dept_head', id_depthead);
+                formData.append('plant_head', id_planthead);
                 formData.append('lampiran', lampiran);
 
                 $.ajax({
@@ -381,6 +381,58 @@
                 });
             }
         });
+
+        // Function to handle delete confirmation
+        $('#show_data').on('click', '.item_delete', function() {
+            var id = $(this).data('id');
+
+            // SweetAlert confirmation before proceeding with deletion
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Perform actual deletion after confirmation
+                    deleteProduct(id);
+                }
+            });
+        });
+
+        // Function to handle actual deletion using AJAX
+        function deleteProduct(id) {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('user/deleterequest') ?>",
+                dataType: "JSON",
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    // Handle success, for example, show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Your file has been deleted.',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    tampildata();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error, for example, show error message
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Unable to delete product.',
+                        icon: 'error'
+                    });
+                }
+            });
+        }
     });
 </script>
 

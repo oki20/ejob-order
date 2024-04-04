@@ -179,9 +179,9 @@ class User extends CI_Controller
             'cep_no' => $this->input->post('cep_no'),
             'dwg_no' => $this->input->post('dwg_no'),
             'mesin_no' => $this->input->post('mesin_no'),
-            'id_plant' => $this->input->post('id_plant'),
-            'id_depthead' => $this->input->post('id_depthead'),
-            'id_planthead' => $this->input->post('id_planthead'),
+            'id_plant' => $this->input->post('plant'),
+            'id_depthead' => $this->input->post('dept_head'),
+            'id_planthead' => $this->input->post('plant_head'),
             'lampiran' => $lampiran,
             'id_pemesan' => $id_pemesan,
             'status' => 1
@@ -196,5 +196,13 @@ class User extends CI_Controller
         } else {
             echo json_encode(array('status' => 'error'));
         }
+    }
+
+    public function deleterequest()
+    {
+        $id = $this->input->post('id');
+        // Panggil model untuk menghapus data
+        $result = $this->model->deleteRequest($id);
+        echo json_encode($result);
     }
 }

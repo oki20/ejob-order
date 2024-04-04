@@ -51,10 +51,16 @@ class Menu_model extends CI_Model
     }
 
 
-    //Model untuk menampilkan request Job Order (User)
+    // Model untuk menampilkan request Job Order (User)
     public function getRequestJo()
     {
-        return $this->db->get_where('pengajuan_job_order')->result_array();
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '1')
+            ->get()
+            ->result_array();
     }
 
     public function getDeptHeadid($plantId)
@@ -78,5 +84,28 @@ class Menu_model extends CI_Model
     public function save_data($data)
     {
         return $this->db->insert("pengajuan_job_order", $data);
+    }
+
+    public function deleteRequest($id)
+    {
+        $this->db->select('lampiran');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pengajuan_job_order');
+        $row = $query->row();
+        $lampiran = $row->lampiran;
+
+        //hapus data dari tabel pengajuan_job_order
+        $this->db->where('id', $id);
+        $result = $this->db->delete('pengajuan_job_order');
+
+        //hapus file lampira dari drive jika ada
+        if ($result && !empty($lampiran)) {
+            $destinationPath = './assets/lampiran/' . $lampiran;
+            if (file_exists($destinationPath)) {
+                unlink($destinationPath); // Hapus lampiran dari drive
+            }
+        }
+
+        return $result;
     }
 }
