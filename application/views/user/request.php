@@ -214,13 +214,18 @@
                     var no;
                     for (i = 0; i < data.length; i++) {
                         var nomor = i + 1;
+                        var statusBadge = '';
+
+                        if (data[i].status == '1') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
+                        }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
                             '<td>' + data[i].pelaksana + '</td>' +
                             '<td> Plant ' + data[i].nama + '</td>' +
-                            '<td>' + data[i].status + '</td>' +
+                            '<td>' + statusBadge + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
                             '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +

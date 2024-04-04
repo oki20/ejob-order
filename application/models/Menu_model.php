@@ -54,14 +54,18 @@ class Menu_model extends CI_Model
     // Model untuk menampilkan request Job Order (User)
     public function getRequestJo()
     {
+        $id = $this->session->userdata('id');
+
         return $this->db
             ->select('*')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
             ->where('pengajuan_job_order.status', '1')
+            ->where('pengajuan_job_order.id_pemesan', $id)
             ->get()
             ->result_array();
     }
+
 
     public function getDeptHeadid($plantId)
     {
@@ -107,5 +111,33 @@ class Menu_model extends CI_Model
         }
 
         return $result;
+    }
+
+    public function getAdeptheadJo()
+    {
+        $id = $this->session->userdata('id');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '2')
+            ->where('pengajuan_job_order.id_pemesan', $id)
+            ->get()
+            ->result_array();
+    }
+
+    public function getAplantheadJo()
+    {
+        $id = $this->session->userdata('id');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '3')
+            ->where('pengajuan_job_order.id_pemesan', $id)
+            ->get()
+            ->result_array();
     }
 }

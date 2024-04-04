@@ -205,4 +205,45 @@ class User extends CI_Controller
         $result = $this->model->deleteRequest($id);
         echo json_encode($result);
     }
+
+
+    //Menampilkan job order yang sudah di approved Dept head
+    //Request Job Order
+    public function adepthead()
+    {
+        $data['title'] = 'App Dept. Head';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/adepthead', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampiladepthead()
+    {
+        $dataAll = $this->model->getAdeptheadJo();
+        echo json_encode($dataAll);
+    }
+
+    //Menampilkan job order yang sudah di approved Plant head
+    //Request Job Order
+    public function aplanthead()
+    {
+        $data['title'] = 'App Plant Head';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/aplanthead', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampilplanthead()
+    {
+        $dataAll = $this->model->getAplantheadJo();
+        echo json_encode($dataAll);
+    }
 }
