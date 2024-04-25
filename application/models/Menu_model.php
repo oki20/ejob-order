@@ -47,7 +47,13 @@ class Menu_model extends CI_Model
     //Model untuk menampilkan master data user
     public function getUser()
     {
-        return $this->db->get_where('user')->result_array();
+        //return $this->db->get_where('user')->result_array();
+        return $this->db
+            ->select('*')
+            ->from('user')
+            ->join('tb_plant', 'user.id_plant = tb_plant.id_plant')
+            ->get()
+            ->result_array();
     }
 
     //Model untuk menampilkan role
@@ -60,6 +66,21 @@ class Menu_model extends CI_Model
     public function getMenu()
     {
         return $this->db->get_where('user_menu')->result_array();
+    }
+
+    public function save_data_menu($data)
+    {
+        return $this->db->insert("user_menu", $data);
+    }
+
+    public function updateData_menu($id, $data)
+    {
+        $tableName = 'user_menu';
+        $primaryKey = 'id';
+
+        //update data
+        $this->db->where($primaryKey, $id);
+        $this->db->update($tableName, $data);
     }
 
 

@@ -50,7 +50,7 @@
 </div>
 <!-- End of Main Content -->
 
-<!-- Modal -->
+<!-- Modal Add -->
 <form>
     <div class="modal fade" id="newRoleModal" tabindex="-1" role="dialog" aria-labelledby="newRoleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -74,6 +74,37 @@
         </div>
     </div>
 </form>
+
+<!-- MODAL EDIT -->
+<form>
+    <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id_edit" id="id_edit" class="form-control">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Nama Menu</label>
+                        <div class="col-md-10">
+                            <input type="text" name="menu_edit" id="menu_edit" class="form-control" placeholder="Nomor Transaksi">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" type="submit" id="btn_edit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--END MODAL EDIT-->
 
 <!-- Script CRUD -->
 <script type="text/javascript">
@@ -114,6 +145,130 @@
                 }
             });
         }
+
+        $('#btn_save').click(function() {
+            var menu = $('#menu').val();
+
+            if (menu.length == "") {
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Menu Wajib Diisi !'
+                });
+            } else {
+                // Form data untuk mengirimkan file
+                var formData = new FormData();
+                formData.append('menu', menu);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('menu/simpandata') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        try {
+                            var jsonResponse = JSON.parse(response);
+                            if (jsonResponse.status === "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: 'Simpan Data Berhasil!'
+                                });
+
+                                $('[name="menu"]').val("");
+                                $('#Modal_Add').modal('hide');
+
+                                tampildata();
+                            } else {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Simpan data Gagal!',
+                                    text: 'silahkan coba lagi!'
+                                });
+
+                            }
+                        } catch (e) {
+                            console.error('Error parsing server response:', e);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oppss!',
+                                text: 'Error parsing server response!!'
+                            });
+                        }
+
+                        console.log(response);
+                    },
+                    error: function(response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Opps!',
+                            text: 'server error!'
+                        });
+                    }
+                });
+            }
+        });
+
+        // Get data for updating record
+        $('#show_data').on('click', '.item_edit', function() {
+            // Base URL for images obtained from CodeIgniter base_url() function
+            var baseUrl = '<?php echo base_url(); ?>';
+            var id = $(this).data('id');
+            var menu = $(this).data('menu');
+
+            $('#Modal_Edit').modal('show');
+            $('[name="id_edit"]').val(id);
+            $('[name="menu_edit"]').val(menu);
+        });
+
+        //btn_edit Menu
+        $('#btn_edit').on('click', function() {
+            var id = $('#id_edit').val();
+            var menu = $('#menu_edit').val();
+
+            var formData = new FormData();
+            formData.append('id', id);
+            formData.append('menu', menu);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('menu/editdata') ?>",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response == "success") {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil!',
+                            text: 'Update Data Berhasil!'
+                        });
+
+                        $('[name="menu"]').val("");
+
+                        $('#Modal_Edit').modal('hide');
+
+                        // Reload or update data in your table
+                        tampildata();
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Update data Gagal!',
+                            text: 'Silahkan coba lagi!'
+                        });
+                    }
+                },
+                error: function(response) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops!',
+                        text: 'Server error!'
+                    });
+                }
+            });
+        });
 
     });
 </script>

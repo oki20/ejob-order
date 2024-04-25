@@ -39,6 +39,47 @@ class Menu extends CI_Controller
         echo json_encode($dataAll);
     }
 
+    public function simpandata()
+    {
+        // Tangkap data yang dikirim dari Ajax
+        $menu = $this->input->post('menu');
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'menu' => $menu // Simpan nama file gambar ke dalam database
+        );
+
+        // Insert data via model
+        $simpanData = $this->model->save_data_menu($data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
+
+    public function editdata()
+    {
+        $id = $this->input->post('id');
+        $menu = $this->input->post('menu');
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'menu' => $menu // Simpan nama file gambar ke dalam database
+        );
+
+        $this->model->updateData_menu($id, $data); // Ubah $id menjadi $id_produksi
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
+
 
     public function submenu()
     {

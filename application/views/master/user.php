@@ -62,14 +62,36 @@
                     var no;
                     for (i = 0; i < data.length; i++) {
                         var nomor = i + 1;
+                        // Initialize an empty variable to store the role name
+                        var roleName = '';
+                        // Check the value of role_id
+                        if (data[i].role_id == 1) {
+                            // If role_id is 1, set roleName to "admin"
+                            roleName = 'Super Admin';
+                        } else if (data[i].role_id == 2) {
+                            roleName = 'User';
+                        } else if (data[i].role_id == 3) {
+                            roleName = 'Dept. Head';
+                        } else if (data[i].role_id == 4) {
+                            roleName = 'Plant Head';
+                        } else if (data[i].role_id == 5) {
+                            roleName = 'Factory Head';
+                        } else if (data[i].role_id == 6) {
+                            roleName = 'Engineering Dept. Head';
+                        } else if (data[i].role_id == 7) {
+                            roleName = 'User Instalasi';
+                        } else {
+                            // If role_id is neither 1 nor 2, set roleName to the actual value of role_id
+                            roleName = data[i].role_id;
+                        }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].name + '</td>' +
                             '<td>' + data[i].email + '</td>' +
                             '<td>' + data[i].nim + '</td>' +
-                            '<td>' + data[i].plant + '</td>' +
+                            '<td>' + data[i].nama + '</td>' +
                             '<td>' + data[i].departemen + '</td>' +
-                            '<td>' + data[i].role_id + '</td>' +
+                            '<td>' + roleName + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id_plant + '">Delete</a>' +
                             '</td>' +
