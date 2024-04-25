@@ -136,7 +136,7 @@
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-success btn-sm item_edit" data-id="' + data[i].id +
                             '" data-menu="' + data[i].menu + '">Edit</a>' + ' ' +
-                            '<a href="<?= base_url('admin/roleaccess/') ?>' + data[i].id + '" class="btn btn-danger btn-sm item_edit">Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id + '">Delete</a>' +
                             '</td>' +
                             '</tr>';
 
@@ -269,6 +269,58 @@
                 }
             });
         });
+
+        // Function to handle delete confirmation
+        $('#show_data').on('click', '.item_delete', function() {
+            var id = $(this).data('id');
+
+            // SweetAlert confirmation before proceeding with deletion
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Perform actual deletion after confirmation
+                    deleteProduct(id);
+                }
+            });
+        });
+
+        // Function to handle actual deletion using AJAX
+        function deleteProduct(id) {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('menu/delete') ?>",
+                dataType: "JSON",
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    // Handle success, for example, show success message
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Your file has been deleted.',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    tampildata();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error, for example, show error message
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Unable to delete product.',
+                        icon: 'error'
+                    });
+                }
+            });
+        }
 
     });
 </script>

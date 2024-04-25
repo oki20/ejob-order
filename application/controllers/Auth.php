@@ -56,15 +56,15 @@ class Auth extends CI_Controller
                     } elseif ($user['role_id'] == 2) {
                         redirect('user');
                     } elseif ($user['role_id'] == 3) {
-                        redirect('dhead');
+                        redirect('user');
                     } elseif ($user['role_id'] == 4) {
-                        redirect('phead');
+                        redirect('user');
                     } elseif ($user['role_id'] == 5) {
-                        redirect('fhead');
+                        redirect('user');
                     } elseif ($user['role_id'] == 6) {
-                        redirect('edhead');
+                        redirect('user');
                     } elseif ($user['role_id'] == 7) {
-                        redirect('receive');
+                        redirect('user');
                     } elseif ($user['role_id'] == 8) {
                         redirect('member');
                     }
