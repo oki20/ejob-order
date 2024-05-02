@@ -160,9 +160,10 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: 'Berhasil!',
+                                    icon: 'success',
                                     text: 'Simpan Data Berhasil!'
                                 });
 
@@ -172,18 +173,20 @@
                                 tampildata();
                             } else {
 
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: 'Simpan data Gagal!',
+                                    icon: 'warning',
                                     text: 'silahkan coba lagi!'
                                 });
 
                             }
                         } catch (e) {
                             console.error('Error parsing server response:', e);
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: 'Oppss!',
+                                icon: 'warning',
                                 text: 'Error parsing server response!!'
                             });
                         }
@@ -191,9 +194,10 @@
                         console.log(response);
                     },
                     error: function(response) {
-                        Swal.fire({
+                        swal({
                             icon: 'error',
                             title: 'Opps!',
+                            icon: 'warning',
                             text: 'server error!'
                         });
                     }
@@ -229,9 +233,10 @@
                 contentType: false,
                 success: function(response) {
                     if (response == "success") {
-                        Swal.fire({
+                        swal({
                             type: 'success',
                             title: 'Berhasil!',
+                            icon: 'success',
                             text: 'Update Data Berhasil!'
                         });
 
@@ -242,17 +247,19 @@
                         // Reload or update data in your table
                         tampildata();
                     } else {
-                        Swal.fire({
+                        swal({
                             type: 'error',
                             title: 'Update data Gagal!',
+                            icon: 'warning',
                             text: 'Silahkan coba lagi!'
                         });
                     }
                 },
                 error: function(response) {
-                    Swal.fire({
+                    swal({
                         type: 'error',
                         title: 'Oops!',
+                        icon: 'warning',
                         text: 'Server error!'
                     });
                 }
@@ -262,9 +269,10 @@
         // Function to handle delete confirmation
         $('#show_data').on('click', '.item_delete', function() {
             var id_plant = $(this).data('id_plant');
+            //deleteProduct(id_plant);
 
             // SweetAlert confirmation before proceeding with deletion
-            Swal.fire({
+            /*Swal.fire({
                 title: 'Are you sure?',
                 text: 'You won\'t be able to revert this!',
                 icon: 'warning',
@@ -274,14 +282,32 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Perform actual deletion after confirmation
+                    // Panggil deleteProduct dengan benar
                     deleteProduct(id_plant);
+                } else {
+                    console.log("Gagal");
                 }
-            });
+            });*/
+
+            swal({
+                    title: "Are you sure?",
+                    text: "You won\'t be able to revert this!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        deleteProduct(id_plant);
+                    }
+                });
         });
+
 
         // Function to handle actual deletion using AJAX
         function deleteProduct(id_plant) {
+            console.log("Deleting product with ID:", id_plant); // Check if the function is called and id_plant is passed correctly
+
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('master/delete') ?>",
@@ -291,18 +317,18 @@
                 },
                 success: function(data) {
                     // Handle success, for example, show success message
-                    Swal.fire({
+                    swal({
                         title: 'Deleted!',
                         text: 'Your file has been deleted.',
                         icon: 'success',
-                        showConfirmButton: false,
                         timer: 3000
                     });
                     tampildata();
                 },
                 error: function(xhr, status, error) {
                     // Handle error, for example, show error message
-                    Swal.fire({
+                    console.log("Error deleting product:", error); // Log error message
+                    swal({
                         title: 'Error!',
                         text: 'Unable to delete product.',
                         icon: 'error'
@@ -310,11 +336,6 @@
                 }
             });
         }
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
 
     });
 </script>

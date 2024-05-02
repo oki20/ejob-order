@@ -1,0 +1,37 @@
+//Untuk alert success Simpan
+swal({
+    icon: 'success',
+    title: 'Berhasil!',
+    icon: 'success',
+    text: 'Simpan Data Berhasil!'
+});
+
+//untuk alert success edit
+swal({
+    icon: 'success',
+    title: 'Berhasil!',
+    icon: 'success',
+    text: 'Update Data Berhasil!'
+});
+
+//untuk alert warning
+swal({
+    icon: 'error',
+    title: 'Oppss!',
+    icon: 'warning',
+    text: 'Error parsing server response!!'
+});
+
+//untuk alert confirmation
+swal({
+    title: "Are you sure?",
+    text: "You won\'t be able to revert this!",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+})
+.then((willDelete) => {
+    if (willDelete) {
+        deleteProduct(id_plant);
+    }
+});

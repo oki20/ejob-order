@@ -257,7 +257,7 @@
 
             if (no_jo.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Nomor Job Order Wajib Di Pilih !'
@@ -265,7 +265,7 @@
 
             } else if (tgl_jo.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Tanggal Job Order Wajib Diisi !'
@@ -273,7 +273,7 @@
 
             } else if (cc_no.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Cost Centre Wajib Diisi !'
@@ -281,7 +281,7 @@
 
             } else if (pekerjaan.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Detail Pekerjaan Wajib Diisi !'
@@ -289,7 +289,7 @@
 
             } else if (tujuan.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Tujuan Wajib Diisi !'
@@ -297,7 +297,7 @@
 
             } else if (pelaksana.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Pelaksana Wajib Diisi !'
@@ -305,7 +305,7 @@
 
             } else if (cep_no.length == "") {
 
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'CEP Nomer Wajib Diisi !'
@@ -339,7 +339,7 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: 'Simpan Data Berhasil!'
@@ -360,7 +360,7 @@
                                 tampildata();
                             } else {
 
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: 'Simpan data Gagal!',
                                     text: 'silahkan coba lagi!'
@@ -368,8 +368,8 @@
 
                             }
                         } catch (e) {
-                            console.error('Error parsing server response:', e);
-                            Swal.fire({
+                            //console.error('Error parsing server response:', e);
+                            swal({
                                 icon: 'error',
                                 title: 'Oppss!',
                                 text: 'Error parsing server response!!'
@@ -377,7 +377,7 @@
                         }
                     },
                     error: function(response) {
-                        Swal.fire({
+                        swal({
                             icon: 'error',
                             title: 'Opps!',
                             text: 'server error!'
@@ -392,20 +392,19 @@
             var id = $(this).data('id');
 
             // SweetAlert confirmation before proceeding with deletion
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Perform actual deletion after confirmation
-                    deleteProduct(id);
-                }
-            });
+
+            swal({
+                    title: "Are you sure?",
+                    text: "You won\'t be able to revert this!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        deleteProduct(id);
+                    }
+                });
         });
 
         // Function to handle actual deletion using AJAX
@@ -419,18 +418,17 @@
                 },
                 success: function(data) {
                     // Handle success, for example, show success message
-                    Swal.fire({
+                    swal({
                         title: 'Deleted!',
                         text: 'Your file has been deleted.',
                         icon: 'success',
-                        showConfirmButton: false,
                         timer: 3000
                     });
                     tampildata();
                 },
                 error: function(xhr, status, error) {
                     // Handle error, for example, show error message
-                    Swal.fire({
+                    swal({
                         title: 'Error!',
                         text: 'Unable to delete product.',
                         icon: 'error'

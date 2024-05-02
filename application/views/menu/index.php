@@ -150,7 +150,7 @@
             var menu = $('#menu').val();
 
             if (menu.length == "") {
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Menu Wajib Diisi !'
@@ -170,9 +170,10 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: 'Berhasil!',
+                                    icon: 'success',
                                     text: 'Simpan Data Berhasil!'
                                 });
 
@@ -240,9 +241,11 @@
                 contentType: false,
                 success: function(response) {
                     if (response == "success") {
-                        Swal.fire({
-                            type: 'success',
+                        //untuk alert success edit
+                        swal({
+                            icon: 'success',
                             title: 'Berhasil!',
+                            icon: 'success',
                             text: 'Update Data Berhasil!'
                         });
 
@@ -253,7 +256,7 @@
                         // Reload or update data in your table
                         tampildata();
                     } else {
-                        Swal.fire({
+                        swal({
                             type: 'error',
                             title: 'Update data Gagal!',
                             text: 'Silahkan coba lagi!'
@@ -261,7 +264,7 @@
                     }
                 },
                 error: function(response) {
-                    Swal.fire({
+                    swal({
                         type: 'error',
                         title: 'Oops!',
                         text: 'Server error!'
@@ -274,21 +277,18 @@
         $('#show_data').on('click', '.item_delete', function() {
             var id = $(this).data('id');
 
-            // SweetAlert confirmation before proceeding with deletion
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Perform actual deletion after confirmation
-                    deleteProduct(id);
-                }
-            });
+            swal({
+                    title: "Are you sure?",
+                    text: "You won\'t be able to revert this!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        deleteProduct(id);
+                    }
+                });
         });
 
         // Function to handle actual deletion using AJAX
@@ -302,7 +302,7 @@
                 },
                 success: function(data) {
                     // Handle success, for example, show success message
-                    Swal.fire({
+                    swal({
                         title: 'Deleted!',
                         text: 'Your file has been deleted.',
                         icon: 'success',
@@ -313,7 +313,7 @@
                 },
                 error: function(xhr, status, error) {
                     // Handle error, for example, show error message
-                    Swal.fire({
+                    swal({
                         title: 'Error!',
                         text: 'Unable to delete product.',
                         icon: 'error'

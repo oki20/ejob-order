@@ -156,9 +156,10 @@
             var role = $('#role').val();
 
             if (role.length == "") {
-                Swal.fire({
+                swal({
                     type: 'warning',
                     title: 'Oops...',
+                    icon: 'warning',
                     text: 'Nama role Wajib Di Pilih !'
                 });
             } else {
@@ -175,7 +176,7 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                Swal.fire({
+                                swal({
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: 'Simpan Data Berhasil!'
@@ -187,7 +188,7 @@
                                 tampildata();
                             } else {
 
-                                Swal.fire({
+                                swal({
                                     icon: 'error',
                                     title: 'Simpan data Gagal!',
                                     text: 'silahkan coba lagi!'
@@ -196,7 +197,7 @@
                             }
                         } catch (e) {
                             console.error('Error parsing server response:', e);
-                            Swal.fire({
+                            swal({
                                 icon: 'error',
                                 title: 'Oppss!',
                                 text: 'Error parsing server response!!'
@@ -204,7 +205,7 @@
                         }
                     },
                     error: function(response) {
-                        Swal.fire({
+                        swal({
                             icon: 'error',
                             title: 'Opps!',
                             text: 'server error!'
@@ -243,9 +244,10 @@
                 contentType: false,
                 success: function(response) {
                     if (response == "success") {
-                        Swal.fire({
+                        swal({
                             type: 'success',
                             title: 'Berhasil!',
+                            icon: 'success',
                             text: 'Update Data Berhasil!'
                         });
 
@@ -256,7 +258,7 @@
                         // Reload or update data in your table
                         tampildata();
                     } else {
-                        Swal.fire({
+                        swal({
                             type: 'error',
                             title: 'Update data Gagal!',
                             text: 'Silahkan coba lagi!'
@@ -264,7 +266,7 @@
                     }
                 },
                 error: function(response) {
-                    Swal.fire({
+                    swal({
                         type: 'error',
                         title: 'Oops!',
                         text: 'Server error!'

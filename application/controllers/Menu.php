@@ -80,6 +80,14 @@ class Menu extends CI_Controller
         }
     }
 
+    public function delete()
+    {
+        $kode = $this->input->post('id');
+        // Panggil model untuk menghapus data
+        $result = $this->model->deleteMenu($kode);
+        echo json_encode($result);
+    }
+
 
     public function submenu()
     {
