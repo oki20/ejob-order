@@ -42,4 +42,40 @@ class Joborder extends CI_Controller
         $dataAll = $this->jomodel->getDataJo($id);
         echo json_encode($dataAll);
     }
+
+    public function simpandata()
+    {
+        $data = array(
+            'no_jo' => $this->input->post('no_jo'),
+            'tgl_jo' => $this->input->post('tgl_jo'),
+            'cc_no' => $this->input->post('cc_no'),
+            'pekerjaan' => $this->input->post('pekerjaan'),
+            'tujuan' => $this->input->post('tujuan'),
+            'pelaksana' => $this->input->post('pelaksana'),
+            'rencana' => $this->input->post('rencana'),
+            'cep_no' => $this->input->post('cep_no'),
+            'dwg_no' => '-',
+            'mesin_no' => '-',
+            'id_plant' => $this->input->post('id_plant'),
+            'id_depthead' => '-',
+            'id_planthead' => '-',
+            'id_pemesan' => $this->input->post('id_pemesan'),
+            'lampiran' => '-',
+            'no_file' => $this->input->post('no_file'),
+            'golongan' => $this->input->post('golongan'),
+            'klasifikasi' => $this->input->post('klasifikasi'),
+            'departemen_lain' => $this->input->post('departemen_lain'),
+            'status' => '5'
+        );
+
+        //insert data via model
+        $simpanData = $this->jomodel->save_data($data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
 }

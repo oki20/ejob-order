@@ -9,7 +9,7 @@ class Jo_model extends CI_Model
             ->select('COUNT(pengajuan_job_order.no_jo) as total_jo, tb_plant.id_plant, tb_plant.nama')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '1')
+            ->where('pengajuan_job_order.status', '5')
             ->get()
             ->result_array();
     }
@@ -28,9 +28,14 @@ class Jo_model extends CI_Model
             ->select('*')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '1')
+            ->where('pengajuan_job_order.status', '5')
             ->where('pengajuan_job_order.id_plant', $id)
             ->get()
             ->result_array();
+    }
+
+    public function save_data($data)
+    {
+        return $this->db->insert("pengajuan_job_order", $data);
     }
 }
