@@ -178,4 +178,19 @@ class Menu_model extends CI_Model
     {
         return $this->db->insert("user_role", $data);
     }
+    
+    public function getRequestJo1()
+    {
+        $id = $this->session->userdata('id_plant');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '1')
+            ->where('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
+    }
+
 }
