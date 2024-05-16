@@ -2,14 +2,14 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Depthead extends CI_Controller
-{   
+{
 
     public function __construct()
-{        
-    parent::__construct();
-    //is_logged_in();
-    $this->load->model('menu_model','model');
-}
+    {
+        parent::__construct();
+        //is_logged_in();
+        $this->load->model('menu_model', 'model');
+    }
 
     public function request()
     {
@@ -49,5 +49,30 @@ class Depthead extends CI_Controller
     {
         $dataAll = $this->model->getRequestJo1();
         echo json_encode($dataAll);
+    }
+
+    public function approveData()
+    {
+        $id = $this->input->post("id");
+        $saran_dept = $this->input->post("saran_dept");
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'status' => '3',
+            'saran_dept' => $saran_dept // Simpan nama file gambar ke dalam database
+        );
+
+        $this->model->appData($id, $data);
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
+
+    public function rejectData()
+    {
     }
 }

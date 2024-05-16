@@ -55,14 +55,15 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
+                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="pekerjaan" name="pekerjaan" style="height: 100px"></textarea>
+                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+                            <button type="button" type="submit" id="btn_approve" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -86,14 +87,15 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
+                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO Reject</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="pekerjaan" name="pekerjaan" style="height: 100px"></textarea>
+                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+                            <button type="button" type="submit" id="btn_reject" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -146,206 +148,107 @@
             });
         }
 
-        // Save product
-        $('#btn_save').on('click', function() {
-            var no_jo = $('#no_jo').val();
-            var tgl_jo = $('#tgl_jo').val();
-            var cc_no = $('#cc_no').val();
-            var pekerjaan = $('#pekerjaan').val();
-            var tujuan = $('#tujuan').val();
-            var pelaksana = $('#pelaksana').val();
-            var rencana = $('#rencana').val();
-            var cep_no = $('#cep_no').val();
-            var dwg_no = $('#dwg_no').val();
-            var mesin_no = $('#mesin_no').val();
-            var id_plant = $('#plant').val();
-            var id_depthead = $('#dept_head').val();
-            var id_planthead = $('#plant_head').val();
-            var lampiran = $('#lampiran')[0].files[0];
-
-            if (no_jo.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Nomor Job Order Wajib Di Pilih !'
-                });
-
-            } else if (tgl_jo.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Tanggal Job Order Wajib Diisi !'
-                });
-
-            } else if (cc_no.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Cost Centre Wajib Diisi !'
-                });
-
-            } else if (pekerjaan.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Detail Pekerjaan Wajib Diisi !'
-                });
-
-            } else if (tujuan.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Tujuan Wajib Diisi !'
-                });
-
-            } else if (pelaksana.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Pelaksana Wajib Diisi !'
-                });
-
-            } else if (cep_no.length == "") {
-
-                Swal.fire({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'CEP Nomer Wajib Diisi !'
-                });
-
-            } else {
-                // Form data untuk mengirimkan file
-                var formData = new FormData();
-                formData.append('no_jo', no_jo);
-                formData.append('tgl_jo', tgl_jo);
-                formData.append('cc_no', cc_no);
-                formData.append('pekerjaan', pekerjaan);
-                formData.append('tujuan', tujuan);
-                formData.append('pelaksana', pelaksana);
-                formData.append('rencana', rencana);
-                formData.append('cep_no', cep_no);
-                formData.append('dwg_no', dwg_no);
-                formData.append('mesin_no', mesin_no);
-                formData.append('plant', id_plant);
-                formData.append('dept_head', id_depthead);
-                formData.append('plant_head', id_planthead);
-                formData.append('lampiran', lampiran);
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo site_url() ?>/user/simpandata",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        try {
-                            var jsonResponse = JSON.parse(response);
-                            if (jsonResponse.status === "success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Simpan Data Berhasil!'
-                                });
-
-                                $('[name="no_jo"]').val("");
-                                $('[name="tgl_jo"]').val("");
-                                $('[name="cc_no"]').val("");
-                                $('[name="pekerjaan"]').val("");
-                                $('[name="tujuan"]').val("");
-                                $('[name="pelaksana"]').val("");
-                                $('[name="rencana"]').val("");
-                                $('[name="cep_no"]').val("");
-                                $('[name="dwg_no"]').val("");
-                                $('[name="mesin_no"]').val("");
-                                $('#Modal_Add').modal('hide');
-
-                                tampildata();
-                            } else {
-
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Simpan data Gagal!',
-                                    text: 'silahkan coba lagi!'
-                                });
-
-                            }
-                        } catch (e) {
-                            console.error('Error parsing server response:', e);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oppss!',
-                                text: 'Error parsing server response!!'
-                            });
-                        }
-                    },
-                    error: function(response) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Opps!',
-                            text: 'server error!'
-                        });
-                    }
-                });
-            }
-        });
-
-        // Function to handle delete confirmation
-
+        // Get data for updating record
         $('#show_data').on('click', '.item_edit', function() {
+
             var id = $(this).data('id');
 
-            // SweetAlert confirmation before proceeding with deletion
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Perform actual deletion after confirmation
-                    deleteProduct(id);
+            $('#Modal_Edit').modal('show');
+            $('[name="id_edit"]').val(id);
+        });
+
+        $('#btn_approve').on('click', function() {
+            var id = $('#id_edit').val();
+
+            var formData = new FormData();
+            formData.append('id', id);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('depthead/approveData') ?>",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response == "success") {
+                        swal({
+                            type: 'success',
+                            title: 'Berhasil!',
+                            icon: 'success',
+                            text: 'Update Data Berhasil!'
+                        });
+
+                        $('[name="saran_dept"]').val("");
+
+                        $('#Modal_Approve').modal('hide');
+
+                        // Reload or update data in your table
+                        tampildata();
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Update data Gagal!',
+                            icon: 'warning',
+                            text: 'Silahkan coba lagi!'
+                        });
+                    }
+                },
+                error: function(response) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops!',
+                        icon: 'warning',
+                        text: 'Server error!'
+                    });
                 }
             });
         });
 
-        // Function to handle actual deletion using AJAX
-        function deleteProduct(id) {
+        $('#btn_reject').on('click', function() {
+            var id = $('#id_edit').val();
+
+            var formData = new FormData();
+            formData.append('id', id);
+
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('user/deleterequest') ?>",
-                dataType: "JSON",
-                data: {
-                    id: id
+                url: "<?php echo site_url('depthead/rejectData') ?>",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response == "success") {
+                        swal({
+                            type: 'success',
+                            title: 'Berhasil!',
+                            icon: 'success',
+                            text: 'Update Data Berhasil!'
+                        });
+
+                        $('[name="saran_dept"]').val("");
+
+                        $('#Modal_Reject').modal('hide');
+
+                        // Reload or update data in your table
+                        tampildata();
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Update data Gagal!',
+                            icon: 'warning',
+                            text: 'Silahkan coba lagi!'
+                        });
+                    }
                 },
-                success: function(data) {
-                    // Handle success, for example, show success message
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Your file has been deleted.',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                    tampildata();
-                },
-                error: function(xhr, status, error) {
-                    // Handle error, for example, show error message
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Unable to delete product.',
-                        icon: 'error'
+                error: function(response) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops!',
+                        icon: 'warning',
+                        text: 'Server error!'
                     });
                 }
             });
-        }
+        });
     });
 </script>

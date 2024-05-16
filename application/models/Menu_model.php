@@ -178,7 +178,7 @@ class Menu_model extends CI_Model
     {
         return $this->db->insert("user_role", $data);
     }
-    
+
     public function getRequestJo1()
     {
         $id = $this->session->userdata('id_plant');
@@ -193,4 +193,13 @@ class Menu_model extends CI_Model
             ->result_array();
     }
 
+    public function appData($id, $data)
+    {
+        $tableName = 'pengajuan_job_order';
+        $primaryKey = 'id';
+
+        //update data
+        $this->db->where($primaryKey, $id);
+        $this->db->update($tableName, $data);
+    }
 }
