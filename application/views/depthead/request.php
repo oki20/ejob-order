@@ -55,7 +55,7 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
-                        <input type="text" name="id_edit" id="id_edit" class="form-control">
+                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO</label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
@@ -128,7 +128,7 @@
                             statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
                         }
                         html += '<tr>' +
-                            '<td>' + nomor + '</td>' +
+                            '<td>' + data[i].id + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
                             '<td>' + data[i].pelaksana + '</td>' +
@@ -136,8 +136,7 @@
                             '<td>' + statusBadge + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' +
-
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
                             '</td>' +
                             '</tr>';
 
@@ -149,11 +148,11 @@
         }
 
         // Get data for updating record
-        $('#show_data').on('click', '.item_edit', function() {
+        $('#show_data').on('click', '.item_approve', function() {
 
             var id = $(this).data('id');
 
-            $('#Modal_Edit').modal('show');
+            $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
         });
 
