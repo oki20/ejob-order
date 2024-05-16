@@ -7,34 +7,34 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <div style="text-align: right;">
-            </div>
         </div>
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>Pelaksana</th>
-                                <th>Plant</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
     </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>Pelaksana</th>
+                            <th>Plant</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </div>
 <!-- /.container-fluid -->
@@ -43,7 +43,7 @@
 
 <!-- MODAL APPROVE -->
 <form>
-<div class="modal fade" id="Modal_approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -53,26 +53,26 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Saran JO</label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="pekerjaan" name="pekerjaan" style="height: 100px"></textarea>
                         </div>
-                    
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>    
 </form>
 
 
 <!-- MODAL ADD REJECT -->
 <form>
-<div class="modal fade" id="Modal_reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,21 +82,20 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Saran JO Reject</label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="pekerjaan" name="pekerjaan" style="height: 100px"></textarea>
                         </div>
-                    
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>    
-</form>
 </form>
 
 <script type="text/javascript">
@@ -293,7 +292,7 @@
         });
 
         // Function to handle delete confirmation
-        
+
         $('#show_data').on('click', '.item_edit', function() {
             var id = $(this).data('id');
 
@@ -345,10 +344,4 @@
             });
         }
     });
-
-
-
-
-
-
 </script>
