@@ -23,7 +23,6 @@ class Depthead extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-
     //Reject Job Order
     public function reject()
     {
@@ -58,7 +57,7 @@ class Depthead extends CI_Controller
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'status' => '3',
+            'status' => '2',
             'saran_dept' => $saran_dept // Simpan nama file gambar ke dalam database
         );
 
@@ -73,6 +72,23 @@ class Depthead extends CI_Controller
     }
 
     public function rejectData()
-    {
+    { 
+        $id = $this->input->post("id");
+        $saran_dept = $this->input->post("saran_dept");
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'status' => '6',
+            'saran_dept' => $saran_dept // Simpan nama file gambar ke dalam database
+        );
+
+        $this->model->appData($id, $data);
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
     }
 }

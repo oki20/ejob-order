@@ -242,6 +242,34 @@ class Menu_model extends CI_Model
             ->result_array();
     }
 
+    public function getRequestJo2()
+    {
+        $id = $this->session->userdata('id_plant');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '2')
+            ->where('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
+    }
+
+    public function getRequestJo3()
+    {
+        $id = $this->session->userdata('id_plant');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '3')
+            ->where('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
+    }
+
     public function appData($id, $data)
     {
         $tableName = 'pengajuan_job_order';

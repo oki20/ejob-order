@@ -7,34 +7,34 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <div style="text-align: right;">
-            </div>
         </div>
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>Pelaksana</th>
-                                <th>Plant</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
     </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>Pelaksana</th>
+                            <th>Plant</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </div>
 <!-- /.container-fluid -->
@@ -69,6 +69,7 @@
         </div>
     </div>
 </form>
+
 
 <!-- MODAL ADD REJECT -->
 <form>
@@ -110,7 +111,7 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('planthead/tampilrequest') ?>',
+                url: '<?php echo site_url('factoryhead/tampilrequest') ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -125,7 +126,7 @@
                             statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
                         }
                         html += '<tr>' +
-                            '<td>' + nomor + '</td>' +
+                            '<td>' + data[i].id + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
                             '<td>' + data[i].pelaksana + '</td>' +
@@ -136,82 +137,89 @@
                             '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
                             '</td>' +
                             '</tr>';
+
                     }
                     $('#show_data').html(html);
+
                 }
             });
         }
 
         // Get data for updating record
         $('#show_data').on('click', '.item_approve', function() {
+
             var id = $(this).data('id');
+
             $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
         });
-        
+
         $('#show_data').on('click', '.item_reject', function() {
+
             var id = $(this).data('id');
+
             $('#Modal_reject').modal('show');
             $('[name="id_edit"]').val(id);
         });
         
+
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
-            var saran_plant = $('#saran_plant').val();
+
             var formData = new FormData();
             formData.append('id', id);
-            formData.append('saran_plant', saran_plant);
-            
+
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('planthead/approveData') ?>",
+                url: "<?php echo site_url('factoryhead/approveData') ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                     console.log(response);
-                     if (response == "success") {
+                    console.log(response);
+                    if (response == "success") {
                         swal({
                             type: 'success',
                             title: 'Berhasil!',
                             icon: 'success',
                             text: 'Update Data Berhasil!'
-                         });
-                         $('[name="saran_plant"]').val("");
-                         $('#Modal_Approve').modal('hide');
-                         
-                         // Reload or update data in your table
-                         tampildata();
-                        } else {
-                             swal({
-                                type: 'error',
-                                title: 'Update data Gagal!',
-                                icon: 'warning',
-                                text: 'Silahkan coba lagi!'
-                            });
-                        }
-                    },
-                    error: function(response) {
+                        });
+
+                        $('[name="saran_dept"]').val("");
+
+                        $('#Modal_Approve').modal('hide');
+
+                        // Reload or update data in your table
+                        tampildata();
+                    } else {
                         swal({
                             type: 'error',
-                            title: 'Oops!',
+                            title: 'Update data Gagal!',
                             icon: 'warning',
-                            text: 'Server error!'
+                            text: 'Silahkan coba lagi!'
                         });
                     }
-                });
+                },
+                error: function(response) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops!',
+                        icon: 'warning',
+                        text: 'Server error!'
+                    });
+                }
+            });
         });
-        
+
         $('#btn_reject').on('click', function() {
             var id = $('#id_edit').val();
-            var saran_plant = $('#saran_plant').val();
+
             var formData = new FormData();
             formData.append('id', id);
-            formData.append('saran_plant', saran_plant);
-            
+
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('planthead/rejectData') ?>",
+                url: "<?php echo site_url('factoryhead/rejectData') ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -223,10 +231,11 @@
                             icon: 'success',
                             text: 'Update Data Berhasil!'
                         });
-                        
-                        $('[name="saran_plant"]').val("");
+
+                        $('[name="saran_dept"]').val("");
+
                         $('#Modal_Reject').modal('hide');
-                        
+
                         // Reload or update data in your table
                         tampildata();
                     } else {

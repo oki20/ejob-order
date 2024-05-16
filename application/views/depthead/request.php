@@ -156,6 +156,15 @@
             $('[name="id_edit"]').val(id);
         });
 
+        $('#show_data').on('click', '.item_reject', function() {
+
+            var id = $(this).data('id');
+
+            $('#Modal_reject').modal('show');
+            $('[name="id_edit"]').val(id);
+        });
+        
+
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
             var saran_dept = $('#saran_dept').val();
@@ -208,9 +217,11 @@
 
         $('#btn_reject').on('click', function() {
             var id = $('#id_edit').val();
+            var saran_dept = $('#saran_dept').val();
 
             var formData = new FormData();
             formData.append('id', id);
+            formData.append('saran_dept', saran_dept);
 
             $.ajax({
                 type: "POST",

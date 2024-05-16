@@ -1,30 +1,37 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Planthead extends CI_Controller
+class Factoryhead extends CI_Controller
 {
-    public function __construct()
-{        
-    parent::__construct();
-    //is_logged_in();
-    $this->load->model('menu_model','model');
-}
 
-    //Request Job Order
+    public function __construct()
+    {
+        parent::__construct();
+        //is_logged_in();
+        $this->load->model('menu_model', 'model');
+    }
+
+    public function delete()
+    {
+        $kode = $this->input->post('id_plant');
+        // Panggil model untuk menghapus data
+        $result = $this->model->deleteData($kode);
+        echo json_encode($result);
+    }
+
     public function request()
     {
         $data['title'] = 'Request Job Order';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        //get Data Plant
-        $data['plants'] = $this->model->getPlant();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('planthead/request', $data);
+        $this->load->view('factoryhead/request', $data);
         $this->load->view('templates/footer');
     }
 
+    //Reject Job Order
     public function reject()
     {
         $data['title'] = 'Reject Job Order';
@@ -35,7 +42,7 @@ class Planthead extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('planthead/reject', $data);
+        $this->load->view('factoryhead/reject', $data);
         $this->load->view('templates/footer');
     }
 
@@ -47,19 +54,17 @@ class Planthead extends CI_Controller
 
     public function tampilrequest()
     {
-        $dataAll = $this->model->getRequestJo2();
+        $dataAll = $this->model->getRequestJo1();
         echo json_encode($dataAll);
-    }    
+    }
 
     public function approveData()
     {
         $id = $this->input->post("id");
-        $saran_dept = $this->input->post("saran_plant");
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'status' => '3',
-            'saran_plant' => $saran_plant // Simpan nama file gambar ke dalam database
+            'status' => '4',
         );
 
         $this->model->appData($id, $data);
@@ -75,12 +80,10 @@ class Planthead extends CI_Controller
     public function rejectData()
     { 
         $id = $this->input->post("id");
-        $saran_dept = $this->input->post("saran_plant");
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'status' => '7',
-            'saran_plant' => $saran_plant // Simpan nama file gambar ke dalam database
+            'status' => '8',
         );
 
         $this->model->appData($id, $data);
