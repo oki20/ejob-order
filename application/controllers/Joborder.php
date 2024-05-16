@@ -9,6 +9,7 @@ class Joborder extends CI_Controller
         //is_logged_in();
         $this->load->model('menu_model', 'model');
         $this->load->model('jo_model', 'jomodel');
+        login_cek();
     }
 
     public function index()
@@ -48,6 +49,7 @@ class Joborder extends CI_Controller
         $data = array(
             'no_jo' => $this->input->post('no_jo'),
             'tgl_jo' => $this->input->post('tgl_jo'),
+            'tgl_terima' => $this->input->post('tgl_terima'),
             'cc_no' => $this->input->post('cc_no'),
             'pekerjaan' => $this->input->post('pekerjaan'),
             'tujuan' => $this->input->post('tujuan'),

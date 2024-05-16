@@ -2,10 +2,11 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+    <h1 class="h3 mb-1 text-gray-800"><?= $title; ?></h1>
+    <h6 class="mb-3">Selamat datang di Aplikasi E-Job Order Departemen Instalasi</h6>
 
     <!-- Content Row -->
-    <div class="row">
+    <div class="row mt-2">
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -14,8 +15,44 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Total Job Order</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">253</div>
+                                Total Job Order Keseluruhan</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totaljo['total_jo']; ?></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Job Order Selesai Tahun <?= date('Y'); ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totaljo['total_jo']; ?></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Order Masuk Menunggu Approve -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Total Job Order Belum Approve</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $receive['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -32,8 +69,26 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Total Job Order Bulan <?= date('M'); ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">14</div>
+                                Total Job Order Masuk Bulan <?= date('M'); ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $month['total_jo']; ?></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Job Order Selesai Bulan <?= date('M'); ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $month['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -89,9 +144,42 @@
         </div>
     </div>
 
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <div class="card shadow mb-4 mt-2">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Job Order Tunggu Approve Instalasi</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>No. Job Order</th>
+                                <th>Pekerjaan</th>
+                                <th>Pelaksana</th>
+                                <th>Plant</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="show_data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>
 <!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+    });
+</script>

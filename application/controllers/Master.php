@@ -22,6 +22,24 @@ class Master extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function member()
+    {
+        $data['title'] = 'Data Member';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('master/member', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampilmember()
+    {
+        $dataAll = $this->model->getMember();
+        echo json_encode($dataAll);
+    }
+
     public function tampildata()
     {
         $dataAll = $this->model->getPlant();
@@ -40,6 +58,34 @@ class Master extends CI_Controller
 
         // Insert data via model
         $simpanData = $this->model->save_data_plant($data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
+
+    public function tambahmember()
+    {
+        $name = $this->input->post('name');
+        $nim = $this->input->post('nim');
+        $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+        $bagian = $this->input->post('bagian');
+        $jabatan = $this->input->post('jabatan');
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'name' => $name,
+            'nim' => $nim,
+            'password' => $password,
+            'bagian' => $bagian,
+            'jabatan' => $jabatan
+        );
+
+        // Insert data via model
+        $simpanData = $this->model->addMember($data);
 
         // Cek apakah data berhasil tersimpan
         if ($simpanData) {

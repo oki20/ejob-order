@@ -12,6 +12,44 @@ class Menu_model extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
+    //Dashboard Admin
+    public function getTotalJo()
+    {
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 5)
+            ->get()
+            ->row_array();
+    }
+
+    //Dashboard Admin
+    public function getWaitReceive()
+    {
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 4)
+            ->get()
+            ->row_array();
+    }
+
+    public function getJoPerMonth()
+    {
+        // Mendapatkan tanggal 15 bulan ini
+        $currentDate = date('Y-m-15');
+        // Mendapatkan tanggal 15 bulan sebelumnya
+        $previousMonthDate = date('Y-m-15', strtotime('-1 month'));
+
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 5)
+            ->where("tgl_terima >= ", $previousMonthDate)
+            ->where("tgl_terima < ", $currentDate)
+            ->get()
+            ->row_array();
+    }
 
     //Model untuk master data plant
     public function getPlant()
@@ -41,6 +79,17 @@ class Menu_model extends CI_Model
         $result = $this->db->delete("tb_plant");
 
         return $result;
+    }
+
+    //Model untuk tambah member
+    public function addMember($data)
+    {
+        return $this->db->insert("member", $data);
+    }
+
+    public function getMember()
+    {
+        return $this->db->get_where('member')->result_array();
     }
 
 

@@ -14,6 +14,10 @@ class Admin extends CI_Controller
     {
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['totaljo'] = $this->model->getTotalJo();
+        $data['receive'] = $this->model->getWaitReceive();
+        $data['month'] = $this->model->getJoPerMonth();
+
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

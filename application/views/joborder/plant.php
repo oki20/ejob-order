@@ -24,8 +24,8 @@
                                 <th>No. Job Order</th>
                                 <th>Pekerjaan</th>
                                 <th>Pelaksana</th>
-                                <th>Plant</th>
-                                <th>Status</th>
+                                <th>No. File</th>
+                                <th>Tgl Terima Jo</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -38,6 +38,9 @@
     </div>
 </div>
 <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
 
 <!-- MODAL ADD -->
 <form>
@@ -181,6 +184,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </form>
 <!--END MODAL ADD-->
 
@@ -206,16 +210,13 @@
                         var nomor = i + 1;
                         var statusBadge = '';
 
-                        if (data[i].status == '1') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
-                        }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
                             '<td>' + data[i].pelaksana + '</td>' +
-                            '<td> Plant ' + data[i].nama + '</td>' +
-                            '<td>' + statusBadge + '</td>' +
+                            '<td>' + data[i].no_file + '</td>' +
+                            '<td>' + data[i].tgl_terima + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
                             '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +

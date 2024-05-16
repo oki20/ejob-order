@@ -7,9 +7,9 @@ class Jo_model extends CI_Model
     {
         return $this->db
             ->select('COUNT(pengajuan_job_order.no_jo) as total_jo, tb_plant.id_plant, tb_plant.nama')
-            ->from('pengajuan_job_order')
-            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '5')
+            ->from('tb_plant')
+            ->join('pengajuan_job_order', 'pengajuan_job_order.id_plant = tb_plant.id_plant AND pengajuan_job_order.status = 5', 'left')
+            ->group_by('tb_plant.id_plant, tb_plant.nama')
             ->get()
             ->result_array();
     }

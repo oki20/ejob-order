@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 function is_logged_in()
 {
@@ -20,6 +20,14 @@ function is_logged_in()
         if ($userAccess->num_rows() < 1) {
             redirect('auth/blocked');
         }
+    }
+}
+
+function login_cek()
+{
+    $ci = get_instance();
+    if (!$ci->session->userdata('email')) {
+        redirect('auth');
     }
 }
 
