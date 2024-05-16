@@ -55,7 +55,7 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
-                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
+                        <input type="text" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO</label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
@@ -159,9 +159,11 @@
 
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
+            var saran_dept = $('#saran_dept').val();
 
             var formData = new FormData();
             formData.append('id', id);
+            formData.append('saran_dept', saran_dept);
 
             $.ajax({
                 type: "POST",
@@ -170,6 +172,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    console.log(response);
                     if (response == "success") {
                         swal({
                             type: 'success',
