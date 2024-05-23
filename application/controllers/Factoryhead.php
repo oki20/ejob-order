@@ -54,7 +54,7 @@ class Factoryhead extends CI_Controller
 
     public function tampilrequest()
     {
-        $dataAll = $this->model->getRequestJo1();
+        $dataAll = $this->model->getRequestJo3();
         echo json_encode($dataAll);
     }
 
@@ -78,7 +78,7 @@ class Factoryhead extends CI_Controller
     }
 
     public function rejectData()
-    { 
+    {
         $id = $this->input->post("id");
 
         // Lakukan penyimpanan data ke database

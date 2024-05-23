@@ -126,6 +126,25 @@ class User extends CI_Controller
         $this->load->view('user/request', $data);
         $this->load->view('templates/footer');
     }
+    public function reject()
+    {
+        $data['title'] = 'Reject Job Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        //get Data Plant
+        $data['plants'] = $this->model->getPlant();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/reject', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampilReject()
+    {
+        $dataAll = $this->model->getRejectJoUser();
+        echo json_encode($dataAll);
+    }
 
     public function tampilrequest()
     {
@@ -226,6 +245,15 @@ class User extends CI_Controller
         $dataAll = $this->model->getAdeptheadJo();
         echo json_encode($dataAll);
     }
+
+
+    public function tampilaplanthead()
+    {
+        $dataAll = $this->model->getAplantheadJo();
+        echo json_encode($dataAll);
+    }
+
+
 
     //Menampilkan job order yang sudah di approved Plant head
     //Request Job Order

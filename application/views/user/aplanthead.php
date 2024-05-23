@@ -55,9 +55,7 @@
                         var nomor = i + 1;
                         var statusBadge = '';
 
-                        if (data[i].status == '3') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
-                        }
+                        statusBadge = '<span class="badge badge-success"><i class="fas fa-info-circle"></i> Accept by Plant.Head</span>';
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +

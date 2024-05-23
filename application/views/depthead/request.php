@@ -163,7 +163,7 @@
             $('#Modal_reject').modal('show');
             $('[name="id_edit"]').val(id);
         });
-        
+
 
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
@@ -191,7 +191,7 @@
 
                         $('[name="saran_dept"]').val("");
 
-                        $('#Modal_Approve').modal('hide');
+                        $('#Modal_approve').modal('hide');
 
                         // Reload or update data in your table
                         tampildata();
@@ -240,7 +240,7 @@
 
                         $('[name="saran_dept"]').val("");
 
-                        $('#Modal_Reject').modal('hide');
+                        $('#Modal_reject').modal('hide');
 
                         // Reload or update data in your table
                         tampildata();
@@ -263,5 +263,6 @@
                 }
             });
         });
+
     });
 </script>

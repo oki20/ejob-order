@@ -525,6 +525,7 @@
                 async: false,
                 dataType: 'json',
                 success: function(data) {
+                    console.log(id_plant);
                     var html = '';
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {

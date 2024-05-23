@@ -237,10 +237,11 @@
                     console.log(response);
                 },
                 error: function(response) {
+                    console.log(response);
                     Swal.fire({ // Mengganti swal menjadi Swal.fire
                         icon: 'error',
                         title: 'Opps!',
-                        text: 'server error!'
+                        text: 'response'
                     });
                 }
             });

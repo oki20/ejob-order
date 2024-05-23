@@ -199,11 +199,13 @@ class Menu_model extends CI_Model
     {
         $id = $this->session->userdata('id');
 
+        $requestStatus = [2, 3, 4];
+
         return $this->db
             ->select('*')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '2')
+            ->where_in('pengajuan_job_order.status', $requestStatus)
             ->where('pengajuan_job_order.id_pemesan', $id)
             ->get()
             ->result_array();
@@ -213,11 +215,13 @@ class Menu_model extends CI_Model
     {
         $id = $this->session->userdata('id');
 
+        $requestStatus = [3, 4];
+
         return $this->db
             ->select('*')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '3')
+            ->where_in('pengajuan_job_order.status', $requestStatus)
             ->where('pengajuan_job_order.id_pemesan', $id)
             ->get()
             ->result_array();
@@ -226,6 +230,35 @@ class Menu_model extends CI_Model
     public function saveRole($data)
     {
         return $this->db->insert("user_role", $data);
+    }
+
+    public function getRejectJoUser()
+    {
+        $id = $this->session->userdata('id_plant');
+
+        $rejectId = [6, 7, 8, 9];
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where_in('pengajuan_job_order.status', $rejectId)
+            ->where('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
+    }
+
+    public function getRejectJo()
+    {
+        $id = $this->session->userdata('id_plant');
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where_in('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
     }
 
     public function getRequestJo1()

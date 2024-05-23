@@ -4,11 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Planthead extends CI_Controller
 {
     public function __construct()
-{        
-    parent::__construct();
-    //is_logged_in();
-    $this->load->model('menu_model','model');
-}
+    {
+        parent::__construct();
+        //is_logged_in();
+        $this->load->model('menu_model', 'model');
+    }
 
     //Request Job Order
     public function request()
@@ -49,12 +49,12 @@ class Planthead extends CI_Controller
     {
         $dataAll = $this->model->getRequestJo2();
         echo json_encode($dataAll);
-    }    
+    }
 
     public function approveData()
     {
         $id = $this->input->post("id");
-        $saran_dept = $this->input->post("saran_plant");
+        $saran_plant = $this->input->post("saran_plant");
 
         // Lakukan penyimpanan data ke database
         $data = array(
@@ -73,9 +73,9 @@ class Planthead extends CI_Controller
     }
 
     public function rejectData()
-    { 
+    {
         $id = $this->input->post("id");
-        $saran_dept = $this->input->post("saran_plant");
+        $saran_plant = $this->input->post("saran_plant");
 
         // Lakukan penyimpanan data ke database
         $data = array(
