@@ -19,8 +19,8 @@
 
                                 <form class="user" method="post" action="<?= base_url('auth'); ?>">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">
-                                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
+                                        <input type="text" class="form-control form-control-user" id="nim" name="nim" placeholder="Enter NIP ..." value="<?= set_value('nim'); ?>">
+                                        <?= form_error('nim', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
@@ -47,4 +47,4 @@
 
     </div>
 
-</div> 
+</div>

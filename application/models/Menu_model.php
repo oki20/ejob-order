@@ -89,7 +89,13 @@ class Menu_model extends CI_Model
 
     public function getMember()
     {
-        return $this->db->get_where('member')->result_array();
+        $query = "SELECT m.*, GROUP_CONCAT(p.nama) AS name_plant 
+              FROM member m 
+              JOIN tb_plant p ON FIND_IN_SET(p.id_plant, m.plant) > 0 
+              WHERE FIND_IN_SET(p.id_plant, m.plant) > 0 
+              GROUP BY m.id";
+
+        return $this->db->query($query)->result_array();
     }
 
 

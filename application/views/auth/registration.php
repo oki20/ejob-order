@@ -20,7 +20,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="number" class="form-control form-control-user" id="nim" name="nim" placeholder="Nomor Induk Pegawai">
+                                    <input type="text" class="form-control form-control-user" id="nim" name="nim" placeholder="Nomor Induk Pegawai">
                                     <?= form_error('nim', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
                                 <div class="col-sm-6">

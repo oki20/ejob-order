@@ -16,7 +16,7 @@ class Auth extends CI_Controller
             redirect('user');
         }
 
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('nim', 'NIP', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == false) {
@@ -33,16 +33,16 @@ class Auth extends CI_Controller
 
     private function _login()
     {
-        $email = $this->input->post('email');
+        $nim = $this->input->post('nim');
         $password = $this->input->post('password');
 
-        $user = $this->db->get_where('user', ['email' => $email])->row_array();
+        // Cek di tabel 'user'
+        $user = $this->db->get_where('user', ['nim' => $nim])->row_array();
 
-        // jika usernya ada
         if ($user) {
-            // jika usernya aktif
+            // Cek apakah user aktif
             if ($user['is_active'] == 1) {
-                // cek password
+                // Verifikasi password
                 if (password_verify($password, $user['password'])) {
                     $data = [
                         'email' => $user['email'],
@@ -51,36 +51,65 @@ class Auth extends CI_Controller
                         'id' => $user['id']
                     ];
                     $this->session->set_userdata($data);
-                    if ($user['role_id'] == 1) {
-                        redirect('admin');
-                    } elseif ($user['role_id'] == 2) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 3) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 4) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 5) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 6) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 7) {
-                        redirect('user');
-                    } elseif ($user['role_id'] == 8) {
-                        redirect('member');
+                    // Redirect berdasarkan role_id
+                    switch ($user['role_id']) {
+                        case 1:
+                            redirect('admin');
+                            break;
+                        case 8:
+                            redirect('member');
+                            break;
+                        default:
+                            redirect('user');
+                            break;
                     }
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
                     redirect('auth');
                 }
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">This email has not been activated!</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">This NIP has not been activated!</div>');
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Email is not registered!</div>');
-            redirect('auth');
+            // Cek di tabel 'member'
+            $member = $this->db->get_where('member', ['nim' => $nim])->row_array();
+            if ($member) {
+                if (password_verify($password, $member['password'])) {
+                    $data = [
+                        'email' => $member['email'],
+                        'jabatan' => $member['jabatan'],
+                        'plant' => $member['plant'],
+                        'id' => $member['id'],
+                        'role_id' => $member['role_id']
+                    ];
+                    $this->session->set_userdata($data);
+                    // Redirect berdasarkan jabatan
+                    switch ($member['jabatan']) {
+                        case 'L':
+                            redirect('leader');
+                            break;
+                        case 'SH':
+                            redirect('section');
+                            break;
+                        case 'ADH':
+                            redirect('assistant');
+                            break;
+                        default:
+                            redirect('auth');
+                            break;
+                    }
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
+                    redirect('auth');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">NIP is not registered!</div>');
+                redirect('auth');
+            }
         }
     }
+
 
 
     public function registration()
@@ -93,7 +122,7 @@ class Auth extends CI_Controller
         $data['plants'] = $this->model->getPlant();
 
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]|callback_check_email_domain', [
             'is_unique' => 'This email has already registered!'
         ]);
         $this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[3]|matches[password2]', [
@@ -146,6 +175,16 @@ class Auth extends CI_Controller
         }
     }
 
+    public function check_email_domain($email)
+    {
+        // Memeriksa apakah alamat email sesuai dengan domain yang diinginkan
+        if (strpos($email, '@gt-tires.com') === FALSE) {
+            $this->form_validation->set_message('check_email_domain', 'The email must belong to gt-tires.com domain');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
     private function _sendEmail($token, $type)
     {

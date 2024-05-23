@@ -26,6 +26,7 @@ class Master extends CI_Controller
     {
         $data['title'] = 'Data Member';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['plant'] = $this->model->getPlant();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -74,24 +75,33 @@ class Master extends CI_Controller
         $password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
         $bagian = $this->input->post('bagian');
         $jabatan = $this->input->post('jabatan');
+        $select_plant = $this->input->post('plant');
+        $email = $this->input->post('email');
 
-        // Lakukan penyimpanan data ke database
+        if ($jabatan == 'L') {
+            $role_id = 8;
+        } else if ($jabatan == 'SH') {
+            $role_id = 9;
+        } else if ($jabatan == 'ADH') {
+            $role_id = 10;
+        }
+
         $data = array(
-            'name' => $name,
-            'nim' => $nim,
+            'name' => htmlspecialchars($name, true),
+            'nim' => htmlspecialchars($nim, true),
             'password' => $password,
-            'bagian' => $bagian,
-            'jabatan' => $jabatan
+            'bagian' => htmlspecialchars($bagian, true),
+            'jabatan' => htmlspecialchars($jabatan, true),
+            'plant' => htmlspecialchars($select_plant, true),
+            'email' => htmlspecialchars($email, true),
+            'role_id' => $role_id
         );
-
-        // Insert data via model
         $simpanData = $this->model->addMember($data);
 
-        // Cek apakah data berhasil tersimpan
         if ($simpanData) {
-            echo json_encode(array('status' => 'success'));
+            echo json_encode(['status' => 'success']);
         } else {
-            echo json_encode(array('status' => 'error'));
+            echo json_encode(['status' => 'error']);
         }
     }
 
