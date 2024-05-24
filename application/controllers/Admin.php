@@ -40,7 +40,7 @@ class Admin extends CI_Controller
 
         $simpantData = $this->model->saveRole($data);
         // Cek apakah data berhasil tersimpan
-        if ($simpanData) {
+        if ($simpantData) {
             echo json_encode(array('status' => 'success'));
         } else {
             echo json_encode(array('status' => 'error'));
