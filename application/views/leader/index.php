@@ -4,6 +4,31 @@
     <h1 class="h3 mb-1 text-gray-800"><?= $title; ?></h1>
     <h6 class="mb-3">Hai <?= $user['name']; ?>, Selamat datang di Aplikasi E-Job Order Departemen Instalasi</h6>
 
+    <?php if (!$this->session->userdata('no_hp')) : ?>
+        <!-- Modal -->
+        <div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="phoneModalLabel">Please enter your phone number</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="handphone">Phone number</label>
+                                <input type="text" class="form-control" id="no_hp" name="no_hp" placeholder="Format phone 628966345.....">
+                            </div>
+                            <button type="button" id="btn_phone" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <div class="row">
         <?php foreach ($plants as $plant) : ?>
             <div class="col-xl-3 col-md-6 mb-4">
@@ -123,6 +148,66 @@
             });
         }
 
+        $('#btn_phone').click(function() {
+            var no_hp = $('#no_hp').val();
+
+            if (!no_hp) {
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Nomor Handphone Wajib Diisi !'
+                });
+            } else {
+                // Form data untuk mengirimkan file
+                var formData = new FormData();
+                formData.append('no_hp', no_hp);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('leader/editphone') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Terimakasih, Anda akan keluar, kemudian login kembali!',
+                            });
+                            setTimeout(function() {
+                                window.location.href = "<?php echo base_url('auth/logout'); ?>";
+                            }, 2000);
+
+
+                            $('[name="no_hp"]').val("");
+
+                            $('#phoneModal').modal('hide');
+
+                            // Reload or update data in your table
+                            tampildata();
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+
         $('#btn_save').click(function() {
             var nama_member = $('#nama_member').val();
             var nim_member = $('#nim_member').val();
@@ -202,3 +287,11 @@
         });
     });
 </script>
+
+<?php if (!$this->session->userdata('no_hp')) : ?>
+    <script>
+        $(document).ready(function() {
+            $('#phoneModal').modal('show');
+        });
+    </script>
+<?php endif; ?>

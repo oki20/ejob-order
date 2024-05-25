@@ -145,4 +145,24 @@ class Leader extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
+
+    public function editphone()
+    {
+        $id = $this->session->userdata('id');
+        $no_hp = $this->input->post('no_hp');
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'no_hp' => $no_hp // Simpan nama file gambar ke dalam database
+        );
+
+        $this->model->updatePhone($id, $data); // Ubah $id menjadi $id_produksi
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
 }

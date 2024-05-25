@@ -123,4 +123,14 @@ class Leader_model extends CI_Model
         $query = $this->db->get('tb_report'); // Ganti 'nama_tabel_laporan' dengan nama tabel yang sesuai
         return $query->row_array(); // Kembalikan hasil dalam bentuk array
     }
+
+    public function updatePhone($id, $data)
+    {
+        $tableName = 'member';
+        $primaryKey = 'id';
+
+        //update data
+        $this->db->where($primaryKey, $id);
+        $this->db->update($tableName, $data);
+    }
 }

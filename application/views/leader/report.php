@@ -245,6 +245,8 @@
 
         // Get data for updating record
         $('#show_data').on('click', '.item_whatsapp', function() {
+            var nomorWhatsApp = "<?php echo $this->session->userdata('no_hp'); ?>";
+
             var id_jo = $(this).data('id_jo');
             var no_jo = $(this).data('no_jo');
             var pekerjaan = $(this).data('pekerjaan');
@@ -255,9 +257,6 @@
                 "\n\nDeskripsi Pekerjaan : " + pekerjaan +
                 "\nNomor Job Order" + no_jo + "\n\n" +
                 "Item Pekerjaan: " + item_pekerjaan;
-
-            // Ganti nomor telepon sesuai kebutuhan
-            var nomorWhatsApp = "6289663456037"; // Ganti dengan nomor tujuan WhatsApp
 
             // Buat URL dengan format yang sesuai untuk membuka WhatsApp dan mengirim pesan
             var urlWhatsApp = "https://wa.me/" + nomorWhatsApp + "?text=" + encodeURIComponent(pesan);

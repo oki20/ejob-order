@@ -82,7 +82,8 @@ class Auth extends CI_Controller
                         'plant' => $member['plant'],
                         'id' => $member['id'],
                         'role_id' => $member['role_id'],
-                        'bagian' => $member['bagian']
+                        'bagian' => $member['bagian'],
+                        'no_hp' => $member['no_hp']
                     ];
                     $this->session->set_userdata($data);
                     // Redirect berdasarkan jabatan
