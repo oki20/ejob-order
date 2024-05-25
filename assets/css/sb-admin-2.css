@@ -2587,6 +2587,25 @@ textarea.form-control {
   }
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Menjaga tombol tetap rata kanan */
+}
+
+.button-container a {
+  margin-bottom: 5px; /* Memberikan jarak antar tombol */
+}
+
+.button-container a:last-child {
+  margin-bottom: 0; /* Menghilangkan margin dari tombol terakhir */
+}
+
+.table-cell {
+  font-size: 14px; /* Atur ukuran font yang diinginkan */
+}
+
+
 .btn:hover {
   color: #858796;
   text-decoration: none;

@@ -26,6 +26,8 @@
                                 <th>Pelaksana</th>
                                 <th>No. File</th>
                                 <th>Tgl Terima Jo</th>
+                                <th>Progres Elektrik</th>
+                                <th>Progres Mekanik</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -217,6 +219,8 @@
                             '<td>' + data[i].pelaksana + '</td>' +
                             '<td>' + data[i].no_file + '</td>' +
                             '<td>' + data[i].tgl_terima + '</td>' +
+                            '<td>' + data[i].progres_elektrik + '</td>' +
+                            '<td>' + data[i].progres_mekanik + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
                             '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +

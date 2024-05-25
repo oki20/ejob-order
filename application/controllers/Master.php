@@ -89,6 +89,7 @@ class Master extends CI_Controller
         $data = array(
             'name' => htmlspecialchars($name, true),
             'nim' => htmlspecialchars($nim, true),
+            'image' => 'default.jpg',
             'password' => $password,
             'bagian' => htmlspecialchars($bagian, true),
             'jabatan' => htmlspecialchars($jabatan, true),
