@@ -233,6 +233,22 @@ class Menu_model extends CI_Model
             ->result_array();
     }
 
+    public function getAfactoryheadJo()
+    {
+        $id = $this->session->userdata('id');
+
+        $requestStatus = [4, 5];
+
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where_in('pengajuan_job_order.status', $requestStatus)
+            ->where('pengajuan_job_order.id_pemesan', $id)
+            ->get()
+            ->result_array();
+    }
+
     public function saveRole($data)
     {
         return $this->db->insert("user_role", $data);
@@ -308,7 +324,19 @@ class Menu_model extends CI_Model
             ->get()
             ->result_array();
     }
+    public function getRequestJo4()
+    {
+        $id = $this->session->userdata('id_plant');
 
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '4')
+            ->where('pengajuan_job_order.id_plant', $id)
+            ->get()
+            ->result_array();
+    }
     public function appData($id, $data)
     {
         $tableName = 'pengajuan_job_order';

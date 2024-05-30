@@ -193,7 +193,6 @@ class User extends CI_Controller
             'cc_no' => $this->input->post('cc_no'),
             'pekerjaan' => $this->input->post('pekerjaan'),
             'tujuan' => $this->input->post('tujuan'),
-            'pelaksana' => $this->input->post('pelaksana'),
             'rencana' => $this->input->post('rencana'),
             'cep_no' => $this->input->post('cep_no'),
             'dwg_no' => $this->input->post('dwg_no'),
@@ -254,7 +253,6 @@ class User extends CI_Controller
     }
 
 
-
     //Menampilkan job order yang sudah di approved Plant head
     //Request Job Order
     public function aplanthead()
@@ -274,4 +272,23 @@ class User extends CI_Controller
         $dataAll = $this->model->getAplantheadJo();
         echo json_encode($dataAll);
     }
+
+    public function afactoryhead()
+    {
+        $data['title'] = 'App Factory Head';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/afactoryhead', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function tampilafactoryhead()
+    {
+        $dataAll = $this->model->getAfactoryheadJo();
+        echo json_encode($dataAll);
+    }
+
 }

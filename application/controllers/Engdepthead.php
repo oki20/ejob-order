@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Factoryhead extends CI_Controller
+class Engdepthead extends CI_Controller
 {
 
     public function __construct()
@@ -27,7 +27,7 @@ class Factoryhead extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('factoryhead/request', $data);
+        $this->load->view('engdepthead/request', $data);
         $this->load->view('templates/footer');
     }
 
@@ -42,7 +42,7 @@ class Factoryhead extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
-        $this->load->view('factoryhead/reject', $data);
+        $this->load->view('engdepthead/reject', $data);
         $this->load->view('templates/footer');
     }
 
@@ -54,19 +54,17 @@ class Factoryhead extends CI_Controller
 
     public function tampilrequest()
     {
-        $dataAll = $this->model->getRequestJo3();
+        $dataAll = $this->model->getRequestJo4();
         echo json_encode($dataAll);
     }
 
     public function approveData()
     {
         $id = $this->input->post("id");
-        $pelaksana = $this->input->post("pelaksana");
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'pelaksana' => $pelaksana,
-            'status'    => '4'
+            'status' => '5',
         );
 
         $this->model->appData($id, $data);
@@ -85,7 +83,7 @@ class Factoryhead extends CI_Controller
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'status' => '8',
+            'status' => '9',
         );
 
         $this->model->appData($id, $data);

@@ -107,17 +107,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">Pelaksana Job Order</label>
-                        <div class="col-md-10">
-                            <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
-                                <option selected disabled>Select one</option>
-                                <option value="Elektrik">Elektrik</option>
-                                <option value="Mekanik">Mekanik</option>
-                                <option value="Elektrik dan Mekanik">Elektrik dan Mekanik</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-md-2 col-form-label">Perkiraan Budget Proyek</label>
                         <div class="col-md-10">
                             <select id="cep_no" name="cep_no" class="form-control custom-select" value="">
@@ -245,7 +234,6 @@
             var cc_no = $('#cc_no').val();
             var pekerjaan = $('#pekerjaan').val();
             var tujuan = $('#tujuan').val();
-            var pelaksana = $('#pelaksana').val();
             var rencana = $('#rencana').val();
             var cep_no = $('#cep_no').val();
             var dwg_no = $('#dwg_no').val();
@@ -257,7 +245,7 @@
 
             if (no_jo.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Nomor Job Order Wajib Di Pilih !'
@@ -265,7 +253,7 @@
 
             } else if (tgl_jo.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Tanggal Job Order Wajib Diisi !'
@@ -273,7 +261,7 @@
 
             } else if (cc_no.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Cost Centre Wajib Diisi !'
@@ -281,7 +269,7 @@
 
             } else if (pekerjaan.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Detail Pekerjaan Wajib Diisi !'
@@ -289,23 +277,15 @@
 
             } else if (tujuan.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'Tujuan Wajib Diisi !'
                 });
 
-            } else if (pelaksana.length == "") {
-
-                swal({
-                    type: 'warning',
-                    title: 'Oops...',
-                    text: 'Pelaksana Wajib Diisi !'
-                });
-
             } else if (cep_no.length == "") {
 
-                swal({
+                Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
                     text: 'CEP Nomer Wajib Diisi !'
@@ -319,7 +299,6 @@
                 formData.append('cc_no', cc_no);
                 formData.append('pekerjaan', pekerjaan);
                 formData.append('tujuan', tujuan);
-                formData.append('pelaksana', pelaksana);
                 formData.append('rencana', rencana);
                 formData.append('cep_no', cep_no);
                 formData.append('dwg_no', dwg_no);
@@ -339,7 +318,7 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                swal({
+                                Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil!',
                                     text: 'Simpan Data Berhasil!'
@@ -350,7 +329,6 @@
                                 $('[name="cc_no"]').val("");
                                 $('[name="pekerjaan"]').val("");
                                 $('[name="tujuan"]').val("");
-                                $('[name="pelaksana"]').val("");
                                 $('[name="rencana"]').val("");
                                 $('[name="cep_no"]').val("");
                                 $('[name="dwg_no"]').val("");
@@ -360,7 +338,7 @@
                                 tampildata();
                             } else {
 
-                                swal({
+                                Swal.fire({
                                     icon: 'error',
                                     title: 'Simpan data Gagal!',
                                     text: 'silahkan coba lagi!'
@@ -368,8 +346,8 @@
 
                             }
                         } catch (e) {
-                            //console.error('Error parsing server response:', e);
-                            swal({
+                            console.error('Error parsing server response:', e);
+                            Swal.fire({
                                 icon: 'error',
                                 title: 'Oppss!',
                                 text: 'Error parsing server response!!'
@@ -377,7 +355,8 @@
                         }
                     },
                     error: function(response) {
-                        swal({
+                        console.Log(response);
+                        Swal.fire({
                             icon: 'error',
                             title: 'Opps!',
                             text: 'server error!'
@@ -392,19 +371,20 @@
             var id = $(this).data('id');
 
             // SweetAlert confirmation before proceeding with deletion
-
-            swal({
-                    title: "Are you sure?",
-                    text: "You won\'t be able to revert this!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        deleteProduct(id);
-                    }
-                });
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Perform actual deletion after confirmation
+                    deleteProduct(id);
+                }
+            });
         });
 
         // Function to handle actual deletion using AJAX
@@ -418,17 +398,18 @@
                 },
                 success: function(data) {
                     // Handle success, for example, show success message
-                    swal({
+                    Swal.fire({
                         title: 'Deleted!',
                         text: 'Your file has been deleted.',
                         icon: 'success',
+                        showConfirmButton: false,
                         timer: 3000
                     });
                     tampildata();
                 },
                 error: function(xhr, status, error) {
                     // Handle error, for example, show error message
-                    swal({
+                    Swal.fire({
                         title: 'Error!',
                         text: 'Unable to delete product.',
                         icon: 'error'
@@ -525,7 +506,6 @@
                 async: false,
                 dataType: 'json',
                 success: function(data) {
-                    console.log(id_plant);
                     var html = '';
                     if (data.length > 0) {
                         for (var i = 0; i < data.length; i++) {

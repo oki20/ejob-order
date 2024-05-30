@@ -39,6 +39,8 @@
 </div>
 <!-- /.container-fluid -->
 
+
+
 <!-- MODAL APPROVE -->
 <form>
     <div class="modal fade" id="Modal_approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -52,18 +54,6 @@
                 </div>
                 <div class="modal-body">
 
-                <div class="form-group row">
-                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
-                        <label class="col-md-2 col-form-label">Pelaksana JO</label>
-                        <div class="col-md-10">
-                <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
-                                <option selected disabled>Select one</option>
-                                <option value="Elektrik">Elektrik</option>
-                                <option value="Mekanik">Mekanik</option>
-                                <option value="Elektrik dan Mekanik">Elektrik dan Mekanik</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group row">
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO</label>
@@ -123,11 +113,10 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('factoryhead/tampilrequest') ?>',
+                url: '<?php echo site_url('engdepthead/tampilrequest') ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     var html = '';
                     var i;
                     var no;
@@ -160,9 +149,7 @@
 
         // Get data for updating record
         $('#show_data').on('click', '.item_approve', function() {
-
             var id = $(this).data('id');
-
             $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
         });
@@ -174,19 +161,19 @@
             $('#Modal_reject').modal('show');
             $('[name="id_edit"]').val(id);
         });
-
+        
 
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
-            var pelaksana = $('#pelaksana').val();
+            var saran_dept = $('#saran_dept').val();
 
             var formData = new FormData();
             formData.append('id', id);
-            formData.append('pelaksana', pelaksana);
+            formData.append('saran_dept', saran_dept);
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('factoryhead/approveData') ?>",
+                url: "<?php echo site_url('engdepthead/approveData') ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -228,13 +215,15 @@
 
         $('#btn_reject').on('click', function() {
             var id = $('#id_edit').val();
+            var saran_dept = $('#saran_dept').val();
 
             var formData = new FormData();
             formData.append('id', id);
+            formData.append('saran_dept', saran_dept);
 
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('factoryhead/rejectData') ?>",
+                url: "<?php echo site_url('engdepthead/rejectData') ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -249,7 +238,7 @@
 
                         $('[name="saran_dept"]').val("");
 
-                        $('#Modal_aeject').modal('hide');
+                        $('#Modal_reject').modal('hide');
 
                         // Reload or update data in your table
                         tampildata();

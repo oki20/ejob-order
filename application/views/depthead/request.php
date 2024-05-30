@@ -149,9 +149,7 @@
 
         // Get data for updating record
         $('#show_data').on('click', '.item_approve', function() {
-
             var id = $(this).data('id');
-
             $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
         });
@@ -163,7 +161,7 @@
             $('#Modal_reject').modal('show');
             $('[name="id_edit"]').val(id);
         });
-
+        
 
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
@@ -263,6 +261,5 @@
                 }
             });
         });
-
     });
 </script>

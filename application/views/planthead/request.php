@@ -7,34 +7,34 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <div style="text-align: right;">
-        </div>
-    </div>
-    <div class="card shadow mb-4 mt-2">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>No. Job Order</th>
-                            <th>Pekerjaan</th>
-                            <th>Pelaksana</th>
-                            <th>Plant</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="show_data">
-                    </tbody>
-                </table>
             </div>
         </div>
-    </div>
+        <div class="card shadow mb-4 mt-2">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Data Request Job Order</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>No. Job Order</th>
+                                <th>Pekerjaan</th>
+                                <th>Pelaksana</th>
+                                <th>Plant</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="show_data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-</div>
+    </div>
 
 </div>
 <!-- /.container-fluid -->
@@ -148,20 +148,20 @@
             $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
         });
-
+        
         $('#show_data').on('click', '.item_reject', function() {
             var id = $(this).data('id');
             $('#Modal_reject').modal('show');
             $('[name="id_edit"]').val(id);
         });
-
+        
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
             var saran_plant = $('#saran_plant').val();
             var formData = new FormData();
             formData.append('id', id);
             formData.append('saran_plant', saran_plant);
-            console.log(id);
+            
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('planthead/approveData') ?>",
@@ -169,46 +169,46 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
-                    if (response == "success") {
+                     console.log(response);
+                     if (response == "success") {
                         swal({
                             type: 'success',
                             title: 'Berhasil!',
                             icon: 'success',
                             text: 'Update Data Berhasil!'
-                        });
-                        $('[name="saran_plant"]').val("");
-                        $('#Modal_approve').modal('hide');
-
-                        // Reload or update data in your table
-                        tampildata();
-                    } else {
+                         });
+                         $('[name="saran_plant"]').val("");
+                         $('#Modal_approve').modal('hide');
+                         
+                         // Reload or update data in your table
+                         tampildata();
+                        } else {
+                             swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
                         swal({
                             type: 'error',
-                            title: 'Update data Gagal!',
+                            title: 'Oops!',
                             icon: 'warning',
-                            text: 'Silahkan coba lagi!'
+                            text: 'Server error!'
                         });
                     }
-                },
-                error: function(response) {
-                    swal({
-                        type: 'error',
-                        title: 'Oops!',
-                        icon: 'warning',
-                        text: 'Server error!'
-                    });
-                }
-            });
+                });
         });
-
+        
         $('#btn_reject').on('click', function() {
             var id = $('#id_edit').val();
             var saran_plant = $('#saran_plant').val();
             var formData = new FormData();
             formData.append('id', id);
             formData.append('saran_plant', saran_plant);
-
+            
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('planthead/rejectData') ?>",
@@ -223,10 +223,10 @@
                             icon: 'success',
                             text: 'Update Data Berhasil!'
                         });
-
+                        
                         $('[name="saran_plant"]').val("");
                         $('#Modal_reject').modal('hide');
-
+                        
                         // Reload or update data in your table
                         tampildata();
                     } else {

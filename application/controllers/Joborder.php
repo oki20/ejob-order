@@ -53,7 +53,6 @@ class Joborder extends CI_Controller
             'cc_no' => $this->input->post('cc_no'),
             'pekerjaan' => $this->input->post('pekerjaan'),
             'tujuan' => $this->input->post('tujuan'),
-            'pelaksana' => $this->input->post('pelaksana'),
             'rencana' => $this->input->post('rencana'),
             'cep_no' => $this->input->post('cep_no'),
             'dwg_no' => '-',
