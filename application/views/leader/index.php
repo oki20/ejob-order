@@ -55,28 +55,28 @@
 <div class="container-fluid">
     <div style="text-align: right;">
         <div style="display: inline-block;">
-            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span>  Tambah Anggota </a>
+            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span> Tambah Anggota </a>
         </div>
     </div>
-    <div class="card shadow mb-4 mt-2">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data Anggota Tim</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NIP</th>
-                            <th>Nama</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="show_data">
-                    </tbody>
-                </table>
-            </div>
+</div>
+<div class="card shadow mb-4 mt-2">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Data Anggota Tim</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>NIP</th>
+                        <th>Nama</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="show_data">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

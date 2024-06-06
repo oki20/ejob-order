@@ -23,7 +23,7 @@
     <link href="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Add for AJAX -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="<?= base_url('assets/'); ?>js/jquery.js"></script>
 
     <!-- Include SweetAlert CDN -->
@@ -37,7 +37,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 
-    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        #wrapper.toggled #accordionSidebar {
+            display: none;
+        }
+    </style>
 
 </head>
 

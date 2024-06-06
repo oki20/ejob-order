@@ -92,6 +92,14 @@
                 });
             </script>
 
+            <script>
+                $(document).ready(function() {
+                    $("#sidebarToggleTop").click(function() {
+                        $("#wrapper").toggleClass("toggled");
+                    });
+                });
+            </script>
+
             </body>
 
             </html>

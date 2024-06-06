@@ -5,39 +5,36 @@
     <h1 class="h3 mb-2 text-gray-800"><?= $title; ?></h1>
 
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Laporan Harian</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <colgroup>
-                            <col style="width: 5%;">
-                            <col style="width: 15%;">
-                            <col style="width: 25%;">
-                            <col style="width: 10%;">
-                            <col style="width: 10%;">
-                            <col style="width: 10%;">
-                            <col style="width: 10%;">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>No. File</th>
-                                <th>Tanggal Pengerjaan</th>
-                                <th>Progres</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Laporan Harian</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <colgroup>
+                        <col style="width: 5%;">
+                        <col style="width: 15%;">
+                        <col style="width: 25%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pekerjaan</th>
+                            <th>No. Job Order</th>
+                            <th>No. File</th>
+                            <th>Tanggal Pengerjaan</th>
+                            <th>Progres</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -208,8 +205,8 @@
 
                         html += '<tr>' +
                             '<td class="table-cell">' + nomor + '</td>' +
-                            '<td class="table-cell">' + data[i].no_jo + '</td>' +
                             '<td class="table-cell">' + data[i].pekerjaan + '</td>' +
+                            '<td class="table-cell">' + data[i].no_jo + '</td>' +
                             '<td class="table-cell">' + data[i].no_file + '</td>' +
                             '<td class="table-cell">' + data[i].tgl_pengerjaan + '</td>' +
                             '<td class="table-cell">' + data[i].progres + '</td>' +
