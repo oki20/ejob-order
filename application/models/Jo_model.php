@@ -83,4 +83,21 @@ class Jo_model extends CI_Model
     {
         return $this->db->insert("pengajuan_job_order", $data);
     }
+
+    public function closeJob($id)
+    {
+        // Define the data array with the new status
+        $data = array(
+            'status' => '10'
+        );
+        // Ensure you have the correct table name
+        $this->db->where('id', '16');
+        $result = $this->db->update('pengajuan_job_order', $data);
+
+        if (!$result) {
+            log_message('error', 'Database error: ' . $this->db->error()['message']);
+        }
+
+        return $result;
+    }
 }

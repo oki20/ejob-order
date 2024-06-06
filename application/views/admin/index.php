@@ -34,7 +34,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Total Job Order Selesai Tahun <?= date('Y'); ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totaljo['total_jo']; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totalyear['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -88,7 +88,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Job Order Selesai Bulan <?= date('M'); ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $month['total_jo']; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $finish['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -158,9 +158,7 @@
                                 <th>#</th>
                                 <th>No. Job Order</th>
                                 <th>Pekerjaan</th>
-                                <th>Pelaksana</th>
                                 <th>Plant</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -180,6 +178,38 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#mydata').DataTable();
 
+        // Function to show data
+        function tampildata() {
+            $.ajax({
+                type: 'ajax',
+                url: '<?php echo site_url('admin/getJo4') ?>',
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+                    var no;
+                    for (i = 0; i < data.length; i++) {
+                        var nomor = i + 1;
+                        var statusBadge = '';
+
+                        if (data[i].status == '1') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
+                        }
+                        html += '<tr>' +
+                            '<td>' + data[i].id + '</td>' +
+                            '<td>' + data[i].no_jo + '</td>' +
+                            '<td>' + data[i].pekerjaan + '</td>' +
+                            '<td> Plant ' + data[i].nama + '</td>' +
+                            '</tr>';
+
+                    }
+                    $('#show_data').html(html);
+
+                }
+            });
+        }
     });
 </script>

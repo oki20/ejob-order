@@ -79,4 +79,11 @@ class Joborder extends CI_Controller
             echo json_encode(array('status' => 'error'));
         }
     }
+
+    public function closejo()
+    {
+        $id = $this->input->post('id');
+        $result = $this->model->closeJob($id);
+        echo json_encode($result);
+    }
 }
