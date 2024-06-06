@@ -59,6 +59,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="id_report" id="id_report" class="form-control">
                     <input type="hidden" name="id_laporan" id="id_laporan" class="form-control">
                     <div class="mb-3">
                         <label class="col-form-label">Nomor Job Order</label>
@@ -116,12 +117,12 @@
 <!--END MODAL Laporan-->
 
 <!-- MODAL EDIT -->
-<form>
+<!-- <form>
     <div class="modal fade" id="Modal_Edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Report Form</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Report Form TEST</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -180,11 +181,12 @@
             </div>
         </div>
     </div>
-</form>
+</form> -->
 <!--END MODAL EDIT-->
 
 
 <script type="text/javascript">
+    var method = '';
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
@@ -213,16 +215,13 @@
                             '<td class="table-cell">' + data[i].progres + '</td>' +
                             '<td style="text-align:right;">' +
                             '<div class="button-container">' +
-                            '<a href="javascript:void(0);" class="btn btn-success btn-sm item_laporan" data-id_jo="' + data[i].id_jo +
-                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '">Buat Laporan</a>' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
-                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '">Edit</a>' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id +
-                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '">Hapus</a>' +
-                            '<a href="javascript:void(0);" class="btn btn-success btn-sm item_whatsapp" data-id_jo="' + data[i].id_jo +
+                            '<a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="edit(' + data[i].id + ')"><i class="fas fal fa-edit"></i> Edit</a>' +
+                            '<a href="javascript:void(0);" class=" btn btn-success btn-sm item_whatsapp" data-id_jo="' + data[i].id_jo +
                             '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan +
                             '" data-tgl_pengerjaan="' + data[i].tgl_pengerjaan + '" data-item_pekerjaan="' + data[i].item_pekerjaan +
-                            '">Whatsapp</a>' +
+                            '"><i class="fab fa-whatsapp"></i> Whatsapp</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_laporan" data-id_jo="' + data[i].id_jo +
+                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '"><i class="fas fa-percentage"></i> Buat Laporan</a>' +
                             '</div>' +
                             '</td>' +
                             '</tr>';
@@ -237,6 +236,9 @@
             var no_jo = $(this).data('no_jo');
             var pekerjaan = $(this).data('pekerjaan');
 
+            method = "add";
+
+            $('#exampleModalLabel').html("Report Form");
             $('#Modal_Laporan').modal('show');
             $('[name="id_laporan"]').val(id_jo);
             $('[name="no_jo_laporan"]').val(no_jo);
@@ -322,9 +324,18 @@
                 formData.append('keterangan', keterangan);
                 formData.append('tim_absen', tim_absen);
 
+                if (method == "add") {
+                    url = "<?php echo site_url('leader/createreport') ?>";
+                } else {
+                    idReport = $('#id_report').val();
+                    idJo = $('#id_laporan').val();
+                    formData.append('id_jo', idJo);
+                    url = "<?php echo site_url() ?>/leader/updatereport/" + idReport;
+                }
+
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('leader/createreport') ?>",
+                    url: url,
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -332,12 +343,20 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                swal({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    icon: 'success',
-                                    text: 'Simpan Data Berhasil!'
-                                });
+                                if (method == 'add') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Simpan Data Berhasil!'
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Update Data Berhasil!'
+                                    });
+                                }
 
                                 $('[name="tgl_pengerjaan"]').val("");
                                 $('[name="progres"]').val("");
@@ -349,11 +368,20 @@
 
                                 tampildata();
                             } else {
-                                swal({
-                                    icon: 'error',
-                                    title: 'Simpan data Gagal!',
-                                    text: jsonResponse.message
-                                });
+                                if (method == 'add') {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Simpan data Gagal!',
+                                        text: jsonResponse.message
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Update data Gagal!',
+                                        text: jsonResponse.message
+                                    });
+                                }
 
                             }
                         } catch (e) {
@@ -380,4 +408,33 @@
             }
         });
     });
+
+
+    function edit(id) {
+        let jobId = id;
+        method = "edit";
+        console.log(id);
+
+        $.ajax({
+            type: "GET",
+            url: "<?php echo site_url() ?>/leader/getreportbyid/" + jobId,
+            data: {
+                id: jobId
+            },
+            dataType: "JSON",
+            success: function(res) {
+                console.log(res);
+                $('#exampleModalLabel').html('Edit Report Form');
+                $('[name="id_laporan"]').val(res.id_jo);
+                $('[name="id_report"]').val(res.id);
+                $('[name="no_jo_laporan"]').val(res.no_jo);
+                $('[name="pekerjaan_laporan"]').val(res.pekerjaan);
+                $('[name="tgl_pengerjaan"]').val(res.tgl_pengerjaan);
+                $('[name="progres"]').val(res.progres);
+                $('[name="item_pekerjaan"]').val(res.item_pekerjaan);
+                $('[name="keterangan"]').val(res.keterangan);
+                $('#Modal_Laporan').modal('show');
+            }
+        })
+    }
 </script>

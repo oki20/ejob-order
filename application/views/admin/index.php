@@ -133,7 +133,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 On Progress Requests</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $wait['total_jo'] ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -158,6 +158,7 @@
                                 <th>#</th>
                                 <th>No. Job Order</th>
                                 <th>Pekerjaan</th>
+                                <th>No. File</th>
                                 <th>Pelaksana</th>
                                 <th>Plant</th>
                                 <th>Action</th>
@@ -180,6 +181,96 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-
+        tampildata();
+        $('#mydata').dataTable();
+        console.log("TESTING");
     });
+    
+    function tampildata() {
+        $.ajax({
+            type: 'ajax',
+            url: '<?php echo site_url('leader/tampiljoadmin'); ?>',
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                var i;
+                var no;
+                for (i = 0; i < data.length; i++) {
+                    var nomor = i + 1;
+                    var statusBadge = '';
+
+                    var mekanikProgress = data[i].progres_mekanik;
+                    var elektrikProgress = data[i].progres_elektrik;
+                    var thisPelaksana = data[i].pelaksana;
+
+                    let isDanPresent = thisPelaksana.includes('dan');
+                    let isMekanikComplete = mekanikProgress == '100';
+                    let isElektrikComplete = elektrikProgress == '100';
+                    let isMekanikAndElektrikComplete = mekanikProgress == '100' && elektrikProgress == '100';
+                    
+
+                    console.log(data[i].tgl_terima);
+                    if ((!isDanPresent && (isMekanikComplete || isElektrikComplete)) || (isMekanikAndElektrikComplete && isDanPresent)) {
+                        let row = '<tr>' +
+                            '<td>' + nomor + '</td>' +
+                            '<td>' + data[i].no_jo + '</td>' +
+                            '<td>' + data[i].pekerjaan + '</td>' +
+                            '<td>' + data[i].no_file + '</td>' +
+                            '<td>' + data[i].pelaksana + '</td>' +
+                            '<td>' + data[i].plant_name + '</td>' +
+                            '<td style="text-align:right;">' +
+                            ((data[i].tgl_terima == '0000-00-00') ? 
+                            '<a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="selesai('+ data[i].job_order_id +')">Selesai</a>' 
+                            : "<div class='badge badge-success'>Approved</div>") +
+                            '</td>' +
+                            '</tr>';
+
+                        html += row;
+                    }
+                    $('#show_data').html(html);
+                }
+            }
+        });
+    }
+
+    function selesai(id){
+        var jobId = id;
+
+        $.ajax({
+            type: "POST",
+            url: '<?= site_url() ?>/admin/completejob/' + jobId,
+            dataType: "JSON",
+            data : {
+                id : jobId
+            },
+            success: function(response){
+                console.log(response);
+                if (response.status == "success") {
+                        swal({
+                            type: 'success',
+                            title: 'Berhasil!',
+                            icon: 'success',
+                            text: 'Job Order Complete!'
+                        });
+                } else {
+                        swal({
+                            type: 'error',
+                            title: 'Update data Gagal!',
+                            icon: 'warning',
+                            text: 'Silahkan coba lagi!'
+                        });
+                }
+                 tampildata();
+            },
+            error: function(response) {
+                    swal({
+                        type: 'error',
+                        title: 'Oops!',
+                        icon: 'warning',
+                        text: 'Server error!'
+                    });
+            }
+        })
+    }
 </script>

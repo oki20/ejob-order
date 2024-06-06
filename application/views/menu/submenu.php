@@ -16,7 +16,7 @@
 
             <?= $this->session->flashdata('message'); ?>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSubMenuModal">Add New Submenu</a>
+            <a href="" class="btn btn-primary mb-3"  data-toggle="modal" data-target="#newSubMenuModal"><span class="fas fa-folder-plus"></span> Add New Submenu</a>
 
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -41,8 +41,8 @@
                             <td><?= $sm['icon']; ?></td>
                             <td><?= $sm['is_active']; ?></td>
                             <td>
-                                <a href="" class="badge badge-success">edit</a>
-                                <a href="" class="badge badge-danger">delete</a>
+                            <a href= ""class="btn btn-info btn-sm item_delete"><i class="fas fal fa-edit"></i> Edit</a> 
+                            <a href= ""class="btn btn-danger btn-sm item_delete"><i class="fas fa-trash-alt"></i> Delete</a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -75,7 +75,7 @@
             <form action="<?= base_url('menu/submenu'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Submenu title">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Submenu Title">
                     </div>
                     <div class="form-group">
                         <select name="menu_id" id="menu_id" class="form-control">
@@ -86,10 +86,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="url" name="url" placeholder="Submenu url">
+                        <input type="text" class="form-control" id="url" name="url" placeholder="Submenu Url">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="icon" name="icon" placeholder="Submenu icon">
+                        <input type="text" class="form-control" id="icon" name="icon" placeholder="Submenu Icon">
                     </div>
                     <div class="form-group">
                         <div class="form-check">
@@ -102,7 +102,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>

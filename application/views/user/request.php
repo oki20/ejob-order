@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div style="text-align: right;">
             <div style="display: inline-block;">
-                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fa fa-plus"></span> Create Job Order </a>
+                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add" id="create_job_order"><span class="fa fa-plus"></span> Create Job Order </a>
             </div>
         </div>
         <div class="card shadow mb-4 mt-2">
@@ -23,7 +23,7 @@
                                 <th>#</th>
                                 <th>No. Job Order</th>
                                 <th>Pekerjaan</th>
-                                <th>Pelaksana</th>
+                                <!-- <th>Pelaksana</th> -->
                                 <th>Plant</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -47,12 +47,13 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Request Job Order</h5>
+                    <h5 class="modal-title" id="modalRequestLabel">Form Request Job Order</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" name="id_jo" id="id_jo">
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">No. Job Order</label>
                         <div class="col-md-10">
@@ -186,6 +187,7 @@
 
 <!-- Script CRUD -->
 <script type="text/javascript">
+    var method = '';
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
@@ -212,13 +214,11 @@
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
-                            '<td>' + data[i].pelaksana + '</td>' +
                             '<td> Plant ' + data[i].nama + '</td>' +
                             '<td>' + statusBadge + '</td>' +
                             '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
-                            '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '">Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="edit(' + data[i].id + ')"><i class="fas fa-edit"></i> Edit</a> ' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                             '</td>' +
                             '</tr>';
                     }
@@ -308,9 +308,17 @@
                 formData.append('plant_head', id_planthead);
                 formData.append('lampiran', lampiran);
 
+                if (method == 'add') {
+                    url = "<?php echo site_url() ?>/user/simpandata";
+                } else {
+                    var id_jo = $('#id_jo').val();
+                    formData.append('id', id_jo)
+                    url = "<?php echo site_url() ?>/user/updatedata/" + id_jo;
+                }
+
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url() ?>/user/simpandata",
+                    url: url,
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -318,11 +326,20 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Simpan Data Berhasil!'
-                                });
+                                if (method == 'add') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Simpan Data Berhasil!'
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Update Data Berhasil!'
+                                    });
+                                }
 
                                 $('[name="no_jo"]').val("");
                                 $('[name="tgl_jo"]').val("");
@@ -337,13 +354,20 @@
 
                                 tampildata();
                             } else {
+                                if (method == 'add') {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Simpan data Gagal!',
+                                        text: 'silahkan coba lagi!'
+                                    });
 
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Simpan data Gagal!',
-                                    text: 'silahkan coba lagi!'
-                                });
-
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Update data Gagal!',
+                                        text: 'silahkan coba lagi!'
+                                    });
+                                }
                             }
                         } catch (e) {
                             console.error('Error parsing server response:', e);
@@ -417,7 +441,61 @@
                 }
             });
         }
+
+        $('#create_job_order').on('click', function() {
+            clearField();
+            method = 'add';
+            $('#modalRequestLabel').html('Form Request Job Order')
+
+        })
+
     });
+
+    function edit(id) {
+        let jobId = id;
+        method = "edit";
+        $.ajax({
+            type: "GET",
+            url: "<?php echo site_url() ?>/user/getjoborderbyid/" + jobId,
+            data: {
+                id: jobId
+            },
+            dataType: "JSON",
+            success: function(data) {
+                console.log(data);
+                $('#modalRequestLabel').html('Edit Form Request Job Order')
+                $('[name="id_jo"]').val(data.jo.id);
+                $('[name="no_jo"]').val(data.jo.no_jo);
+                $('[name="tgl_jo"]').val(data.jo.tgl_jo);
+                $('[name="cc_no"]').val(data.jo.cc_no);
+                $('[name="pekerjaan"]').val(data.jo.pekerjaan);
+                $('[name="tujuan"]').val(data.jo.tujuan);
+                $('[name="rencana"]').val(data.jo.rencana);
+                $('[name="cep_no"]').val(data.jo.cep_no);
+                $('[name="dwg_no"]').val(data.jo.dwg_no);
+                $('[name="mesin_no"]').val(data.jo.mesin_no);
+                $('[name="plant"]').val(data.jo.id_plant);
+                $('[name="dept_head"]').html('<option value=' + data.depthead.id + '>' + data.depthead.name + '</option>');
+                $('[name="plant_head"]').html('<option value=' + data.planthead.id + '>' + data.planthead.name + '</option>');
+                $('#Modal_Add').modal('show');
+            }
+        })
+    }
+
+    function clearField() {
+        $('[name="no_jo"]').val('');
+        $('[name="tgl_jo"]').val('');
+        $('[name="cc_no"]').val('');
+        $('[name="pekerjaan"]').val('');
+        $('[name="tujuan"]').val('');
+        $('[name="rencana"]').val('');
+        $('[name="cep_no"]').val('');
+        $('[name="dwg_no"]').val('');
+        $('[name="mesin_no"]').val('');
+        $('[name="plant"]').val('');
+        $('[name="dept_head"]').val('');
+        $('[name="plant_head"]').val('');
+    }
 </script>
 
 <script>

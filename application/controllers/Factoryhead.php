@@ -9,6 +9,7 @@ class Factoryhead extends CI_Controller
         parent::__construct();
         //is_logged_in();
         $this->load->model('menu_model', 'model');
+        $this->load->model('leader_model', 'lead_model');
     }
 
     public function delete()
@@ -30,6 +31,20 @@ class Factoryhead extends CI_Controller
         $this->load->view('factoryhead/request', $data);
         $this->load->view('templates/footer');
     }
+
+    public function joborder()
+    {
+        $data['title'] = 'Monitoring Job Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['anggota'] = $this->lead_model->getAnggota();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('factoryhead/joborder', $data);
+        $this->load->view('templates/footer');
+    }
+
 
     //Reject Job Order
     public function reject()
@@ -80,12 +95,14 @@ class Factoryhead extends CI_Controller
     }
 
     public function rejectData()
-    { 
+    {
         $id = $this->input->post("id");
+        $saran_dept = $this->input->post("saran_dept");
 
         // Lakukan penyimpanan data ke database
         $data = array(
             'status' => '8',
+            'saran_dept' => $saran_dept
         );
 
         $this->model->appData($id, $data);

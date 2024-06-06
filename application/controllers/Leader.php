@@ -73,6 +73,25 @@ class Leader extends CI_Controller
         echo json_encode($dataAll);
     }
 
+    public function getreportbyid()
+    {
+        $id = $this->input->get('id');
+        $data = $this->model->getReportById($id);
+        echo json_encode($data);
+    }
+
+    public function tampiljouser()
+    {
+        $dataAll = $this->model->getJoUser();
+        echo json_encode($dataAll);
+    }
+    
+    public function tampiljoadmin()
+    {
+        $dataAll = $this->model->getJoAdmin();
+        echo json_encode($dataAll);
+    }
+
     public function tampilanggota()
     {
         $dataAll = $this->model->getAnggota();
@@ -132,8 +151,9 @@ class Leader extends CI_Controller
         $previous_progress = $this->model->getPreviousProgress($id_edit); // Anda perlu menyesuaikan ini dengan nama metode Anda
 
         // Periksa apakah $previous_progress ada sebelum melakukan perbandingan
-        if ($progres < $previous_progress) {
+        if (intval((int)$progres) < (int)$previous_progress) {
             echo json_encode(['status' => 'error', 'message' => 'Progress cannot be lower than previous progress']);
+            // echo json_encode(['status' => 'error', 'message' => $previous_progress]);
             return;
         }
 
@@ -145,6 +165,51 @@ class Leader extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
+
+
+    public function updatereport($id)
+    {
+        $bagian = $this->session->userdata('bagian');
+        $id_member = $this->session->userdata('id');
+
+        $tgl = $this->input->post('tgl_pengerjaan');
+        $tim_pekerja = $this->input->post('tim_pekerja');
+        $item_pekerjaan = $this->input->post('item_pekerjaan');
+        $keterangan = $this->input->post('keterangan');
+        $tim_absen = $this->input->post('tim_absen');
+        $id_edit = $this->input->post('id_jo');
+        $progres = $this->input->post('progres');
+
+        $data = array(
+            // 'id_jo' => htmlspecialchars($id_edit, true),
+            'id_member' => htmlspecialchars($id_member, true),
+            'tgl_pengerjaan' => htmlspecialchars($tgl, true),
+            'progres' => htmlspecialchars($progres, true),
+            'tim_pekerja' => htmlspecialchars($tim_pekerja, true),
+            'item_pekerjaan' => htmlspecialchars($item_pekerjaan, true),
+            'keterangan' => htmlspecialchars($keterangan, true),
+            'tim_absen' => htmlspecialchars($tim_absen, true),
+        );
+
+        // Ambil progres sebelumnya
+        $previous_progress = $this->model->getPreviousProgressUpdate($id_edit); // Anda perlu menyesuaikan ini dengan nama metode Anda
+        // Periksa apakah $previous_progress ada sebelum melakukan perbandingan
+        if (intval((int)$progres) < (int)$previous_progress) {
+            echo json_encode(['status' => 'error', 'message' => 'Progress cannot be lower than previous progress']);
+            // echo json_encode(['status' => 'error', 'message' => $previous_progress]);
+            return;
+        }
+
+        $simpanData = $this->model->updateReport($id, $data);
+
+        if ($simpanData) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
+    }
+
+
 
     public function editphone()
     {

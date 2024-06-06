@@ -27,7 +27,7 @@ class Joborder extends CI_Controller
 
     public function plant($id)
     {
-        $data['title'] = 'Job Order';
+        $data['title'] = 'JOB ORDER PLANT';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['plant'] = $this->jomodel->getPlant($id);
 

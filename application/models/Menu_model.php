@@ -34,6 +34,15 @@ class Menu_model extends CI_Model
             ->row_array();
     }
 
+    public function getWaitingApproveJo(){
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where_in('status', [1,2,3,4])
+            ->get()
+            ->row_array();
+    }
+
     public function getJoPerMonth()
     {
         // Mendapatkan tanggal 15 bulan ini
@@ -138,6 +147,10 @@ class Menu_model extends CI_Model
         $this->db->update($tableName, $data);
     }
 
+    public function updateJobOrder($id,$data){
+        $this->db->where('id', $id);
+        return $this->db->update('pengajuan_job_order',$data);
+    }
 
     // Model untuk menampilkan request Job Order (User)
     public function getRequestJo()
@@ -176,6 +189,12 @@ class Menu_model extends CI_Model
     public function save_data($data)
     {
         return $this->db->insert("pengajuan_job_order", $data);
+    }
+
+    public function update_data($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('pengajuan_job_order', $data);
     }
 
     public function deleteRequest($id)
@@ -346,4 +365,11 @@ class Menu_model extends CI_Model
         $this->db->where($primaryKey, $id);
         $this->db->update($tableName, $data);
     }
+
+
+public function getSubmenuById($id)
+{
+    return $this->db->get_where('user_sub_menu', ['id' => $id])->row_array();
+}
+
 }

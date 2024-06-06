@@ -13,7 +13,7 @@
         </div>
         <div class="card shadow mb-4 mt-2">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Job Order <?= $plant['nama']; ?></h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Job Order Plant <?= $plant['nama']; ?></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -223,8 +223,8 @@
                             '<td>' + data[i].progres_mekanik + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
-                            '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '">Delete</a>' +
+                            '" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                             '</td>' +
                             '</tr>';
                     }

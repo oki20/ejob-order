@@ -152,4 +152,12 @@ class Master extends CI_Controller
         $dataAll = $this->model->getUser();
         echo json_encode($dataAll);
     }
+
+    public function deleteuser()
+    {
+        $id = $this->input->post('id');
+        // Panggil model untuk menghapus data
+        $result = $this->model->deleteuser($id);
+        echo json_encode($result);
+    }
 }

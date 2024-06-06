@@ -6,7 +6,6 @@
 
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
         <div class="card shadow mb-4 mt-2">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Job Order</h6>
@@ -67,7 +66,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Progres Pengerjaan JO</label>
-                        <input type="text" name="progres" id="progres" class="form-control" placeholder="Progres">
+                        <input type="number" name="progres" id="progres" class="form-control" onInput="return check(event,value)" min="0" max="100" step="0" placeholder="Progres">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tim Pelaksana</label>
@@ -109,6 +108,20 @@
 <!--END MODAL EDIT-->
 
 <script type="text/javascript">
+    check = function(e, value) {
+        if (!e.target.validity.valid) {
+            e.target.value = value.substring(0, value.length - 1);
+            return false;
+        }
+        var idx = value.indexOf('.');
+        if (idx >= 0) {
+            if (value.length - idx > 3) {
+                e.target.value = value.substring(0, value.length - 1);
+                return false;
+            }
+        }
+        return true;
+    }
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
@@ -138,8 +151,8 @@
                             '<td>' + data[i].progres_elektrik + '</td>' +
                             '<td>' + data[i].progres_mekanik + '</td>' +
                             '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
-                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '">Buat Laporan</a>' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].job_order_id +
+                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '"><i class="fas fa-percentage"></i> Buat Laporan</a>' + ' ' +
                             '</td>' +
                             '</tr>';
                     }
@@ -171,25 +184,25 @@
 
             if (!tgl_pengerjaan) {
                 Swal.fire({
-                    type: 'warning',
+                    icon: 'warning',
                     title: 'Oops...',
                     text: 'Tanggal Pengerjaan Wajib Diisi !'
                 });
             } else if (!progres) {
                 Swal.fire({
-                    type: 'warning',
+                    icon: 'warning',
                     title: 'Oops...',
                     text: 'Progres Wajib Diisi !'
                 });
             } else if (!tim_pekerja) {
                 Swal.fire({
-                    type: 'warning',
+                    icon: 'warning',
                     title: 'Oops...',
                     text: 'Anggota Tim Pelaksana Wajib Diisi !'
                 });
             } else if (!item_pekerjaan) {
                 Swal.fire({
-                    type: 'warning',
+                    icon: 'warning',
                     title: 'Oops...',
                     text: 'Item Pekerjaan Wajib Diisi !'
                 });

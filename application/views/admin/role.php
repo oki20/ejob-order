@@ -10,7 +10,7 @@
 
             <?= $this->session->flashdata('message'); ?>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal">Add New Role</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal"><span class="fas fa-user-plus"></span> Add New Role</a>
             <!-- DataTales Example -->
             <div class="container-fluid">
                 <div class="card shadow mb-4">
@@ -75,7 +75,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_save" class="btn btn-primary">Add</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

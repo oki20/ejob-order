@@ -21,7 +21,7 @@
                             <th>#</th>
                             <th>No. Job Order</th>
                             <th>Pekerjaan</th>
-                            <th>Pelaksana</th>
+                            <th>Saran</th>
                             <th>Plant</th>
                             <th>Status</th>
                         </tr>
@@ -60,7 +60,7 @@
                                 '<td>' + data[i].id + '</td>' +
                                 '<td>' + data[i].no_jo + '</td>' +
                                 '<td>' + data[i].pekerjaan + '</td>' +
-                                '<td>' + data[i].pelaksana + '</td>' +
+                                '<td>' + data[i].saran_dept + '</td>' +
                                 '<td> Plant ' + data[i].nama + '</td>' +
                                 '<td>' + statusBadge + '</td>' +
                                 '</tr>';

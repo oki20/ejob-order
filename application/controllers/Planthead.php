@@ -8,6 +8,7 @@ class Planthead extends CI_Controller
         parent::__construct();
         //is_logged_in();
         $this->load->model('menu_model', 'model');
+        $this->load->model('leader_model', 'lead_model');
     }
 
     //Request Job Order
@@ -51,6 +52,20 @@ class Planthead extends CI_Controller
         echo json_encode($dataAll);
     }
 
+    public function joborder()
+    {
+        $data['title'] = 'Monitoring Job Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['anggota'] = $this->lead_model->getAnggota();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('planthead/joborder', $data);
+        $this->load->view('templates/footer');
+    }
+
+
     public function approveData()
     {
         $id = $this->input->post("id");
@@ -80,7 +95,7 @@ class Planthead extends CI_Controller
         // Lakukan penyimpanan data ke database
         $data = array(
             'status' => '7',
-            'saran_plant' => $saran_plant // Simpan nama file gambar ke dalam database
+            'saran_dept' => $saran_plant // Simpan nama file gambar ke dalam database
         );
 
         $this->model->appData($id, $data);

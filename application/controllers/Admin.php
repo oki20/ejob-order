@@ -17,6 +17,7 @@ class Admin extends CI_Controller
         $data['totaljo'] = $this->model->getTotalJo();
         $data['receive'] = $this->model->getWaitReceive();
         $data['month'] = $this->model->getJoPerMonth();
+        $data['wait'] = $this->model->getWaitingApproveJo();
 
 
         $this->load->view('templates/header', $data);
@@ -64,6 +65,23 @@ class Admin extends CI_Controller
         } else {
             echo "error";
         }
+    }
+
+    public function completeJob($id){
+        $updatedData = [
+            'tgl_terima' => date('Y-m-d')
+        ];
+
+        $update = $this->model->updateJobOrder($id, $updatedData);
+
+
+        if($update){
+            $msg['status'] = 'success';
+        } else {
+            $msg['status'] = 'error';
+            $msg['message'] = 'Failed!!';
+        }
+        echo json_encode($msg);
     }
 
 

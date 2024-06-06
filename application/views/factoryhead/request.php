@@ -45,31 +45,32 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Saran JO Approve</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Form JO Approve</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                <div class="form-group row">
+                    <div class="form-group row">
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Pelaksana JO</label>
                         <div class="col-md-10">
-                <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
+                            <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
                                 <option selected disabled>Select one</option>
                                 <option value="Elektrik">Elektrik</option>
                                 <option value="Mekanik">Mekanik</option>
                                 <option value="Elektrik dan Mekanik">Elektrik dan Mekanik</option>
                             </select>
                         </div>
-                    </div>
+
+                    </div>
                     <div class="form-group row">
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
-                        <label class="col-md-2 col-form-label">Saran JO</label>
+                        <!-- <label class="col-md-2 col-form-label">Saran JO</label>
                         <div class="col-md-10">
                             <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
-                        </div>
+                        </div> -->
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -100,7 +101,7 @@
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <label class="col-md-2 col-form-label">Saran JO Reject</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
+                            <textarea class="form-control" placeholder="Masukkan Saran JO Reject" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
                         </div>
 
                         <div class="modal-footer">
@@ -120,43 +121,6 @@
         $('#mydata').dataTable();
 
         // Function to show data
-        function tampildata() {
-            $.ajax({
-                type: 'ajax',
-                url: '<?php echo site_url('factoryhead/tampilrequest') ?>',
-                async: false,
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    var html = '';
-                    var i;
-                    var no;
-                    for (i = 0; i < data.length; i++) {
-                        var nomor = i + 1;
-                        var statusBadge = '';
-
-                        if (data[i].status == '1') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
-                        }
-                        html += '<tr>' +
-                            '<td>' + data[i].id + '</td>' +
-                            '<td>' + data[i].no_jo + '</td>' +
-                            '<td>' + data[i].pekerjaan + '</td>' +
-                            '<td>' + data[i].pelaksana + '</td>' +
-                            '<td> Plant ' + data[i].nama + '</td>' +
-                            '<td>' + statusBadge + '</td>' +
-                            '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
-                            '</td>' +
-                            '</tr>';
-
-                    }
-                    $('#show_data').html(html);
-
-                }
-            });
-        }
 
         // Get data for updating record
         $('#show_data').on('click', '.item_approve', function() {
@@ -228,9 +192,11 @@
 
         $('#btn_reject').on('click', function() {
             var id = $('#id_edit').val();
+            var saran_dept = $('#saran_dept').val();
 
             var formData = new FormData();
             formData.append('id', id);
+            formData.append('saran_dept', saran_dept);
 
             $.ajax({
                 type: "POST",
@@ -249,7 +215,7 @@
 
                         $('[name="saran_dept"]').val("");
 
-                        $('#Modal_aeject').modal('hide');
+                        $('#Modal_reject').modal('hide');
 
                         // Reload or update data in your table
                         tampildata();
@@ -273,4 +239,96 @@
             });
         });
     });
+
+    function tampildata() {
+        $.ajax({
+            type: 'ajax',
+            url: '<?php echo site_url('factoryhead/tampilrequest') ?>',
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                var html = '';
+                var i;
+                var no;
+                for (i = 0; i < data.length; i++) {
+                    var nomor = i + 1;
+                    var statusBadge = '';
+
+                    if (data[i].status == '3') {
+                        statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Factory Head</span>';
+                    }
+                    html += '<tr>' +
+                        '<td>' + data[i].id + '</td>' +
+                        '<td>' + data[i].no_jo + '</td>' +
+                        '<td>' + data[i].pekerjaan + '</td>' +
+                        '<td>' + data[i].pelaksana + '</td>' +
+                        '<td> Plant ' + data[i].nama + '</td>' +
+                        '<td>' + statusBadge + '</td>' +
+                        '<td style="text-align:right;">' +
+                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
+                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                }
+                $('#show_data').html(html);
+
+            }
+        });
+    }
+
+
+    // function approveData(id) {
+    //     Swal.fire({
+    //         title: "Are you sure?",
+    //         text: "You won't be able to revert this!",
+    //         icon: "warning",
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Yes, Approve it!"
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             var formData = new FormData();
+    //             formData.append('id', id);
+
+    //             $.ajax({
+    //                 type: "POST",
+    //                 url: "<?php echo site_url('factoryhead/approveData') ?>",
+    //                 data: formData,
+    //                 processData: false,
+    //                 contentType: false,
+    //                 success: function(response) {
+    //                     console.log(response);
+    //                     if (response == "success") {
+    //                         swal({
+    //                             type: 'success',
+    //                             title: 'Berhasil!',
+    //                             icon: 'success',
+    //                             text: 'Update Data Berhasil!'
+    //                         });
+    //                         // Reload or update data in your table
+    //                         tampildata();
+    //                     } else {
+    //                         swal({
+    //                             type: 'error',
+    //                             title: 'Update data Gagal!',
+    //                             icon: 'warning',
+    //                             text: 'Silahkan coba lagi!'
+    //                         });
+    //                     }
+    //                 },
+    //                 error: function(response) {
+    //                     swal({
+    //                         type: 'error',
+    //                         title: 'Oops!',
+    //                         icon: 'warning',
+    //                         text: 'Server error!'
+    //                     });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 </script>

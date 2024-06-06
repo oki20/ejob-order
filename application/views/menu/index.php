@@ -12,7 +12,7 @@
 
             <?= $this->session->flashdata('message'); ?>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal">Add New Menu</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal"><span class="fas fa-folder-plus"></span> Add New Menu</a>
 
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -63,12 +63,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu name">
+                        <input type="text" class="form-control" id="menu" name="menu" placeholder="Menu Name">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn_save" class="btn btn-primary">Add</button>
+                    <button type="submit" id="btn_save" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -134,9 +134,9 @@
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].menu + '</td>' +
                             '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-success btn-sm item_edit" data-id="' + data[i].id +
-                            '" data-menu="' + data[i].menu + '">Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id + '">Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
+                            '" data-menu="' + data[i].menu + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                             '</td>' +
                             '</tr>';
 

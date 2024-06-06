@@ -8,6 +8,7 @@ class User extends CI_Controller
         parent::__construct();
         is_logged_in();
         $this->load->model('menu_model', 'model');
+        $this->load->model('leader_model', 'lead_model');
     }
 
     public function index()
@@ -22,6 +23,18 @@ class User extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function joborder()
+    {
+        $data['title'] = 'Monitoring Job Order';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['anggota'] = $this->lead_model->getAnggota();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/joborder', $data);
+        $this->load->view('templates/footer');
+    }
 
     public function edit()
     {
@@ -140,6 +153,15 @@ class User extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function getJobOrderById()
+    {
+        $id = $this->input->get('id');
+        $data['jo'] = $this->db->get_where('pengajuan_job_order', ['id' => $id])->row_array();
+        $data['depthead'] = $this->db->get_where('user', ['id' => $data['jo']['id_depthead']])->row_array();
+        $data['planthead'] = $this->db->get_where('user', ['id' => $data['jo']['id_planthead']])->row_array();
+        echo json_encode($data);
+    }
+
     public function tampilReject()
     {
         $dataAll = $this->model->getRejectJoUser();
@@ -210,6 +232,56 @@ class User extends CI_Controller
 
         // Cek apakah data berhasil tersimpan
         if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
+
+    public function updatedata($id)
+    {
+        $no_jo = $this->input->post('no_jo');
+        $id_pemesan = $this->session->userdata('id');
+        $lampiran = isset($_FILES['lampiran']['name']) ? $_FILES['lampiran']['name'] : null;
+
+        if (!empty($lampiran)) {
+            // Specify the destination directory with spaces in the path
+            $destinationPath = './assets/lampiran/';
+            // Ensure the destination directory exists; create it if not
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $newImagePath = $destinationPath . $lampiran;
+            move_uploaded_file($_FILES['lampiran']['tmp_name'], $newImagePath);
+        } else {
+            // Jika tidak ada PDF yang diunggah, atur path PDF ke null
+            $lampiran = "";
+        }
+
+        $data = array(
+            'no_jo' => $no_jo,
+            'tgl_jo' => $this->input->post('tgl_jo'),
+            'cc_no' => $this->input->post('cc_no'),
+            'pekerjaan' => $this->input->post('pekerjaan'),
+            'tujuan' => $this->input->post('tujuan'),
+            'rencana' => $this->input->post('rencana'),
+            'cep_no' => $this->input->post('cep_no'),
+            'dwg_no' => $this->input->post('dwg_no'),
+            'mesin_no' => $this->input->post('mesin_no'),
+            'id_plant' => $this->input->post('plant'),
+            'id_depthead' => $this->input->post('dept_head'),
+            'id_planthead' => $this->input->post('plant_head'),
+            'lampiran' => $lampiran,
+            'id_pemesan' => $id_pemesan,
+            'status' => 1
+        );
+
+        // Insert data via model
+        $updateData = $this->model->update_data($id, $data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($updateData) {
             echo json_encode(array('status' => 'success'));
         } else {
             echo json_encode(array('status' => 'error'));
@@ -290,5 +362,4 @@ class User extends CI_Controller
         $dataAll = $this->model->getAfactoryheadJo();
         echo json_encode($dataAll);
     }
-
 }

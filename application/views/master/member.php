@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div style="text-align: right;">
             <div style="display: inline-block;">
-                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fa fa-plus"></span> Tambah Member </a>
+                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span> Add New Member </a>
             </div>
         </div>
         <div class="card shadow mb-4 mt-2">
@@ -115,7 +115,6 @@
 <!--END MODAL ADD-->
 
 
-
 <!-- Script -->
 <script type="text/javascript">
     $(document).ready(function() {
@@ -153,8 +152,8 @@
                         '<td>' + data[i].name_plant + '</td>' +
                         '<td style="text-align:right;">' +
                         '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
-                        '" data-nama="' + data[i].nama + '">Edit</a>' + ' ' +
-                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id_plant + '">Delete</a>' +
+                        '" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
+                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id_plant + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                         '</td>' +
                         '</tr>';
                 }

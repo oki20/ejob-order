@@ -122,4 +122,21 @@ class Menu extends CI_Controller
             redirect('menu/submenu');
         }
     }
+
+     
+    public function updateSubmenu()
+    {
+        $id = $this->input->post('id');
+        $data = [
+            'title' => $this->input->post('title'),
+            'menu_id' => $this->input->post('menu_id'),
+            'url' => $this->input->post('url'),
+            'icon' => $this->input->post('icon'),
+            'is_active' => $this->input->post('is_active')
+        ];
+    
+        $this->model->updateSubmenu($id, $data);
+        echo json_encode(['status' => 'success']);
+    }
+    
 }
