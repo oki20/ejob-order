@@ -24,6 +24,20 @@ class Menu_model extends CI_Model
     }
 
     //Dashboard Admin
+    public function getTotalJoYear()
+    {
+        $currentYear = date('Y');
+
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 5)
+            ->where("YEAR(tgl_terima) =", $currentYear)
+            ->get()
+            ->row_array();
+    }
+
+    //Dashboard Admin
     public function getWaitReceive()
     {
         return $this->db
@@ -45,15 +59,32 @@ class Menu_model extends CI_Model
 
     public function getJoPerMonth()
     {
-        // Mendapatkan tanggal 15 bulan ini
-        $currentDate = date('Y-m-15');
-        // Mendapatkan tanggal 15 bulan sebelumnya
-        $previousMonthDate = date('Y-m-15', strtotime('-1 month'));
+        // Mendapatkan tanggal 20 bulan ini
+        $currentDate = date('Y-m-20');
+        // Mendapatkan tanggal 20 bulan sebelumnya
+        $previousMonthDate = date('Y-m-20', strtotime('-1 month'));
 
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
             ->from('pengajuan_job_order')
             ->where('status', 5)
+            ->where("tgl_terima >= ", $previousMonthDate)
+            ->where("tgl_terima < ", $currentDate)
+            ->get()
+            ->row_array();
+    }
+
+    public function getJoFinishPerMonth()
+    {
+        // Mendapatkan tanggal 20 bulan ini
+        $currentDate = date('Y-m-20');
+        // Mendapatkan tanggal 20 bulan sebelumnya
+        $previousMonthDate = date('Y-m-20', strtotime('-1 month'));
+
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 6)
             ->where("tgl_terima >= ", $previousMonthDate)
             ->where("tgl_terima < ", $currentDate)
             ->get()
@@ -356,6 +387,18 @@ class Menu_model extends CI_Model
             ->get()
             ->result_array();
     }
+
+    public function getJoStatus4()
+    {
+        return $this->db
+            ->select('*')
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
+            ->where('pengajuan_job_order.status', '4')
+            ->get()
+            ->result_array();
+    }
+
     public function appData($id, $data)
     {
         $tableName = 'pengajuan_job_order';

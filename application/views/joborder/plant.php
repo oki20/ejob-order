@@ -222,6 +222,7 @@
                             '<td>' + data[i].progres_elektrik + '</td>' +
                             '<td>' + data[i].progres_mekanik + '</td>' +
                             '<td style="text-align:right;">' +
+                            '<div class="button-container">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
                             '" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
                             '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
@@ -434,5 +435,66 @@
                 });
             }
         });
+
+        // Function to handle delete confirmation
+        $('#show_data').on('click', '.item_close', function() {
+            var id = $(this).data('id'); // Get the ID from the data-id attribute
+            console.log("ID to be deleted:", id); // Log the ID to check if it's correct
+
+            // Show a SweetAlert confirmation dialog
+            swal({
+                title: "Apakah Job Order Ini Selesai?",
+                text: "Pastikan Progres Elektrik dan Mekanik sudah 100% !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    // If confirmed, call the deleteProduct function
+                    deleteProduct(id);
+                }
+            });
+        });
+
+        // Function to handle actual deletion using AJAX
+        function deleteProduct(id) {
+            console.log("Deleting product with ID:", id);
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('joborder/closejo') ?>",
+                dataType: "JSON",
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        swal({
+                            title: 'Berhasil!',
+                            text: response.message,
+                            icon: 'success',
+                            timer: 3000
+                        });
+                        tampildata();
+                    } else {
+                        swal({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting product:", error);
+                    swal({
+                        title: 'Error!',
+                        text: 'Gagal Mengarsipkan Job Order.',
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+
+
     });
 </script>

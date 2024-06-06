@@ -34,7 +34,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Total Job Order Selesai Tahun <?= date('Y'); ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totaljo['total_jo']; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totalyear['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -88,7 +88,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Job Order Selesai Bulan <?= date('M'); ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $month['total_jo']; ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $finish['total_jo']; ?></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -161,7 +161,6 @@
                                 <th>No. File</th>
                                 <th>Pelaksana</th>
                                 <th>Plant</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">

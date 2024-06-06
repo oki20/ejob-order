@@ -15,7 +15,9 @@ class Admin extends CI_Controller
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['totaljo'] = $this->model->getTotalJo();
+        $data['totalyear'] = $this->model->getTotalJoYear();
         $data['receive'] = $this->model->getWaitReceive();
+        $data['finish'] = $this->model->getJoFinishPerMonth();
         $data['month'] = $this->model->getJoPerMonth();
         $data['wait'] = $this->model->getWaitingApproveJo();
 
@@ -137,5 +139,11 @@ class Admin extends CI_Controller
         }
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Access Changed!</div>');
+    }
+
+    public function getJo4()
+    {
+        $dataAll = $this->model->getJoStatus4();
+        echo json_encode($dataAll);
     }
 }
