@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div style="text-align: right;">
             <div style="display: inline-block;">
-                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fa fa-plus"></span> Create Job Order </a>
+                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add" id="create_job_order"><span class="fa fa-plus"></span> Create Job Order </a>
             </div>
         </div>
         <div class="card shadow mb-4 mt-2">
@@ -56,6 +56,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="id_jo" name="id_jo" value="">
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Plant</label>
                         <div class="col-md-10">
@@ -153,7 +154,7 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Nomor File</label>
                         <div class="col-md-10">
-                            <input type="text" name="no_file" id="no_file" class="form-control" placeholder="Masukkan Mesin Number">
+                            <input type="text" name="no_file" id="no_file" class="form-control" placeholder="Masukkan No.File">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -191,48 +192,13 @@
 <!--END MODAL ADD-->
 
 <script type="text/javascript">
+    var method = "";
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
 
         // Function to show data
-        function tampildata() {
-            var id_plant = <?= json_encode($plant['id_plant']); ?>;
-            var url = '<?php echo site_url('joborder/tampiljoplant/'); ?>' + id_plant; // Tambahkan id_plant ke dalam URL
-            $.ajax({
-                type: 'ajax',
-                url: url,
-                async: false,
-                dataType: 'json',
-                success: function(data) {
-                    var html = '';
-                    var i;
-                    var no;
-                    for (i = 0; i < data.length; i++) {
-                        var nomor = i + 1;
-                        var statusBadge = '';
 
-                        html += '<tr>' +
-                            '<td>' + nomor + '</td>' +
-                            '<td>' + data[i].no_jo + '</td>' +
-                            '<td>' + data[i].pekerjaan + '</td>' +
-                            '<td>' + data[i].pelaksana + '</td>' +
-                            '<td>' + data[i].no_file + '</td>' +
-                            '<td>' + data[i].tgl_terima + '</td>' +
-                            '<td>' + data[i].progres_elektrik + '</td>' +
-                            '<td>' + data[i].progres_mekanik + '</td>' +
-                            '<td style="text-align:right;">' +
-                            '<div class="button-container">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
-                            '" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
-                            '</td>' +
-                            '</tr>';
-                    }
-                    $('#show_data').html(html);
-                }
-            });
-        }
 
         // Save product
         $('#btn_save').on('click', function() {
@@ -375,9 +341,17 @@
                 formData.append('golongan', golongan);
                 formData.append('departemen_lain', departemen_lain);
 
+                if (method == 'add') {
+                    url = "<?php echo site_url() ?>/joborder/simpandata";
+                } else {
+                    var id_jo = $('#id_jo').val();
+                    formData.append('id_jo', id_jo)
+                    url = "<?php echo site_url() ?>/joborder/updatedata";
+                }
+
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url() ?>/joborder/simpandata",
+                    url: url,
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -385,11 +359,20 @@
                         try {
                             var jsonResponse = JSON.parse(response);
                             if (jsonResponse.status === "success") {
-                                swal({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Simpan Data Berhasil!'
-                                });
+                                if (method == 'add') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Simpan Data Berhasil!'
+                                    });
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Update Data Berhasil!'
+                                    });
+                                }
 
                                 $('[name="no_jo"]').val("");
                                 $('[name="tgl_jo"]').val("");
@@ -408,7 +391,6 @@
 
                                 tampildata();
                             } else {
-
                                 swal({
                                     icon: 'error',
                                     title: 'Simpan data Gagal!',
@@ -436,6 +418,13 @@
             }
         });
 
+        $('#create_job_order').on('click', function() {
+            clearField();
+            method = 'add';
+            $('#exampleModalLabel').html('Form Request Job Order')
+
+        })
+
         // Function to handle delete confirmation
         $('#show_data').on('click', '.item_close', function() {
             var id = $(this).data('id'); // Get the ID from the data-id attribute
@@ -455,6 +444,8 @@
                 }
             });
         });
+
+
 
         // Function to handle actual deletion using AJAX
         function deleteProduct(id) {
@@ -497,4 +488,141 @@
 
 
     });
+
+    function tampildata() {
+        var id_plant = <?= json_encode($plant['id_plant']); ?>;
+        var url = '<?php echo site_url('joborder/tampiljoplant/'); ?>' + id_plant; // Tambahkan id_plant ke dalam URL
+        $.ajax({
+            type: 'ajax',
+            url: url,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var html = '';
+                var i;
+                var no;
+                for (i = 0; i < data.length; i++) {
+                    var nomor = i + 1;
+                    var statusBadge = '';
+
+                    html += '<tr>' +
+                        '<td>' + nomor + '</td>' +
+                        '<td>' + data[i].no_jo + '</td>' +
+                        '<td>' + data[i].pekerjaan + '</td>' +
+                        '<td>' + data[i].pelaksana + '</td>' +
+                        '<td>' + data[i].no_file + '</td>' +
+                        '<td>' + data[i].tgl_terima + '</td>' +
+                        '<td>' + data[i].progres_elektrik + '</td>' +
+                        '<td>' + data[i].progres_mekanik + '</td>' +
+                        '<td style="text-align:right;">' +
+                        '<div class="button-container">' +
+                        '<button class="btn btn-info btn-sm" onclick="editData(' + data[i].job_order_id + ')"><i class="fas fal fa-edit"></i> Edit</button>' + ' ' +
+                        '<button class="btn btn-danger btn-sm" onclick="deleteJob(' + data[i].job_order_id + ')"><i class="fas fal fa-trash"></i> Delete</button>' + ' ' +
+                        '</td>' +
+                        '</tr>';
+                }
+                $('#show_data').html(html);
+            }
+        });
+    }
+
+    function editData(id) {
+        console.log(id);
+        $('#exampleModalLabel').html('Edit Form Job Order')
+        method = "edit";
+        $.ajax({
+            type: "GET",
+            url: "<?php echo site_url() ?>/joborder/edit",
+            data: {
+                id: id
+            },
+            dataType: "JSON",
+            success: function(res) {
+                console.log(res);
+                $('[name="id_jo"]').val(res.id);
+                $('[name="no_jo"]').val(res.no_jo);
+                $('[name="tgl_jo"]').val(res.tgl_jo);
+                $('[name="tgl_terima"]').val(res.tgl_terima);
+                $('[name="cc_no"]').val(res.cc_no);
+                $('[name="pekerjaan"]').val(res.pekerjaan);
+                $('[name="tujuan"]').val(res.tujuan);
+                $('[name="pelaksana"]').val(res.pelaksana);
+                $('[name="rencana"]').val(res.rencana);
+                $('[name="cep_no"]').val(res.cep_no);
+                $('[name="id_pemesan"]').val(res.id_pemesan);
+                $('[name="golongan"]').val(res.golongan);
+                $('[name="klasifikasi"]').val(res.klasifikasi);
+                $('[name="departemen_lain"]').val(res.departemen_lain);
+
+                $('#Modal_Add').modal('show');
+            }
+        })
+    }
+
+    function deleteJob(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', id);
+                $.ajax({
+                    type: "POST",
+                    url: "<?= site_url() ?>/joborder/delete",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var json = JSON.parse(response);
+                        if (json.status == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: 'Hapus Data Berhasil!'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hapus data Gagal!',
+                                text: 'silahkan coba lagi!'
+                            });
+                        }
+                        // Reload or update data in your table
+                        tampildata();
+
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function clearField() {
+        $('[name="no_jo"]').val("");
+        $('[name="tgl_jo"]').val("");
+        $('[name="tgl_terima"]').val("");
+        $('[name="cc_no"]').val("");
+        $('[name="pekerjaan"]').val("");
+        $('[name="tujuan"]').val("");
+        $('[name="pelaksana"]').val("");
+        $('[name="rencana"]').val("");
+        $('[name="cep_no"]').val("");
+        $('[name="id_pemesan"]').val("");
+        $('[name="golongan"]').val("");
+        $('[name="klasifikasi"]').val("");
+        $('[name="departemen_lain"]').val("");
+    }
 </script>

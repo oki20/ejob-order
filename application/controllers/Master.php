@@ -160,4 +160,16 @@ class Master extends CI_Controller
         $result = $this->model->deleteuser($id);
         echo json_encode($result);
     }
+
+    public function deletemember()
+    {
+        $id = $this->input->post('id');
+        $delete = $this->db->delete('member', ['id' => $id]);
+
+        if ($delete) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
+    }
 }

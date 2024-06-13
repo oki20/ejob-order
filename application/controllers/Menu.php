@@ -83,9 +83,13 @@ class Menu extends CI_Controller
     public function delete()
     {
         $kode = $this->input->post('id');
-        // Panggil model untuk menghapus data
-        $result = $this->model->deleteMenu($kode);
-        echo json_encode($result);
+        $this->db->where('id',$kode);
+        $delete = $this->db->delete('user_sub_menu');
+        if ($delete) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
     }
 
 
@@ -123,6 +127,11 @@ class Menu extends CI_Controller
         }
     }
 
+    public function getSubmenu(){
+        $id = $this->input->post('id');
+        $data = $this->db->get_where('user_sub_menu',['id' => $id])->row_array();
+        echo json_encode($data);   
+    }
      
     public function updateSubmenu()
     {

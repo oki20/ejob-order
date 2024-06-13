@@ -132,7 +132,58 @@
             });
         }
 
-        $('#btn_save').click(function() {
+        function deleteplant(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', id);
+                $.ajax({
+                    type: "POST",
+                    url: "<?= site_url() ?>/master/delete",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var json = JSON.parse(response);
+                        if (json.status == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: 'Hapus Data Berhasil!'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hapus data Gagal!',
+                                text: 'silahkan coba lagi!'
+                            });
+                        }
+                        // Reload or update data in your table
+                        tampildata();
+
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+        $('#btn_save').click(function(event) {
             var nama = $('#nama').val();
 
             if (nama.length == "") {

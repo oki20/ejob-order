@@ -21,8 +21,8 @@
                                 <th>No. File</th>
                                 <th>Tgl Terima Jo</th>
                                 <th>Pelaksana</th>
-                                <th>Progres Elektrik</th>
-                                <th>Progres Mekanik</th>
+                                <th>Progress Elektrik</th>
+                                <th>Progress Mekanik</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -65,7 +65,7 @@
                         <input type="date" name="tgl_pengerjaan" id="tgl_pengerjaan" class="form-control" placeholder="Progres">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Progres Pengerjaan JO</label>
+                        <label class="col-form-label">Progress Pengerjaan JO</label>
                         <input type="number" name="progres" id="progres" class="form-control" onInput="return check(event,value)" min="0" max="100" step="0" placeholder="Progres">
                     </div>
                     <div class="mb-3">
@@ -79,7 +79,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Detal Pengerjaan JO</label>
+                        <label class="col-form-label">Detail Pengerjaan JO</label>
                         <textarea class="form-control" placeholder="Informasi terkait pekerjaan JO" id="item_pekerjaan" name="item_pekerjaan"></textarea>
                     </div>
                     <div class="mb-3">
@@ -123,6 +123,14 @@
         return true;
     }
     $(document).ready(function() {
+        $('#tim_pekerja').select2({
+            theme: 'bootstrap4'
+        })
+        $('#tim_absen').select2({
+            theme: 'bootstrap4'
+        })
+
+
         tampildata();
         $('#mydata').dataTable();
 

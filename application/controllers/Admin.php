@@ -29,6 +29,19 @@ class Admin extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+
+    public function jobComplete()
+    {
+        $data['title'] = 'Dashboard';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('admin/jobcomplete', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function tampilrole()
     {
         $dataAll = $this->model->getRole();
@@ -76,6 +89,22 @@ class Admin extends CI_Controller
 
         $update = $this->model->updateJobOrder($id, $updatedData);
 
+
+        if($update){
+            $msg['status'] = 'success';
+        } else {
+            $msg['status'] = 'error';
+            $msg['message'] = 'Failed!!';
+        }
+        echo json_encode($msg);
+    }
+
+    public function updateJob($id){
+        $updateData = [
+            'no_file' => $this->input->post('no_file')
+        ];
+
+        $update = $this->model->updateJobOrder($id,$updateData);
 
         if($update){
             $msg['status'] = 'success';
@@ -145,5 +174,17 @@ class Admin extends CI_Controller
     {
         $dataAll = $this->model->getJoStatus4();
         echo json_encode($dataAll);
+    }
+
+    public function deletemember()
+    {
+        $id = $this->input->post('id');
+        $delete = $this->db->delete('member', ['id' => $id]);
+
+        if ($delete) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
     }
 }

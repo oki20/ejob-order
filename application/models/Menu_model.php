@@ -183,6 +183,11 @@ class Menu_model extends CI_Model
         return $this->db->update('pengajuan_job_order',$data);
     }
 
+    public function updateSubmenu($id,$data){
+        $this->db->where('id',$id);
+        return $this->db->update('user_sub_menu',$data);
+    }
+
     // Model untuk menampilkan request Job Order (User)
     public function getRequestJo()
     {

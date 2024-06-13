@@ -55,7 +55,7 @@
 <div class="container-fluid">
     <div style="text-align: right;">
         <div style="display: inline-block;">
-            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span>  Tambah Anggota </a>
+            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span>  Add New Member </a>
         </div>
     </div>
     <div class="card shadow mb-4 mt-2">
@@ -140,6 +140,7 @@
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
                             '" data-no_jo="' + data[i].nim_member + '" data-pekerjaan="' + data[i].nama_member + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                             '</td>' +
                             '</tr>';
                     }

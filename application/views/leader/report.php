@@ -30,7 +30,7 @@
                                 <th>Pekerjaan</th>
                                 <th>No. File</th>
                                 <th>Tanggal Pengerjaan</th>
-                                <th>Progres</th>
+                                <th>Progress</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -59,6 +59,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <input type="hidden" name="id_report" id="id_report" class="form-control">
                     <input type="hidden" name="id_laporan" id="id_laporan" class="form-control">
                     <div class="mb-3">
@@ -74,12 +75,12 @@
                         <input type="date" name="tgl_pengerjaan" id="tgl_pengerjaan" class="form-control" placeholder="Progres">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Progres Pengerjaan JO</label>
-                        <input type="text" name="progres" id="progres" class="form-control" placeholder="Progres">
+                        <label class="col-form-label">Progress Pengerjaan JO</label>
+                        <input type="text" name="progres" id="progres" class="form-control" onInput="return check(event,value)" min="0" max="100" step="0" placeholder="Progres">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tim Pelaksana</label>
-                        <select id="tim_pekerja" name="tim_pekerja[]" multiple="multiple" class="multiselect-dropdown form-control" required>
+                        <select id="tim_pekerja" name="tim_pekerja[]" multiple="multiple" class="form-control" required>
                             <?php if (isset($anggota)) {
                                 foreach ($anggota as $agt) : ?>
                                     <option value="<?= $agt['id']; ?>"><?= $agt['nama_member']; ?></option>
@@ -186,8 +187,31 @@
 
 
 <script type="text/javascript">
+    check = function(e, value) {
+        if (!e.target.validity.valid) {
+            e.target.value = value.substring(0, value.length - 1);
+            return false;
+        }
+        var idx = value.indexOf('.');
+        if (idx >= 0) {
+            if (value.length - idx > 3) {
+                e.target.value = value.substring(0, value.length - 1);
+                return false;
+            }
+        }
+        return true;
+    }
+
     var method = '';
     $(document).ready(function() {
+        $('#tim_pekerja').select2({
+            theme: 'bootstrap4'
+        })
+        $('#tim_absen').select2({
+            theme: 'bootstrap4'
+        })
+
+
         tampildata();
         $('#mydata').dataTable();
 
@@ -330,7 +354,7 @@
                     idReport = $('#id_report').val();
                     idJo = $('#id_laporan').val();
                     formData.append('id_jo', idJo);
-                    url = "<?php echo site_url() ?>/leader/updatereport/" + idReport;
+                    url = "<?php echo site_url() ?>leader/updatereport/" + idReport;
                 }
 
                 $.ajax({

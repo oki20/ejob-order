@@ -161,6 +161,7 @@
                                 <th>No. File</th>
                                 <th>Pelaksana</th>
                                 <th>Plant</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -176,15 +177,123 @@
 <!-- /.container-fluid -->
 
 </div>
+<form>
+    <div class="modal fade" id="Modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id_jo" id="id_jo">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">No. File</label>
+                        <div class="col-md-10">
+                            <input type="text" name="no_file" id="no_file" class="form-control" placeholder="Masukkan Nomor File">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">No. Job Order</label>
+                        <div class="col-md-10">
+                            <input type="text" name="no_jo" id="no_jo" class="form-control" placeholder="Masukkan Nomor Job Order" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Pekerjaan</label>
+                        <div class="col-md-10">
+                            <input type="text" name="pekerjaan" id="pekerjaan" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Pelaksana</label>
+                        <div class="col-md-10">
+                            <input class="form-control" id="pelaksana" name="pelaksana" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Plant</label>
+                        <div class="col-md-10">
+                            <input class="form-control" id="plant" name="plant" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" type="submit" id="btn_save" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <!-- End of Main Content -->
+
 
 <script type="text/javascript">
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
         console.log("TESTING");
+
+
+        $('#btn_save').on('click', function() {
+            var id = $('#id_jo').val();
+            var no_file = $('#no_file').val();
+
+            // var formData = new FormData();
+            // formData.append('id', id);
+            // formData.append('no_file', no_file);
+            if (no_file.length == "") {
+                Swal.fire({
+                    type: 'warning',
+                    title: 'Oops...',
+                    text: 'Nomor File Wajib Diisi !'
+                });
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url() ?>/admin/updateJob/" + id,
+                    data: {
+                        no_file: no_file
+                    },
+                    dataType: "JSON",
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Job Order Complete!'
+                            });
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                        $('#Modal_edit').modal('hide');
+                        $('[name="no_file"]').val('')
+                        tampildata();
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+
+        });
     });
-    
+
     function tampildata() {
         $.ajax({
             type: 'ajax',
@@ -207,68 +316,86 @@
                     let isMekanikComplete = mekanikProgress == '100';
                     let isElektrikComplete = elektrikProgress == '100';
                     let isMekanikAndElektrikComplete = mekanikProgress == '100' && elektrikProgress == '100';
-                    
+
 
                     console.log(data[i].tgl_terima);
-                    if ((!isDanPresent && (isMekanikComplete || isElektrikComplete)) || (isMekanikAndElektrikComplete && isDanPresent)) {
-                        let row = '<tr>' +
-                            '<td>' + nomor + '</td>' +
-                            '<td>' + data[i].no_jo + '</td>' +
-                            '<td>' + data[i].pekerjaan + '</td>' +
-                            '<td>' + data[i].no_file + '</td>' +
-                            '<td>' + data[i].pelaksana + '</td>' +
-                            '<td>' + data[i].plant_name + '</td>' +
-                            '<td style="text-align:right;">' +
-                            ((data[i].tgl_terima == '0000-00-00') ? 
-                            '<a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="selesai('+ data[i].job_order_id +')">Selesai</a>' 
-                            : "<div class='badge badge-success'>Approved</div>") +
-                            '</td>' +
-                            '</tr>';
+                    // if ((!isDanPresent && (isMekanikComplete || isElektrikComplete)) || (isMekanikAndElektrikComplete && isDanPresent)) {
+                    let row = '<tr>' +
+                        '<td>' + nomor + '</td>' +
+                        '<td>' + data[i].no_jo + '</td>' +
+                        '<td>' + data[i].pekerjaan + '</td>' +
+                        '<td>' + data[i].no_file + '</td>' +
+                        '<td>' + data[i].pelaksana + '</td>' +
+                        '<td>' + data[i].plant_name + '</td>' +
+                        '<td style="text-align:right;">' +
+                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_update" onclick="showModal(' + data[i].job_order_id + ')"> Input No.File</a>' +
+                        '</td>' +
+                        '</tr>';
 
-                        html += row;
-                    }
+                    html += row;
+                    // }
                     $('#show_data').html(html);
                 }
             }
         });
     }
 
-    function selesai(id){
+    function showModal(id) {
+        $('#Modal_edit').modal('show');
+
+        $.ajax({
+            type: 'ajax',
+            url: '<?php echo site_url(); ?>/leader/getjobbyid/' + id,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                var i;
+                $('#id_jo').val(data.job_order_id)
+                $('#no_file').val(data.no_file)
+                $('#no_jo').val(data.no_jo)
+                $('#pekerjaan').val(data.pekerjaan)
+                $('#pelaksana').val(data.pelaksana)
+                $('#plant').val(data.plant_name)
+            }
+        })
+    }
+
+    function selesai(id) {
         var jobId = id;
 
         $.ajax({
             type: "POST",
             url: '<?= site_url() ?>/admin/completejob/' + jobId,
             dataType: "JSON",
-            data : {
-                id : jobId
+            data: {
+                id: jobId
             },
-            success: function(response){
+            success: function(response) {
                 console.log(response);
                 if (response.status == "success") {
-                        swal({
-                            type: 'success',
-                            title: 'Berhasil!',
-                            icon: 'success',
-                            text: 'Job Order Complete!'
-                        });
+                    swal({
+                        type: 'success',
+                        title: 'Berhasil!',
+                        icon: 'success',
+                        text: 'Job Order Complete!'
+                    });
                 } else {
-                        swal({
-                            type: 'error',
-                            title: 'Update data Gagal!',
-                            icon: 'warning',
-                            text: 'Silahkan coba lagi!'
-                        });
-                }
-                 tampildata();
-            },
-            error: function(response) {
                     swal({
                         type: 'error',
-                        title: 'Oops!',
+                        title: 'Update data Gagal!',
                         icon: 'warning',
-                        text: 'Server error!'
+                        text: 'Silahkan coba lagi!'
                     });
+                }
+                tampildata();
+            },
+            error: function(response) {
+                swal({
+                    type: 'error',
+                    title: 'Oops!',
+                    icon: 'warning',
+                    text: 'Server error!'
+                });
             }
         })
     }

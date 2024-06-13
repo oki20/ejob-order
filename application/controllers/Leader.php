@@ -85,10 +85,21 @@ class Leader extends CI_Controller
         $dataAll = $this->model->getJoUser();
         echo json_encode($dataAll);
     }
-    
+
     public function tampiljoadmin()
     {
         $dataAll = $this->model->getJoAdmin();
+        echo json_encode($dataAll);
+    }
+    public function tampiljoadmincomplete()
+    {
+        $dataAll = $this->model->getJoAdminComplete();
+        echo json_encode($dataAll);
+    }
+
+    public function getjobbyid($id)
+    {
+        $dataAll = $this->model->getJoById($id);
         echo json_encode($dataAll);
     }
 
@@ -192,7 +203,8 @@ class Leader extends CI_Controller
         );
 
         // Ambil progres sebelumnya
-        $previous_progress = $this->model->getPreviousProgressUpdate($id_edit); // Anda perlu menyesuaikan ini dengan nama metode Anda
+        $previous_progress = $this->model->getPreviousProgressUpdate($id_edit);
+        // Anda perlu menyesuaikan ini dengan nama metode Anda
         // Periksa apakah $previous_progress ada sebelum melakukan perbandingan
         if (intval((int)$progres) < (int)$previous_progress) {
             echo json_encode(['status' => 'error', 'message' => 'Progress cannot be lower than previous progress']);
@@ -208,6 +220,9 @@ class Leader extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
+
+
+
 
 
 

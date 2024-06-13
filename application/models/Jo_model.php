@@ -70,6 +70,7 @@ class Jo_model extends CI_Model
         WHERE 
             pjo.id_plant IN ($id)
             AND pjo.status = 5
+            AND pjo.no_file <> ''
         ORDER BY 
             pjo.id
     ";
@@ -82,6 +83,12 @@ class Jo_model extends CI_Model
     public function save_data($data)
     {
         return $this->db->insert("pengajuan_job_order", $data);
+    }
+
+    public function update_data($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('pengajuan_job_order', $data);
     }
 
     public function closeJob($id)

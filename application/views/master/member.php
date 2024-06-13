@@ -151,9 +151,9 @@
                         '<td>' + jabatan + '</td>' +
                         '<td>' + data[i].name_plant + '</td>' +
                         '<td style="text-align:right;">' +
-                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
-                        '" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
-                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id_plant="' + data[i].id_plant + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
+                        //'<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id_plant="' + data[i].id_plant +
+                        //'" data-nama="' + data[i].nama + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
+                        '<button class="btn btn-danger btn-sm" onclick="deleteModal(' + data[i].id + ')"><i class="fas fal fa-trash"></i> Delete</button>' + ' ' +
                         '</td>' +
                         '</tr>';
                 }
@@ -279,4 +279,58 @@
             });
         }
     });
+
+    function deleteModal(id){
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', id);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('master/deletemember') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var json = JSON.parse(response)
+                        console.log(json);
+                        if (json.status == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Delete Data Berhasil!'
+                            });
+                            // Reload or update data in your table
+                            tampildata();
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Delete data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+    }
 </script>

@@ -80,10 +80,67 @@ class Joborder extends CI_Controller
         }
     }
 
+    public function updatedata()
+    {
+        $id = $this->input->post('id_jo');
+        $data = array(
+            'no_jo' => $this->input->post('no_jo'),
+            'tgl_jo' => $this->input->post('tgl_jo'),
+            'tgl_terima' => $this->input->post('tgl_terima'),
+            'cc_no' => $this->input->post('cc_no'),
+            'pekerjaan' => $this->input->post('pekerjaan'),
+            'pelaksana' => $this->input->post('pelaksana'),
+            'tujuan' => $this->input->post('tujuan'),
+            'rencana' => $this->input->post('rencana'),
+            'cep_no' => $this->input->post('cep_no'),
+            'dwg_no' => '-',
+            'mesin_no' => '-',
+            'id_plant' => $this->input->post('id_plant'),
+            'id_depthead' => '-',
+            'id_planthead' => '-',
+            'id_pemesan' => $this->input->post('id_pemesan'),
+            'lampiran' => '-',
+            'no_file' => $this->input->post('no_file'),
+            'golongan' => $this->input->post('golongan'),
+            'klasifikasi' => $this->input->post('klasifikasi'),
+            'departemen_lain' => $this->input->post('departemen_lain'),
+            'status' => '5'
+        );
+
+        //insert data via model
+        $updateData = $this->jomodel->update_data($id, $data);
+
+        // Cek apakah data berhasil tersimpan
+        if ($updateData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
+
     public function closejo()
     {
         $id = $this->input->post('id');
         $result = $this->model->closeJob($id);
         echo json_encode($result);
+    }
+
+    public function edit()
+    {
+        $id = $this->input->get('id');
+        $data = $this->db->get_where('pengajuan_job_order', ['id' => $id])->row_array();
+        echo json_encode($data);
+    }
+
+    public function delete()
+    {
+        $id = $this->input->post('id');
+        $delete = $this->db->delete('pengajuan_job_order', ['id' => $id]);
+
+        if ($delete) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
     }
 }

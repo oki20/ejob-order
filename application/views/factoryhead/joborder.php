@@ -22,8 +22,8 @@
                                 <th>No. File</th>
                                 <th>Tgl Terima Jo</th>
                                 <th>Pelaksana</th>
-                                <th>Progres Elektrik</th>
-                                <th>Progres Mekanik</th>
+                                <th>Progresss Elektrik</th>
+                                <th>Progress Mekanik</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
