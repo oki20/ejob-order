@@ -232,8 +232,8 @@
 
                         html += '<tr>' +
                             '<td class="table-cell">' + nomor + '</td>' +
-                            '<td class="table-cell">' + data[i].no_jo + '</td>' +
                             '<td class="table-cell">' + data[i].pekerjaan + '</td>' +
+                            '<td class="table-cell">' + data[i].no_jo + '</td>' +
                             '<td class="table-cell">' + data[i].no_file + '</td>' +
                             '<td class="table-cell">' + data[i].tgl_pengerjaan + '</td>' +
                             '<td class="table-cell">' + data[i].progres + '</td>' +

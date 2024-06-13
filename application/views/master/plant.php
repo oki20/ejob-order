@@ -11,24 +11,24 @@
                 <a href="javascript:void(0);" class="btn btn-primary" onclick="activateWebcam()" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-clinic-medical"></span> Add New Plant </a>
             </div>
         </div>
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Plant</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Plant</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+    </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Plant</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Plant</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

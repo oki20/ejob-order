@@ -5,44 +5,37 @@
     <h1 class="h3 mb-2 text-gray-800"><?= $title; ?></h1>
 
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-        <!--<div style="text-align: right;">
-            <div style="display: inline-block;">
-                <a href="javascript:void(0);" class="btn btn-primary" onclick="activateWebcam()" data-toggle="modal" data-target="#Modal_Add"><span class="fa fa-plus"></span> Tambah Plant </a>
-            </div>
-        </div>-->
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data User E-Job Order</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>NIK</th>
-                                <th>Plant</th>
-                                <th>Departemen</th>
-                                <th>Role Id</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data User E-Job Order</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>NIK</th>
+                            <th>Plant</th>
+                            <th>Departemen</th>
+                            <th>Role Id</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
-
-
-
 </div>
 <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -101,8 +94,8 @@
                 }
             });
         }
-                // Function to handle delete confirmation
-                $('#show_data').on('click', '.item_delete', function() {
+        // Function to handle delete confirmation
+        $('#show_data').on('click', '.item_delete', function() {
             var id = $(this).data('id');
 
             // SweetAlert confirmation before proceeding with deletion

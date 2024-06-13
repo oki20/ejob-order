@@ -151,8 +151,8 @@
 
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
-                            '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].pekerjaan + '</td>' +
+                            '<td>' + data[i].no_jo + '</td>' +
                             '<td>' + data[i].no_file + '</td>' +
                             '<td>' + data[i].tgl_terima + '</td>' +
                             '<td>' + data[i].pelaksana + '</td>' +
