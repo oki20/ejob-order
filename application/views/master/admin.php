@@ -17,11 +17,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Email</th>
                             <th>NIK</th>
-                            <th>Plant</th>
-                            <th>Departemen</th>
-                            <th>Role Id</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -46,7 +42,7 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('master/tampiluser') ?>',
+                url: '<?php echo site_url('master/tampiladmin') ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -80,11 +76,7 @@
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].name + '</td>' +
-                            '<td>' + data[i].email + '</td>' +
                             '<td>' + data[i].nim + '</td>' +
-                            '<td>' + data[i].nama + '</td>' +
-                            '<td>' + data[i].departemen + '</td>' +
-                            '<td>' + roleName + '</td>' +
                             '<td style="text-align:right;">' +
                             '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
                             '</td>' +

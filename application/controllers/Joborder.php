@@ -143,4 +143,23 @@ class Joborder extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
+
+    public function approveData()
+    {
+        $id = $this->input->post("id");
+
+        // Lakukan penyimpanan data ke database
+        $data = array(
+            'status' => '10'
+        );
+
+        $this->model->appData($id, $data);
+
+        // Check if data is successfully updated
+        if ($this->db->affected_rows() > 0) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
 }

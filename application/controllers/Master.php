@@ -35,9 +35,28 @@ class Master extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function admin()
+    {
+        $data['title'] = 'Data Admin';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['plant'] = $this->model->getPlant();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('master/admin', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function tampilmember()
     {
         $dataAll = $this->model->getMember();
+        echo json_encode($dataAll);
+    }
+
+    public function tampiladmin()
+    {
+        $dataAll = $this->model->getAdmin();
         echo json_encode($dataAll);
     }
 

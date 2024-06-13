@@ -145,29 +145,27 @@
     </div>
 
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Job Order Tunggu Approve Instalasi</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>No. File</th>
-                                <th>Pelaksana</th>
-                                <th>Plant</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Job Order Tunggu Approve Instalasi</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>No. File</th>
+                            <th>Pelaksana</th>
+                            <th>Plant</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

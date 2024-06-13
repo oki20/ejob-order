@@ -5,36 +5,34 @@
     <h1 class="h3 mb-2 text-gray-800"><?= $title; ?> <?= $plant['nama']; ?></h1>
 
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-        <div style="text-align: right;">
-            <div style="display: inline-block;">
-                <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add" id="create_job_order"><span class="fa fa-plus"></span> Create Job Order </a>
-            </div>
+    <div style="text-align: right;">
+        <div style="display: inline-block;">
+            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add" id="create_job_order"><span class="fa fa-plus"></span> Create Job Order </a>
         </div>
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Job Order Plant <?= $plant['nama']; ?></h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>Pelaksana</th>
-                                <th>No. File</th>
-                                <th>Tgl Terima Jo</th>
-                                <th>Progres Elektrik</th>
-                                <th>Progres Mekanik</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+    </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Job Order Plant <?= $plant['nama']; ?></h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>Pelaksana</th>
+                            <th>No. File</th>
+                            <th>Tgl Terima Jo</th>
+                            <th>Progres Elektrik</th>
+                            <th>Progres Mekanik</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -518,6 +516,8 @@
                         '<div class="button-container">' +
                         '<button class="btn btn-info btn-sm" onclick="editData(' + data[i].job_order_id + ')"><i class="fas fal fa-edit"></i> Edit</button>' + ' ' +
                         '<button class="btn btn-danger btn-sm" onclick="deleteJob(' + data[i].job_order_id + ')"><i class="fas fal fa-trash"></i> Delete</button>' + ' ' +
+                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        '</div>' +
                         '</td>' +
                         '</tr>';
                 }
@@ -624,5 +624,58 @@
         $('[name="golongan"]').val("");
         $('[name="klasifikasi"]').val("");
         $('[name="departemen_lain"]').val("");
+    }
+
+    function approveData(id) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Approve it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', id);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('joborder/approveData') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        if (response == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Update Data Berhasil!'
+                            });
+                            // Reload or update data in your table
+                            tampildata();
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
     }
 </script>

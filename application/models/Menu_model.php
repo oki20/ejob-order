@@ -48,11 +48,12 @@ class Menu_model extends CI_Model
             ->row_array();
     }
 
-    public function getWaitingApproveJo(){
+    public function getWaitingApproveJo()
+    {
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
             ->from('pengajuan_job_order')
-            ->where_in('status', [1,2,3,4])
+            ->where_in('status', [1, 2, 3, 4])
             ->get()
             ->row_array();
     }
@@ -121,6 +122,14 @@ class Menu_model extends CI_Model
         return $result;
     }
 
+    public function deleteuser($id)
+    {
+        $this->db->where('id', $id);
+        $result = $this->db->delete("user");
+
+        return $result;
+    }
+
     //Model untuk tambah member
     public function addMember($data)
     {
@@ -136,6 +145,16 @@ class Menu_model extends CI_Model
               GROUP BY m.id";
 
         return $this->db->query($query)->result_array();
+    }
+
+    public function getAdmin()
+    {
+        return $this->db
+            ->select('*')
+            ->from('user')
+            ->where('user.role_id', 1)
+            ->get()
+            ->result_array();
     }
 
 
@@ -178,14 +197,16 @@ class Menu_model extends CI_Model
         $this->db->update($tableName, $data);
     }
 
-    public function updateJobOrder($id,$data){
+    public function updateJobOrder($id, $data)
+    {
         $this->db->where('id', $id);
-        return $this->db->update('pengajuan_job_order',$data);
+        return $this->db->update('pengajuan_job_order', $data);
     }
 
-    public function updateSubmenu($id,$data){
-        $this->db->where('id',$id);
-        return $this->db->update('user_sub_menu',$data);
+    public function updateSubmenu($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('user_sub_menu', $data);
     }
 
     // Model untuk menampilkan request Job Order (User)
@@ -415,9 +436,8 @@ class Menu_model extends CI_Model
     }
 
 
-public function getSubmenuById($id)
-{
-    return $this->db->get_where('user_sub_menu', ['id' => $id])->row_array();
-}
-
+    public function getSubmenuById($id)
+    {
+        return $this->db->get_where('user_sub_menu', ['id' => $id])->row_array();
+    }
 }

@@ -282,7 +282,8 @@
             var pesan = "Laporan Harian Pekerjaan Instalasi :  \nTanggal" + tgl +
                 "\n\nDeskripsi Pekerjaan : " + pekerjaan +
                 "\nNomor Job Order" + no_jo + "\n\n" +
-                "Item Pekerjaan: " + item_pekerjaan;
+                "Item Pekerjaan: " + item_pekerjaan +
+                "\n\nProgres:" + progres;
 
             // Buat URL dengan format yang sesuai untuk membuka WhatsApp dan mengirim pesan
             var urlWhatsApp = "https://wa.me/" + nomorWhatsApp + "?text=" + encodeURIComponent(pesan);
