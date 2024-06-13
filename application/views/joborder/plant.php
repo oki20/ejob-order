@@ -58,7 +58,7 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">Plant</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="<?= $plant['nama']; ?>">
+                            <input type="text" class="form-control" value="<?= $plant['nama']; ?>" disabled>
                             <input type="text" name="id_plant" id="id_plant" class="form-control" value="<?= $plant['id_plant']; ?>" hidden>
                         </div>
                     </div>

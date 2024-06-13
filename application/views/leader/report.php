@@ -64,11 +64,11 @@
                     <input type="hidden" name="id_laporan" id="id_laporan" class="form-control">
                     <div class="mb-3">
                         <label class="col-form-label">Nomor Job Order</label>
-                        <input type="text" name="no_jo_laporan" id="no_jo_laporan" class="form-control" placeholder="Nomor Transaksi">
+                        <input type="text" name="no_jo_laporan" id="no_jo_laporan" class="form-control" placeholder="Nomor Transaksi" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Keterangan Pekerjaan</label>
-                        <input type="text" name="pekerjaan_laporan" id="pekerjaan_laporan" class="form-control" placeholder="Nomor Transaksi">
+                        <input type="text" name="pekerjaan_laporan" id="pekerjaan_laporan" class="form-control" placeholder="Nomor Transaksi" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tanggal Laporan Harian JO</label>

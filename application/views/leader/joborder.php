@@ -54,11 +54,11 @@
                     <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                     <div class="mb-3">
                         <label class="col-form-label">Nomor Job Order</label>
-                        <input type="text" name="no_jo_edit" id="no_jo_edit" class="form-control" placeholder="Nomor Transaksi">
+                        <input type="text" name="no_jo_edit" id="no_jo_edit" class="form-control" placeholder="Nomor Transaksi" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Keterangan Pekerjaan</label>
-                        <input type="text" name="pekerjaan_edit" id="pekerjaan_edit" class="form-control" placeholder="Nomor Transaksi">
+                        <input type="text" name="pekerjaan_edit" id="pekerjaan_edit" class="form-control" placeholder="Nomor Transaksi" disabled>
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tanggal Laporan Harian JO</label>
