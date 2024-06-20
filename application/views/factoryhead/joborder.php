@@ -38,8 +38,8 @@
 
 </div>
 <!-- End of Main Content -->
-<script>    
-    $(document).ready(function(){
+<script>
+    $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
 
@@ -47,7 +47,7 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('leader/tampiljo'); ?>',
+                url: '<?php echo site_url('leader/tampiljouser'); ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -86,5 +86,4 @@
             $('[name="pekerjaan_edit"]').val(pekerjaan);
         });
     })
-
 </script>

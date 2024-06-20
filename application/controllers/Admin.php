@@ -82,15 +82,16 @@ class Admin extends CI_Controller
         }
     }
 
-    public function completeJob($id){
+    public function completeJob($id)
+    {
         $updatedData = [
-            'tgl_terima' => date('Y-m-d')
+            'status' => '10'
         ];
 
         $update = $this->model->updateJobOrder($id, $updatedData);
 
 
-        if($update){
+        if ($update) {
             $msg['status'] = 'success';
         } else {
             $msg['status'] = 'error';
@@ -99,14 +100,15 @@ class Admin extends CI_Controller
         echo json_encode($msg);
     }
 
-    public function updateJob($id){
+    public function updateJob($id)
+    {
         $updateData = [
             'no_file' => $this->input->post('no_file')
         ];
 
-        $update = $this->model->updateJobOrder($id,$updateData);
+        $update = $this->model->updateJobOrder($id, $updateData);
 
-        if($update){
+        if ($update) {
             $msg['status'] = 'success';
         } else {
             $msg['status'] = 'error';

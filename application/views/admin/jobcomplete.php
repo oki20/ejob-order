@@ -43,7 +43,6 @@
     $(document).ready(function() {
         tampildata();
         $('#mydata').dataTable();
-        console.log("TESTING");
     });
 
     function tampildata() {
@@ -69,8 +68,6 @@
                     let isElektrikComplete = elektrikProgress == '100';
                     let isMekanikAndElektrikComplete = mekanikProgress == '100' && elektrikProgress == '100';
 
-
-                    console.log(data[i].tgl_terima);
                     if ((!isDanPresent && (isMekanikComplete || isElektrikComplete)) || (isMekanikAndElektrikComplete && isDanPresent)) {
                         let row = '<tr>' +
                             '<td>' + nomor + '</td>' +
@@ -80,7 +77,7 @@
                             '<td>' + data[i].pelaksana + '</td>' +
                             '<td>' + data[i].plant_name + '</td>' +
                             '<td style="text-align:right;">' +
-                            ((data[i].tgl_terima == '0000-00-00') ?
+                            ((data[i].status != '10') ?
                                 '<a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="selesai(' + data[i].job_order_id + ')">Selesai</a>' :
                                 "<div class='badge badge-success'>Approved</div>") +
                             '</td>' +
@@ -97,40 +94,54 @@
     function selesai(id) {
         var jobId = id;
 
-        $.ajax({
-            type: "POST",
-            url: '<?= site_url() ?>/admin/completejob/' + jobId,
-            dataType: "JSON",
-            data: {
-                id: jobId
-            },
-            success: function(response) {
-                console.log(response);
-                if (response.status == "success") {
-                    swal({
-                        type: 'success',
-                        title: 'Berhasil!',
-                        icon: 'success',
-                        text: 'Job Order Complete!'
-                    });
-                } else {
-                    swal({
-                        type: 'error',
-                        title: 'Update data Gagal!',
-                        icon: 'warning',
-                        text: 'Silahkan coba lagi!'
-                    });
-                }
-                tampildata();
-            },
-            error: function(response) {
-                swal({
-                    type: 'error',
-                    title: 'Oops!',
-                    icon: 'warning',
-                    text: 'Server error!'
-                });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Approve it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: '<?= site_url() ?>/admin/completejob/' + jobId,
+                    dataType: "JSON",
+                    data: {
+                        id: jobId
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Job Order Complete!'
+                            });
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                        tampildata();
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                })
             }
-        })
+        });
+
+
     }
 </script>

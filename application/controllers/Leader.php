@@ -160,6 +160,11 @@ class Leader extends CI_Controller
 
         // Ambil progres sebelumnya
         $previous_progress = $this->model->getPreviousProgress($id_edit); // Anda perlu menyesuaikan ini dengan nama metode Anda
+        $isTanggalTerimaAvailable = $this->model->isTanggalTerimaAvailable($id_edit);
+
+        if ($isTanggalTerimaAvailable) {
+            $this->model->updateTanggalTerima($id_edit, $tgl);
+        }
 
         // Periksa apakah $previous_progress ada sebelum melakukan perbandingan
         if (intval((int)$progres) < (int)$previous_progress) {

@@ -362,6 +362,7 @@ class Menu_model extends CI_Model
     public function getRequestJo1()
     {
         $id = $this->session->userdata('id_plant');
+        $id_depthead = $this->session->userdata('id');
 
         return $this->db
             ->select('*')
@@ -369,6 +370,7 @@ class Menu_model extends CI_Model
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
             ->where('pengajuan_job_order.status', '1')
             ->where('pengajuan_job_order.id_plant', $id)
+            ->where('pengajuan_job_order.id_depthead', $id_depthead)
             ->get()
             ->result_array();
     }

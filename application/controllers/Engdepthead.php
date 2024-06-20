@@ -79,6 +79,7 @@ class Engdepthead extends CI_Controller
         // Lakukan penyimpanan data ke database
         $data = array(
             'status' => '5',
+            'id_eng_depthead' => $this->session->userdata('id')
         );
 
         $this->model->appData($id, $data);

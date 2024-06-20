@@ -230,7 +230,7 @@
             // Form data
             var id = $('#id_edit').val();
             var role = $('#role_edit').val();
-
+            console.log(id);
             // Form data untuk mengirimkan file
             var formData = new FormData();
             formData.append('id_edit', id);

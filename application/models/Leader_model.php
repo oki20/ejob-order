@@ -89,6 +89,8 @@ class Leader_model extends CI_Model
 
     public function getJoUser()
     {
+        $idUser = $this->session->userdata('id');
+
         $bagian = $this->session->userdata('bagian');
         $data = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $plant_string = $data['id_plant']; // Dapatkan string plant dari data anggota yang sedang login
@@ -132,8 +134,9 @@ class Leader_model extends CI_Model
                 (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON pjo.id = lr_elektrik.id_jo
             WHERE 
                 pjo.id_plant IN (" . implode(',', array_map('intval', $plant_array)) . ")
-                AND pjo.status = 5
+                AND pjo.status in (5, 10)
                 AND pjo.no_file <> ''
+                AND (pjo.id_pemesan = '$idUser' OR pjo.id_depthead = '$idUser' OR pjo.id_planthead = '$idUser' OR pjo.id_factoryhead = '$idUser' OR pjo.id_eng_depthead = '$idUser')
             ORDER BY 
                 pjo.id
         ";
@@ -238,7 +241,7 @@ class Leader_model extends CI_Model
             JOIN 
                 tb_plant pl ON pl.id_plant=pjo.id_plant
             WHERE 
-                pjo.status = 5
+                pjo.status in (5, 10)
             AND 
                 pjo.no_file <> ''
             ORDER BY 
@@ -362,6 +365,30 @@ class Leader_model extends CI_Model
         $query = $this->db->get('tb_report'); // Ganti 'nama_tabel_laporan' dengan nama tabel yang sesuai
         return $query->row_array(); // Kembalikan hasil dalam bentuk array
     }
+
+    public function isTanggalTerimaAvailable($idJo)
+    {
+        $this->db->select('count(id) AS count');
+        $this->db->where('id', $idJo);
+        $this->db->where('tgl_terima IS NULL');
+        $query = $this->db->get('pengajuan_job_order');
+        if ($query->row_array()['count'] == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function updateTanggalTerima($idJo, $tglTerima)
+    {
+        $data = array(
+            'tgl_terima' => $tglTerima
+        );
+        $this->db->where('id', $idJo);
+        return $this->db->update('pengajuan_job_order', $data);
+    }
+
+
     public function getPreviousProgressUpdate($id_jo)
     {
         $id_member = $this->session->userdata('id');
