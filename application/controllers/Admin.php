@@ -86,7 +86,7 @@ class Admin extends CI_Controller
     public function completeJob($id)
     {
         $updatedData = [
-            'tgl_terima' => date('Y-m-d')
+            'status' => '10'
         ];
 
         $update = $this->model->updateJobOrder($id, $updatedData);

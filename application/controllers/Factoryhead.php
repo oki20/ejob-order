@@ -81,7 +81,8 @@ class Factoryhead extends CI_Controller
         // Lakukan penyimpanan data ke database
         $data = array(
             'pelaksana' => $pelaksana,
-            'status'    => '4'
+            'status'    => '4',
+            'id_factoryhead' => $this->session->userdata('id')
         );
 
         $this->model->appData($id, $data);
