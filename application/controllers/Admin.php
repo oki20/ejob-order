@@ -20,6 +20,7 @@ class Admin extends CI_Controller
         $data['finish'] = $this->model->getJoFinishPerMonth();
         $data['month'] = $this->model->getJoPerMonth();
         $data['wait'] = $this->model->getWaitingApproveJo();
+        $data['jem'] = $this->model->getTotJoJem();
 
 
         $this->load->view('templates/header', $data);
@@ -82,7 +83,8 @@ class Admin extends CI_Controller
         }
     }
 
-    public function completeJob($id){
+    public function completeJob($id)
+    {
         $updatedData = [
             'tgl_terima' => date('Y-m-d')
         ];
@@ -90,7 +92,7 @@ class Admin extends CI_Controller
         $update = $this->model->updateJobOrder($id, $updatedData);
 
 
-        if($update){
+        if ($update) {
             $msg['status'] = 'success';
         } else {
             $msg['status'] = 'error';
@@ -99,14 +101,15 @@ class Admin extends CI_Controller
         echo json_encode($msg);
     }
 
-    public function updateJob($id){
+    public function updateJob($id)
+    {
         $updateData = [
             'no_file' => $this->input->post('no_file')
         ];
 
-        $update = $this->model->updateJobOrder($id,$updateData);
+        $update = $this->model->updateJobOrder($id, $updateData);
 
-        if($update){
+        if ($update) {
             $msg['status'] = 'success';
         } else {
             $msg['status'] = 'error';

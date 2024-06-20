@@ -195,9 +195,6 @@
         tampildata();
         $('#mydata').dataTable();
 
-        // Function to show data
-
-
         // Save product
         $('#btn_save').on('click', function() {
             var no_jo = $('#no_jo').val();
@@ -421,7 +418,7 @@
             method = 'add';
             $('#exampleModalLabel').html('Form Request Job Order')
 
-        })
+        });
 
         // Function to handle delete confirmation
         $('#show_data').on('click', '.item_close', function() {
@@ -442,8 +439,6 @@
                 }
             });
         });
-
-
 
         // Function to handle actual deletion using AJAX
         function deleteProduct(id) {
@@ -516,7 +511,7 @@
                         '<div class="button-container">' +
                         '<button class="btn btn-info btn-sm" onclick="editData(' + data[i].job_order_id + ')"><i class="fas fal fa-edit"></i> Edit</button>' + ' ' +
                         '<button class="btn btn-danger btn-sm" onclick="deleteJob(' + data[i].job_order_id + ')"><i class="fas fal fa-trash"></i> Delete</button>' + ' ' +
-                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].job_order_id + ')"><i class="fas fal fa-check-square"></i> Approve</button>' + ' ' +
                         '</div>' +
                         '</td>' +
                         '</tr>';
@@ -628,8 +623,8 @@
 
     function approveData(id) {
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            title: "Apakah Job Order Ini Selesai?",
+            text: "Pastikan Progres Elektrik dan Mekanik sudah 100% !",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",

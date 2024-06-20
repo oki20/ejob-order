@@ -48,6 +48,22 @@ class Menu_model extends CI_Model
             ->row_array();
     }
 
+    //Dashboard admin menampilkan jumlah JO JEM
+    public function getTotJoJem()
+    {
+        // Ensure the substring is safe and properly formatted for the query
+        $safe_substring = $this->db->escape_like_str('98800');
+
+        $this->db->select('COUNT(no_jo) as total_jo');
+        $this->db->from('pengajuan_job_order');
+        $this->db->like('no_jo', $safe_substring); // WHERE `no_jo` LIKE '%substring%'
+
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result;
+    }
+
     public function getWaitingApproveJo()
     {
         return $this->db
