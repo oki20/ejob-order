@@ -13,7 +13,7 @@ class Master extends CI_Controller
     public function plant()
     {
         $data['title'] = 'Data Plant';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -25,7 +25,7 @@ class Master extends CI_Controller
     public function member()
     {
         $data['title'] = 'Data Member';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['plant'] = $this->model->getPlant();
 
         $this->load->view('templates/header', $data);
@@ -38,7 +38,7 @@ class Master extends CI_Controller
     public function admin()
     {
         $data['title'] = 'Data Admin';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['plant'] = $this->model->getPlant();
 
         $this->load->view('templates/header', $data);
@@ -157,7 +157,7 @@ class Master extends CI_Controller
     public function user()
     {
         $data['title'] = 'Data User';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

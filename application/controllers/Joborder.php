@@ -15,7 +15,7 @@ class Joborder extends CI_Controller
     public function index()
     {
         $data['title'] = 'Job Order';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['plant'] = $this->jomodel->getDataPlant();
 
         $this->load->view('templates/header', $data);
@@ -28,7 +28,7 @@ class Joborder extends CI_Controller
     public function plant($id)
     {
         $data['title'] = 'JOB ORDER PLANT';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['plant'] = $this->jomodel->getPlant($id);
 
         $this->load->view('templates/header', $data);

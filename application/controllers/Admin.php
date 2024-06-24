@@ -13,7 +13,7 @@ class Admin extends CI_Controller
     public function index()
     {
         $data['title'] = 'Dashboard';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['totaljo'] = $this->model->getTotalJo();
         $data['totalyear'] = $this->model->getTotalJoYear();
         $data['receive'] = $this->model->getWaitReceive();
@@ -34,7 +34,7 @@ class Admin extends CI_Controller
     public function jobComplete()
     {
         $data['title'] = 'Dashboard';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
@@ -122,7 +122,7 @@ class Admin extends CI_Controller
     public function role()
     {
         $data['title'] = 'Role';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $data['role'] = $this->db->get('user_role')->result_array();
 
@@ -137,7 +137,7 @@ class Admin extends CI_Controller
     public function roleAccess($role_id)
     {
         $data['title'] = 'Role Access';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $data['role'] = $this->db->get_where('user_role', ['id' => $role_id])->row_array();
 

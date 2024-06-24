@@ -15,7 +15,7 @@ class Planthead extends CI_Controller
     public function request()
     {
         $data['title'] = 'Request Job Order';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         //get Data Plant
         $data['plants'] = $this->model->getPlant();
 
@@ -29,7 +29,7 @@ class Planthead extends CI_Controller
     public function reject()
     {
         $data['title'] = 'Reject Job Order';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         //get Data Plant
         $data['plants'] = $this->model->getPlant();
 
@@ -55,7 +55,7 @@ class Planthead extends CI_Controller
     public function joborder()
     {
         $data['title'] = 'Monitoring Job Order';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['anggota'] = $this->lead_model->getAnggota();
 
         $this->load->view('templates/header', $data);

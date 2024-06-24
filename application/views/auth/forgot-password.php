@@ -19,8 +19,8 @@
 
                                 <form class="user" method="post" action="<?= base_url('auth/forgotpassword'); ?>">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email'); ?>">
-                                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
+                                        <input type="text" class="form-control form-control-user" id="whatsapp" name="whatsapp" placeholder="Enter Whatsapp number (62888123123)..." value="<?= set_value('whatsapp'); ?>">
+                                        <?= form_error('whatsapp', '<small class="text-danger pl-3">', '</small>'); ?>
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Reset Password
@@ -40,4 +40,4 @@
 
     </div>
 
-</div> 
+</div>

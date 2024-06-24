@@ -13,7 +13,7 @@ class Menu extends CI_Controller
     public function index()
     {
         $data['title'] = 'Menu Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
@@ -83,7 +83,7 @@ class Menu extends CI_Controller
     public function delete()
     {
         $kode = $this->input->post('id');
-        $this->db->where('id',$kode);
+        $this->db->where('id', $kode);
         $delete = $this->db->delete('user_sub_menu');
         if ($delete) {
             echo json_encode(['status' => 'success']);
@@ -96,7 +96,7 @@ class Menu extends CI_Controller
     public function submenu()
     {
         $data['title'] = 'Submenu Management';
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $this->load->model('Menu_model', 'menu');
 
         $data['subMenu'] = $this->menu->getSubMenu();
@@ -127,12 +127,13 @@ class Menu extends CI_Controller
         }
     }
 
-    public function getSubmenu(){
+    public function getSubmenu()
+    {
         $id = $this->input->post('id');
-        $data = $this->db->get_where('user_sub_menu',['id' => $id])->row_array();
-        echo json_encode($data);   
+        $data = $this->db->get_where('user_sub_menu', ['id' => $id])->row_array();
+        echo json_encode($data);
     }
-     
+
     public function updateSubmenu()
     {
         $id = $this->input->post('id');
@@ -143,9 +144,8 @@ class Menu extends CI_Controller
             'icon' => $this->input->post('icon'),
             'is_active' => $this->input->post('is_active')
         ];
-    
+
         $this->model->updateSubmenu($id, $data);
         echo json_encode(['status' => 'success']);
     }
-    
 }
