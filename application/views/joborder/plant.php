@@ -380,8 +380,10 @@
                                 $('[name="cep_no"]').val("");
                                 $('[name="id_pemesan"]').val("");
                                 $('[name="golongan"]').val("");
+                                $('[name="no_file"]').val("");
                                 $('[name="klasifikasi"]').val("");
                                 $('[name="departemen_lain"]').val("");
+
                                 $('#Modal_Add').modal('hide');
 
                                 tampildata();
@@ -542,6 +544,7 @@
                 $('[name="pekerjaan"]').val(res.pekerjaan);
                 $('[name="tujuan"]').val(res.tujuan);
                 $('[name="pelaksana"]').val(res.pelaksana);
+                $('[name="no_file"]').val(res.no_file);
                 $('[name="rencana"]').val(res.rencana);
                 $('[name="cep_no"]').val(res.cep_no);
                 $('[name="id_pemesan"]').val(res.id_pemesan);
@@ -613,6 +616,7 @@
         $('[name="pekerjaan"]').val("");
         $('[name="tujuan"]').val("");
         $('[name="pelaksana"]').val("");
+        $('[name="no_file"]').val("");
         $('[name="rencana"]').val("");
         $('[name="cep_no"]').val("");
         $('[name="id_pemesan"]').val("");

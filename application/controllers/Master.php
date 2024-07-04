@@ -191,4 +191,40 @@ class Master extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
+
+    public function getMemberById()
+    {
+        $id = $this->input->get('id');
+        $data = $this->model->getMemberById($id);
+        echo json_encode($data);
+    }
+
+    public function editMember()
+    {
+        $id = $this->input->post('id');
+        $plant = $this->input->post('plant'); // This should be an array
+
+        // Ensure $plant is an array
+        if (!is_array($plant)) {
+            $plant = explode(',', $plant); // Convert to array if necessary
+        }
+
+        $data = array(
+            'name' => $this->input->post('name'),
+            'nim' => $this->input->post('nim'),
+            'no_hp' => $this->input->post('no_hp'),
+            'bagian' => $this->input->post('bagian'),
+            'jabatan' => $this->input->post('jabatan'),
+            'plant' => implode(',', $plant) // Convert array to comma-separated string
+        );
+
+        $result = $this->model->updateMember($id, $data);
+
+        // Check if data is successfully updated
+        if ($result) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+    }
 }

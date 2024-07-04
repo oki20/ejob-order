@@ -101,7 +101,7 @@ class Menu_model extends CI_Model
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
             ->from('pengajuan_job_order')
-            ->where('status', 6)
+            ->where('status', 10)
             ->where("tgl_terima >= ", $previousMonthDate)
             ->where("tgl_terima < ", $currentDate)
             ->get()
@@ -457,5 +457,18 @@ class Menu_model extends CI_Model
     public function getSubmenuById($id)
     {
         return $this->db->get_where('user_sub_menu', ['id' => $id])->row_array();
+    }
+
+    public function getMemberById($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('member');
+        return $query->row_array();
+    }
+
+    public function updateMember($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('member', $data);
     }
 }
