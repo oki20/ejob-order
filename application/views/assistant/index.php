@@ -53,32 +53,36 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <div style="text-align: right;">
+    <!--<div style="text-align: right;">
         <div style="display: inline-block;">
-            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span> Add New Member </a>
+            <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add"><span class="fas fa-user-plus"></span> Add Your Tim </a>
         </div>
     </div>
-</div>
-<div class="card shadow mb-4 mt-2">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Data Anggota Tim</h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>NIP</th>
-                        <th>Nama</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="show_data">
-                </tbody>
-            </table>
+
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Laporan Harian</h6>
         </div>
-    </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>No. File</th>
+                            <th>Tanggal Pengerjaan</th>
+                            <th>Plant</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>-->
 </div>
 </div>
 
@@ -122,7 +126,7 @@
         function tampildata() {
             $.ajax({
                 type: 'ajax',
-                url: '<?php echo site_url('leader/tampilanggota'); ?>',
+                url: '<?php echo site_url('assistant/tampilreport'); ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -134,14 +138,13 @@
                         var statusBadge = '';
 
                         html += '<tr>' +
-                            '<td>' + nomor + '</td>' +
-                            '<td>' + data[i].nim_member + '</td>' +
-                            '<td>' + data[i].nama_member + '</td>' +
-                            '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm item_edit" data-id="' + data[i].id +
-                            '" data-no_jo="' + data[i].nim_member + '" data-pekerjaan="' + data[i].nama_member + '"><i class="fas fal fa-edit"></i> Edit</a>' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
-                            '</td>' +
+                            '<td class="table-cell">' + nomor + '</td>' +
+                            '<td class="table-cell">' + data[i].no_jo + '</td>' +
+                            '<td class="table-cell">' + data[i].pekerjaan + '</td>' +
+                            '<td class="table-cell">' + data[i].no_file + '</td>' +
+                            '<td class="table-cell">' + data[i].tgl_pengerjaan + '</td>' +
+                            '<td class="table-cell">' + data[i].plant + '</td>' +
+                            '<td class="table-cell">' + data[i].progres + '</td>' +
                             '</tr>';
                     }
                     $('#show_data').html(html);

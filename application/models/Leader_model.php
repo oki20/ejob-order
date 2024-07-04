@@ -33,7 +33,7 @@ class Leader_model extends CI_Model
 
     public function getJo()
     {
-        $bagian = $this->session->userdata('bagian');
+        //$bagian = $this->session->userdata('bagian');
         $data = $this->db->get_where('member', ['id' => $this->session->userdata('id')])->row_array();
         $plant_string = $data['plant']; // Dapatkan string plant dari data anggota yang sedang login
 
