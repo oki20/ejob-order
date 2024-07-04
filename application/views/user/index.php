@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <!-- <?= $this->session->flashdata('message'); ?> -->
+            <?= $this->session->flashdata('message'); ?>
         </div>
     </div>
 
@@ -19,14 +19,14 @@
                 <img src="<?= base_url('assets/img/profile/') . $user['image']; ?>" class="card-img">
             </div>
             <div class="modal-body">
-                    <div class="form-group">
-                    <h5 class="form-control" ><small class="text-muted"> NAMA : <?= $user['name']; ?></h5>
-                    <h5 class="form-control" ><small class="text-muted"> EMAIL : <?= $user['email']; ?></h5>
-                    <h5 class="form-control" ><small class="text-muted"> NIP : <?= $user['nim']; ?></h5>
-                    <h5 class="form-control" ><small class="text-muted"> DEPARTEMEN : <?= $user['departemen']; ?></h5>
+                <div class="form-group">
+                    <h5 class="form-control"><small class="text-muted"> NAMA : <?= $user['name']; ?></h5>
+                    <h5 class="form-control"><small class="text-muted"> EMAIL : <?= $user['email']; ?></h5>
+                    <h5 class="form-control"><small class="text-muted"> NIP : <?= $user['nim']; ?></h5>
+                    <h5 class="form-control"><small class="text-muted"> DEPARTEMEN : <?= $user['departemen']; ?></h5>
                     <i class="card-text"><small class="text-muted" style="font-size:1vw">Member since <?= date('d F Y', $user['date_created']); ?></i>
-                    </div>
-            </div>   
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-lg-12">

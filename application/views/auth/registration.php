@@ -15,8 +15,12 @@
                                 <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email Address" value="<?= set_value('email'); ?>">
+                                <input type="text" contenteditable="true" class="form-control form-control-user" id="email" name="email" placeholder="Email address.." value="<?= set_value('email'); ?>">
                                 <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" contenteditable="true" class="form-control form-control-user" id="whatsapp" name="whatsapp" placeholder="No Whatsapp" value="<?= set_value('whatsapp'); ?>">
+                                <?= form_error('whatsapp', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
@@ -76,3 +80,33 @@
     </div>
 
 </div>
+
+
+<script>
+    // Util function
+    function addFormatter(input, formatFn) {
+        let oldValue = input.value;
+
+        const handleInput = event => {
+            const result = formatFn(input.value, oldValue, event);
+            if (typeof result === 'string') {
+                input.value = result;
+            }
+
+            oldValue = input.value;
+        }
+
+        handleInput();
+        input.addEventListener("input", handleInput);
+    }
+
+    // Example implementation
+    // HOF returning regex prefix formatter
+    function regexPrefix(regex, prefix) {
+        return (newValue, oldValue) => regex.test(newValue) ? newValue : (newValue ? oldValue : prefix);
+    }
+
+    // Apply formatter
+    const input = document.getElementById('whatsapp');
+    addFormatter(input, regexPrefix(/62/, '62'));
+</script>
