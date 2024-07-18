@@ -66,4 +66,14 @@ class Assistant_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('tb_informasi');
     }
+
+    public function getLastIdInfo()
+    {
+        $query = $this->db->order_by('no_info', 'DESC')->limit(1)->get('tb_informasi');
+        if ($query->num_rows() > 0) {
+            return $query->row()->no_info;
+        } else {
+            return null;
+        }
+    }
 }

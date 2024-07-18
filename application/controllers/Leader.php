@@ -67,9 +67,28 @@ class Leader extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function informasi()
+    {
+        $data['title'] = 'Pekerjaan Informasi';
+        $data['user'] = $this->db->get_where('member', ['id' => $this->session->userdata('id')])->row_array();
+        $data['anggota'] = $this->model->getAnggota();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('leader/informasi', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function tampiljo()
     {
         $dataAll = $this->model->getJo();
+        echo json_encode($dataAll);
+    }
+
+    public function tampilinformasi()
+    {
+        $dataAll = $this->model->getInformasi();
         echo json_encode($dataAll);
     }
 
@@ -225,11 +244,6 @@ class Leader extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
         }
     }
-
-
-
-
-
 
     public function editphone()
     {

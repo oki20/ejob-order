@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+
 class Joborder extends CI_Controller
 {
     public function __construct()
@@ -38,9 +39,27 @@ class Joborder extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function laporan()
+    {
+        $data['title'] = 'Laporan Harian';
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('joborder/laporan', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function tampiljoplant($id)
     {
         $dataAll = $this->jomodel->getDataJo($id);
+        echo json_encode($dataAll);
+    }
+
+    public function tampilreport()
+    {
+        $dataAll = $this->jomodel->getReportData();
         echo json_encode($dataAll);
     }
 
@@ -161,5 +180,116 @@ class Joborder extends CI_Controller
         } else {
             echo "error";
         }
+    }
+
+    public function exportToExcel()
+    {
+        $start_date = $this->input->get('start_date');
+        $end_date = $this->input->get('end_date');
+
+        $sql = "
+        SELECT 
+            tr.id AS report_id,
+            tr.id_jo,
+            tr.id_member,
+            tr.tgl_pengerjaan,
+            tr.progres,
+            tr.tim_pekerja,
+            tr.item_pekerjaan,
+            tr.keterangan,
+            tr.tim_absen,
+            pjo.no_jo,
+            pjo.pekerjaan,
+            pjo.tujuan,
+            pjo.pelaksana,
+            pjo.rencana,
+            pjo.status,
+            tp.nama,
+            mb.bagian,
+            GROUP_CONCAT(mp.nama_member ORDER BY mp.id SEPARATOR ', ') AS nama_member,
+            GROUP_CONCAT(mp.nim_member ORDER BY mp.id SEPARATOR ', ') AS nim_member
+        FROM 
+            tb_report tr
+        JOIN 
+            pengajuan_job_order pjo ON tr.id_jo = pjo.id
+        LEFT JOIN 
+            member_plant mp ON FIND_IN_SET(mp.id, tr.tim_pekerja)
+        LEFT JOIN 
+            tb_plant tp ON pjo.id_plant = tp.id_plant
+        LEFT JOIN
+            member mb ON tr.id_member = mb.id
+        WHERE 
+            tr.tgl_pengerjaan BETWEEN ? AND ?
+        GROUP BY 
+            tr.id,
+            tr.id_jo,
+            tr.id_member,
+            tr.tgl_pengerjaan,
+            tr.progres,
+            tr.tim_pekerja,
+            tr.item_pekerjaan,
+            tr.keterangan,
+            tr.tim_absen,
+            pjo.no_jo,
+            pjo.pekerjaan,
+            pjo.tujuan,
+            pjo.pelaksana,
+            pjo.rencana,
+            pjo.status,
+            tp.nama,
+            mb.bagian
+        ORDER BY 
+            tr.id DESC
+    ";
+
+        // Execute query
+        $query = $this->db->query($sql, array($start_date, $end_date));
+        $data = $query->result_array();
+
+        // File name
+        $filename = 'report_data_' . date('Y-m-d_H-i-s') . '.csv';
+
+        // Set headers to force download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+
+        // Open PHP output stream
+        $output = fopen('php://output', 'w');
+
+        // Add header row
+        fputcsv($output, array(
+            'Tanggal Pengerjaan',
+            'Bagian',
+            'Plant',
+            'Identitas Report',
+            'Nomor Job Order',
+            'Deskripsi Pekerjaan',
+            'Aktivitas Pekerjaan',
+            'Pelaksana',
+            'Progres',
+            'Tim Under Performance',
+            'Keterangan'
+        ));
+
+        // Add data rows
+        foreach ($data as $datum) {
+            fputcsv($output, array(
+                $datum['tgl_pengerjaan'],
+                $datum['bagian'],
+                $datum['nama'],
+                'JO/EJO',
+                $datum['no_jo'],
+                $datum['pekerjaan'],
+                $datum['item_pekerjaan'],
+                $datum['nama_member'],
+                $datum['progres'],
+                $datum['tim_absen'],
+                $datum['keterangan']
+            ));
+        }
+
+        // Close the output stream
+        fclose($output);
+        exit;
     }
 }

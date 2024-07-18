@@ -107,4 +107,62 @@ class Jo_model extends CI_Model
 
         return $result;
     }
+
+    public function getReportData()
+    {
+        $sql = "
+        SELECT 
+            tr.id AS report_id,
+            tr.id_jo,
+            tr.id_member,
+            tr.tgl_pengerjaan,
+            tr.progres,
+            tr.tim_pekerja,
+            tr.item_pekerjaan,
+            tr.keterangan,
+            tr.tim_absen,
+            pjo.no_jo,
+            pjo.pekerjaan,
+            pjo.tujuan,
+            pjo.pelaksana,
+            pjo.rencana,
+            pjo.status,
+            pjo.no_file,
+            GROUP_CONCAT(mp.nama_member SEPARATOR ', ') AS nama_tim_pekerja,
+            GROUP_CONCAT(mp.nim_member SEPARATOR ', ') AS nim_tim_pekerja,
+            plt.nama
+        FROM 
+            tb_report tr
+        JOIN 
+            pengajuan_job_order pjo ON tr.id_jo = pjo.id
+        JOIN
+            tb_plant plt ON pjo.id_plant = plt.id_plant
+        LEFT JOIN 
+            member_plant mp ON FIND_IN_SET(mp.id, tr.tim_pekerja) > 0
+        GROUP BY 
+            tr.id,
+            tr.id_jo,
+            tr.id_member,
+            tr.tgl_pengerjaan,
+            tr.progres,
+            tr.tim_pekerja,
+            tr.item_pekerjaan,
+            tr.keterangan,
+            tr.tim_absen,
+            pjo.no_jo,
+            pjo.pekerjaan,
+            pjo.tujuan,
+            pjo.pelaksana,
+            pjo.rencana,
+            pjo.status,
+            pjo.no_file,
+            plt.nama
+        ORDER BY 
+            tr.id DESC
+    ";
+
+        // Execute query
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }

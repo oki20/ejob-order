@@ -31,6 +31,56 @@ class Leader_model extends CI_Model
         return $query->row_array();
     }
 
+    public function getInformasi()
+    {
+        // Fetch the member data based on session ID
+        $data = $this->db->get_where('member', ['id' => $this->session->userdata('id')])->row_array();
+        $plant_string = $data['plant']; // Get the plant string from the logged-in member data
+
+        // Convert the plant string to an array
+        $plant_array = explode(',', $plant_string);
+
+        // Latest report subquery
+        $latest_report_sql = "
+    SELECT 
+        tri.id_info,
+        tri.id_member,
+        tri.tgl_pengerjaan,
+        tri.progres,
+        m.bagian,
+        ROW_NUMBER() OVER (PARTITION BY tri.id_info, m.bagian ORDER BY tri.tgl_pengerjaan DESC, tri.id DESC) AS row_num
+    FROM 
+        tb_report_informasi tri
+    JOIN 
+        member m ON tri.id_member = m.id
+";
+
+        // Main query
+        $sql = "
+    SELECT
+        ti.id AS informasi_id,
+        ti.no_info,
+        ti.pekerjaan,
+        COALESCE(lr_mekanik.progres, 0) AS progres_mekanik,
+        COALESCE(lr_elektrik.progres, 0) AS progres_elektrik
+    FROM
+        tb_informasi ti
+    LEFT JOIN 
+        (SELECT id_info, progres FROM ($latest_report_sql) lr WHERE bagian = 'Mekanik' AND row_num = 1) lr_mekanik ON ti.id = lr_mekanik.id_info
+    LEFT JOIN 
+        (SELECT id_info, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON ti.id = lr_elektrik.id_info
+    WHERE
+        ti.id_plant IN (" . implode(',', array_map('intval', $plant_array)) . ")
+        AND ti.pelaksana LIKE '%" . $data['bagian'] . "%'
+    ORDER BY 
+        ti.id
+";
+
+        // Execute query
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function getJo()
     {
         //$bagian = $this->session->userdata('bagian');

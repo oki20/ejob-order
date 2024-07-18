@@ -56,7 +56,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label class="col-form-label">Nomor Informasi</label>
-                        <input type="text" name="no_info" id="no_info" class="form-control">
+                        <input type="text" name="no_info" id="no_info" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Pekerjaan</label>
@@ -108,7 +108,7 @@
                     <input type="hidden" name="id_edit" id="id_edit">
                     <div class="form-group">
                         <label class="col-form-label">Nomor Informasi</label>
-                        <input type="text" name="no_info_edit" id="no_info_edit" class="form-control">
+                        <input type="text" name="no_info_edit" id="no_info_edit" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Pekerjaan</label>
@@ -174,7 +174,7 @@
                             '<td class="table-cell">' + data[i].tgl_create + '</td>' +
                             '<td class="table-cell">' + (data[i].progres ? data[i].progres : 0) + '</td>' +
                             '<td class="table-cell">' +
-                            '<button class="btn btn-warning btn_edit" data-id="' + data[i].id + '" data-no_info="' + data[i].no_info + '" data-pekerjaan="' + data[i].pekerjaan + '" data-plant="' + data[i].plant + '" data-pelaksana="' + data[i].pelaksana + '">Edit</button>' +
+                            '<button class="btn btn-warning btn_edit" data-id="' + data[i].id + '" data-no_info="' + data[i].no_info + '" data-pekerjaan="' + data[i].pekerjaan + '" data-id_plant="' + data[i].id_plant + '" data-pelaksana="' + data[i].pelaksana + '">Edit</button>' +
                             ' ' +
                             '<button class="btn btn-danger btn_delete" data-id="' + data[i].id + '">Delete</button>' +
                             '</td>' +
@@ -251,7 +251,7 @@
             var id = $(this).data('id');
             var no_info = $(this).data('no_info');
             var pekerjaan = $(this).data('pekerjaan');
-            var plant = $(this).data('plant');
+            var plant = $(this).data('id_plant');
             var pelaksana = $(this).data('pelaksana');
 
             $('#id_edit').val(id);
@@ -374,6 +374,37 @@
                         });
                     }
                 });
+        });
+
+        function incrementId(lastId) {
+            if (!lastId) return generateNewId(1); // Return the first ID if there are no entries yet
+
+            const parts = lastId.split('/');
+            const number = parseInt(parts[3], 10) + 1;
+            return `${parts[0]}/${parts[1]}/${parts[2]}/${number.toString().padStart(3, '0')}`;
+        }
+
+        function generateNewId(sequence) {
+            const now = new Date();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Get month and pad with zero if needed
+            const year = now.getFullYear();
+            return `INS/${month}/${year}/${sequence.toString().padStart(3, '0')}`;
+        }
+
+        $('#Modal_Add').on('show.bs.modal', function() {
+            $.ajax({
+                url: '<?= site_url('assistant/getLastId') ?>', // Adjust the URL to your endpoint
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const newId = incrementId(data);
+                    $('#no_info').val(newId);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching the last ID:', error);
+                    $('#no_info').val(generateNewId(1)); // Fallback if there's an error
+                }
+            });
         });
     });
 </script>

@@ -100,4 +100,10 @@ class Assistant extends CI_Controller
         $result = $this->model->deleteInformation($id);
         echo json_encode(array('status' => $result ? 'success' : 'error'));
     }
+
+    public function getLastId()
+    {
+        $lastId = $this->model->getLastIdInfo();
+        echo json_encode($lastId);
+    }
 }
