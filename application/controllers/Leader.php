@@ -67,6 +67,19 @@ class Leader extends CI_Controller
         $this->load->view('templates/footer');
     }
 
+    public function reportinformasi()
+    {
+        $data['title'] = 'Laporan Informasi';
+        $data['user'] = $this->db->get_where('member', ['id' => $this->session->userdata('id')])->row_array();
+        $data['anggota'] = $this->model->getAnggota();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('leader/reportinformasi', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function informasi()
     {
         $data['title'] = 'Pekerjaan Informasi';
@@ -134,6 +147,12 @@ class Leader extends CI_Controller
         echo json_encode($dataAll);
     }
 
+    public function tampilreportinformasi()
+    {
+        $dataAll = $this->model->getReportInform();
+        echo json_encode($dataAll);
+    }
+
     public function tambahanggota()
     {
         $id = $this->session->userdata('id');
@@ -193,6 +212,54 @@ class Leader extends CI_Controller
         }
 
         $simpanData = $this->model->addReport($data);
+
+        if ($simpanData) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Please Try Again, Maybe Network Error !']);
+        }
+    }
+
+    public function createinform()
+    {
+        $bagian = $this->session->userdata('bagian');
+        $id_member = $this->session->userdata('id');
+
+        $tgl = $this->input->post('tgl_pengerjaan');
+        $tim_pekerja = $this->input->post('tim_pekerja');
+        $item_pekerjaan = $this->input->post('item_pekerjaan');
+        $keterangan = $this->input->post('keterangan');
+        $tim_absen = $this->input->post('tim_absen');
+        $id_edit = $this->input->post('id_edit');
+        $progres = $this->input->post('progres');
+
+        $data = array(
+            'id_info' => htmlspecialchars($id_edit, true),
+            'id_member' => htmlspecialchars($id_member, true),
+            'tgl_pengerjaan' => htmlspecialchars($tgl, true),
+            'progres' => htmlspecialchars($progres, true),
+            'tim_pekerja' => htmlspecialchars($tim_pekerja, true),
+            'item_pekerjaan' => htmlspecialchars($item_pekerjaan, true),
+            'keterangan' => htmlspecialchars($keterangan, true),
+            'tim_absen' => htmlspecialchars($tim_absen, true),
+        );
+
+        // Ambil progres sebelumnya
+        $previous_progress = $this->model->getPreviousProgress($id_edit); // Anda perlu menyesuaikan ini dengan nama metode Anda
+        $isTanggalTerimaAvailable = $this->model->isTanggalTerimaAvailable($id_edit);
+
+        if ($isTanggalTerimaAvailable) {
+            $this->model->updateTanggalTerima($id_edit, $tgl);
+        }
+
+        // Periksa apakah $previous_progress ada sebelum melakukan perbandingan
+        if (intval((int)$progres) < (int)$previous_progress) {
+            echo json_encode(['status' => 'error', 'message' => 'Progress cannot be lower than previous progress']);
+            // echo json_encode(['status' => 'error', 'message' => $previous_progress]);
+            return;
+        }
+
+        $simpanData = $this->model->addReportInform($data);
 
         if ($simpanData) {
             echo json_encode(['status' => 'success']);

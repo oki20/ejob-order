@@ -378,6 +378,18 @@ class Leader_model extends CI_Model
         return $query->result_array();
     }
 
+    public function getReportInform()
+    {
+        $id_member = $this->session->userdata('id');
+        $this->db->select('*');
+        $this->db->from('tb_informasi');
+        $this->db->join('tb_report_informasi', 'tb_informasi.id = tb_report_informasi.id_info');
+        $this->db->where('tb_report_informasi.id_member', $id_member);
+        $this->db->order_by('tb_report_informasi.id', 'DESC'); // Order by 'id' in descending order
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     public function getReportById($id)
     {
         $id_member = $this->session->userdata('id');
@@ -399,6 +411,11 @@ class Leader_model extends CI_Model
     public function addReport($data)
     {
         return $this->db->insert("tb_report", $data);
+    }
+
+    public function addReportInform($data)
+    {
+        return $this->db->insert("tb_report_informasi", $data);
     }
 
     public function updateReport($id, $data)
