@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/ejob-order/';
+$config['base_url'] = 'https://instalasi.my.id';
 
 /*
 |--------------------------------------------------------------------------
@@ -521,3 +521,15 @@ $config['rewrite_short_tags'] = false;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+//Email Configuration
+$config['protocol'] = 'smtp';
+$config['smtp_host'] = 'https://instalasi.my.id/'; // Atau server SMTP yang sesuai
+$config['smtp_port'] = 587; // Gunakan 465 untuk SSL, 587 untuk TLS
+$config['smtp_user'] = 'admin@instalasi.my.id'; // Email yang akan digunakan
+$config['smtp_pass'] = 'Instalasi2024'; // Password aplikasi jika menggunakan autentikasi 2FA
+$config['mailtype'] = 'html'; // Atau 'text' untuk teks biasa
+$config['charset'] = 'utf-8';
+$config['newline'] = "\r\n";
+$config['smtp_crypto'] = 'tls'; // Atau 'ssl' jika menggunakan port 465
