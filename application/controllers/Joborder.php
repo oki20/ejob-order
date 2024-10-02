@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+require 'vendor/autoload.php'; // Load PHPSpreadsheet
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
 
 class Joborder extends CI_Controller
 {
@@ -246,50 +254,107 @@ class Joborder extends CI_Controller
         $query = $this->db->query($sql, array($start_date, $end_date));
         $data = $query->result_array();
 
-        // File name
-        $filename = 'report_data_' . date('Y-m-d_H-i-s') . '.csv';
+        // Buat spreadsheet baru
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-        // Set headers to force download
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        // Set properti dokumen
+        $spreadsheet->getProperties()->setCreator("PT. Gajah Tunggal Tbk")
+            ->setTitle("Laporan Harian")
+            ->setDescription("Departemen Instalasi");
 
-        // Open PHP output stream
-        $output = fopen('php://output', 'w');
-
-        // Add header row
-        fputcsv($output, array(
-            'Tanggal Pengerjaan',
-            'Bagian',
-            'Plant',
-            'Identitas Report',
-            'Nomor Job Order',
-            'Deskripsi Pekerjaan',
-            'Aktivitas Pekerjaan',
-            'Pelaksana',
-            'Progres',
-            'Tim Under Performance',
-            'Keterangan'
-        ));
-
-        // Add data rows
-        foreach ($data as $datum) {
-            fputcsv($output, array(
-                $datum['tgl_pengerjaan'],
-                $datum['bagian'],
-                $datum['nama'],
-                'JO/EJO',
-                $datum['no_jo'],
-                $datum['pekerjaan'],
-                $datum['item_pekerjaan'],
-                $datum['nama_member'],
-                $datum['progres'],
-                $datum['tim_absen'],
-                $datum['keterangan']
-            ));
+        foreach (range('A', 'K') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setWidth(12);
         }
 
-        // Close the output stream
-        fclose($output);
+        // Merge cells untuk header
+        $sheet->mergeCells('A1:K1');
+        $sheet->mergeCells('A2:K2');
+        $sheet->mergeCells('A3:K3');
+        $sheet->mergeCells('A4:K4');
+
+        // Set header text
+        $sheet->setCellValue('A1', 'PT. Gajah Tunggal Tbk');
+        $sheet->setCellValue('A2', 'Departemen Instalasi');
+        $sheet->setCellValue('A3', 'Laporan Harian');
+        
+        // Style header text
+        $headerStyleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+        $sheet->getStyle('A1')->applyFromArray($headerStyleArray);
+        $sheet->getStyle('A2')->applyFromArray($headerStyleArray);
+        $sheet->getStyle('A3')->applyFromArray($headerStyleArray);
+    
+        // Set header tabel
+        $sheet->setCellValue('A5', 'Tanggal Pengerjaan');
+        $sheet->setCellValue('B5', 'Bagian');
+        $sheet->setCellValue('C5', 'Plant');
+        $sheet->setCellValue('D5', 'Identitas Report');
+        $sheet->setCellValue('E5', 'Nomor Job Order');
+        $sheet->setCellValue('F5', 'Deskripsi Pekerjaan');
+        $sheet->setCellValue('G5', 'Aktivitas Pekerjaan');
+        $sheet->setCellValue('H5', 'Pelaksana');
+        $sheet->setCellValue('I5', 'Progres (%)');
+        $sheet->setCellValue('J5', 'Tim Under Performance');
+        $sheet->setCellValue('K5', 'Keterangan');
+        
+        // Isi data
+        $row = 6;
+        foreach ($data as $item) {
+            $sheet->setCellValue('A' . $row, $item['tgl_pengerjaan']);
+            $sheet->setCellValue('B' . $row, $item['bagian']);
+            $sheet->setCellValue('C' . $row, $item['nama']);
+            $sheet->setCellValue('D' . $row, 'JO/EJO');
+            $sheet->setCellValue('E' . $row, $item['no_jo']);
+            $sheet->setCellValue('F' . $row, $item['pekerjaan']);
+            $sheet->setCellValue('G' . $row, $item['item_pekerjaan']);
+            $sheet->setCellValue('H' . $row, $item['nama_member']);
+            $sheet->setCellValue('I' . $row, $item['progres']);
+            $sheet->setCellValue('J' . $row, $item['tim_absen']);
+            $sheet->setCellValue('K' . $row, $item['keterangan']);
+            $row++;
+        }
+        
+        // Set column widths
+        foreach (range('A', 'K') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Add border to the cells
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $sheet->getStyle('A5:K' . ($row - 1))->applyFromArray($styleArray);
+
+
+        // Save the spreadsheet to a file
+        $filename = 'Laporan_Harian' . date('Ymd_His') . '.xlsx';
+
+        // Output ke browser
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
         exit;
     }
 }

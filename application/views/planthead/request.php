@@ -187,7 +187,7 @@
 
     function tampildata() {
         $.ajax({
-            type: 'ajax',
+            type: 'post',
             url: '<?php echo site_url('planthead/tampilrequest') ?>',
             async: false,
             dataType: 'json',

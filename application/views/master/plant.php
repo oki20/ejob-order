@@ -101,17 +101,22 @@
 <!-- Script -->
 <script type="text/javascript">
     $(document).ready(function() {
+        console.log('Document ready');
+        
         tampildata();
         $('#mydata').dataTable();
 
         // Function to show data
         function tampildata() {
+            console.log('Making AJAX call');
             $.ajax({
-                type: 'ajax',
+                type: 'post',
                 url: '<?php echo site_url('master/tampildata') ?>',
-                async: false,
+                async: true,
                 dataType: 'json',
+                contentType: "application/json",
                 success: function(data) {
+                    console.log('Data received:', data);
                     var html = '';
                     var i;
                     var no;
@@ -128,7 +133,10 @@
                             '</tr>';
                     }
                     $('#show_data').html(html);
-                }
+                },
+                error: function(xhr, status, error) {
+                console.error('AJAX Error:', xhr, status, error);
+            }
             });
         }
 
@@ -316,26 +324,7 @@
         // Function to handle delete confirmation
         $('#show_data').on('click', '.item_delete', function() {
             var id_plant = $(this).data('id_plant');
-            //deleteProduct(id_plant);
-
-            // SweetAlert confirmation before proceeding with deletion
-            /*Swal.fire({
-                title: 'Are you sure?',
-                text: 'You won\'t be able to revert this!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Panggil deleteProduct dengan benar
-                    deleteProduct(id_plant);
-                } else {
-                    console.log("Gagal");
-                }
-            });*/
-
+            
             swal({
                     title: "Are you sure?",
                     text: "You won\'t be able to revert this!",

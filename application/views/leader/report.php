@@ -218,7 +218,7 @@
         // Function to show data
         function tampildata() {
             $.ajax({
-                type: 'ajax',
+                type: 'post',
                 url: '<?php echo site_url('leader/tampilreport'); ?>',
                 async: false,
                 dataType: 'json',
@@ -236,7 +236,7 @@
                             '<td class="table-cell">' + data[i].no_jo + '</td>' +
                             '<td class="table-cell">' + data[i].no_file + '</td>' +
                             '<td class="table-cell">' + data[i].tgl_pengerjaan + '</td>' +
-                            '<td class="table-cell">' + data[i].progres + '</td>' +
+                            '<td class="table-cell"><div class="progress progress-sm"><div class="progress-bar bg-green" role="progressbar" aria-valuenow="' + data[i].progres + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + data[i].progres + '%"></div></div>' + data[i].progres + ' % </td>' +
                             '<td style="text-align:right;">' +
                             '<div class="button-container">' +
                             '<a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="edit(' + data[i].id + ')"><i class="fas fal fa-edit"></i> Edit</a>' +

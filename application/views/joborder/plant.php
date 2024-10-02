@@ -488,7 +488,7 @@
         var id_plant = <?= json_encode($plant['id_plant']); ?>;
         var url = '<?php echo site_url('joborder/tampiljoplant/'); ?>' + id_plant; // Tambahkan id_plant ke dalam URL
         $.ajax({
-            type: 'ajax',
+            type: 'post',
             url: url,
             async: false,
             dataType: 'json',

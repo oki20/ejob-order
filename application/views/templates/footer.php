@@ -59,6 +59,12 @@
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <!-- Page level custom scripts -->
             <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+            
+<script>
+    $(document).ready(function() {
+        console.log('jQuery loaded');
+    });
+</script>
 
             <script>
                 $(document).ready(function() {

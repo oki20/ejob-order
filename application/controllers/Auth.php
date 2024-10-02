@@ -27,6 +27,7 @@ class Auth extends CI_Controller
         } else {
             // validasinya success
             $this->_login();
+            //$this->send_email();
         }
     }
 
@@ -366,6 +367,32 @@ class Auth extends CI_Controller
 
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password has been changed! Please login.</div>');
             redirect('auth');
+        }
+    }
+    
+    public function send_email() {
+        // Load library email
+        $this->load->library('email');
+
+        // Email sender dan receiver
+        $from = 'admin@instalasi.my.id'; // Ganti dengan email Anda
+        $to = 'sardiko20@gmail.com'; // Tujuan pengiriman email
+        $subject = 'Aktivasi Akun';
+        $message = 'Silahkan klik link dibawah ini untuk melakukan aktifasi akun';
+
+        // Set pengaturan email
+        $this->email->from($from, 'Admin');
+        $this->email->to($to);
+        $this->email->subject($subject);
+        $this->email->message($message);
+
+        // Mengirim email dan menangani error jika gagal
+        if ($this->email->send()) {
+            echo 'Pesan email sudah terkirim.';
+        } else {
+            // Menampilkan pesan error jika pengiriman gagal
+            echo 'Pengiriman email gagal.';
+            echo $this->email->print_debugger();
         }
     }
 }

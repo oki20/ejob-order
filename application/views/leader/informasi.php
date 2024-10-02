@@ -130,7 +130,7 @@
         // Function to show data
         function tampildata() {
             $.ajax({
-                type: 'ajax',
+                type: 'GET',
                 url: '<?php echo site_url('leader/tampilinformasi'); ?>',
                 async: false,
                 dataType: 'json',

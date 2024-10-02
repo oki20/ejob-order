@@ -62,6 +62,7 @@ class Master extends CI_Controller
 
     public function tampildata()
     {
+        header('Content-Type: application/json');
         $dataAll = $this->model->getPlant();
         echo json_encode($dataAll);
     }

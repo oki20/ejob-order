@@ -12,7 +12,6 @@
 
             <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newRoleModal"><span class="fas fa-user-plus"></span> Add New Role</a>
             <!-- DataTales Example -->
-            <div class="container-fluid">
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -40,7 +39,6 @@
                                     <?php endforeach; ?>-->
                                 </tbody>
                             </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -121,7 +119,7 @@
         // Function to show data
         function tampildata() {
             $.ajax({
-                type: 'ajax',
+                type: 'post',
                 url: '<?php echo site_url('admin/tampilrole') ?>',
                 async: false,
                 dataType: 'json',

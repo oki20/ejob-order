@@ -198,7 +198,7 @@
     // Function to show data
     function tampildata() {
         $.ajax({
-            type: 'post',
+            type: 'ajax',
             url: '<?php echo site_url('master/tampilmember') ?>',
             async: false,
             dataType: 'json',

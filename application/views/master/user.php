@@ -22,6 +22,7 @@
                             <th>Plant</th>
                             <th>Departemen</th>
                             <th>Role Id</th>
+                            <th>Status Akun</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -45,7 +46,7 @@
         // Function to show data
         function tampildata() {
             $.ajax({
-                type: 'ajax',
+                type: 'post',
                 url: '<?php echo site_url('master/tampiluser') ?>',
                 async: false,
                 dataType: 'json',
@@ -77,6 +78,13 @@
                             // If role_id is neither 1 nor 2, set roleName to the actual value of role_id
                             roleName = data[i].role_id;
                         }
+                        
+                        var status = '';
+                        if (data[i].is_active == 0){
+                            status = 'Tidak Aktif';
+                        } else if (data[i].is_active == 1) {
+                            status = 'Aktif';
+                        }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
                             '<td>' + data[i].name + '</td>' +
@@ -85,8 +93,10 @@
                             '<td>' + data[i].nama + '</td>' +
                             '<td>' + data[i].departemen + '</td>' +
                             '<td>' + roleName + '</td>' +
+                            '<td>' + status + '</td>' +
                             '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-success btn-sm item_edit" data-id="' + data[i].id + '"><i class="fas fa-edit"></i></a>' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i></a>' +
                             '</td>' +
                             '</tr>';
                     }
