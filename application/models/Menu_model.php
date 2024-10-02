@@ -173,6 +173,31 @@ class Menu_model extends CI_Model
             ->result_array();
     }
 
+    //Model untuk menampilkan data dept head
+    public function getDh()
+    {
+        //return $this->db->get_where('user')->result_array();
+        return $this->db
+            ->select('*')
+            ->from('user')
+            ->join('tb_plant', 'user.id_plant = tb_plant.id_plant')
+            ->where('user.role_id', 3)
+            ->get()
+            ->result_array();
+    }
+
+    //Model untuk menampilkan data dept head
+    public function getPh()
+    {
+        //return $this->db->get_where('user')->result_array();
+        return $this->db
+            ->select('*')
+            ->from('user')
+            ->join('tb_plant', 'user.id_plant = tb_plant.id_plant')
+            ->where('user.role_id', 4)
+            ->get()
+            ->result_array();
+    }
 
     //Model untuk menampilkan master data user
     public function getUser()

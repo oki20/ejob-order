@@ -139,6 +139,35 @@ class User extends CI_Controller
         $this->load->view('user/request', $data);
         $this->load->view('templates/footer');
     }
+
+    public function depthead()
+    {
+        $data['title'] = 'Data Dept. Head';
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+        //get Data Plant
+        $data['plants'] = $this->model->getPlant();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/depthead', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function planthead()
+    {
+        $data['title'] = 'Data Plant Head';
+        $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+        //get Data Plant
+        $data['plants'] = $this->model->getPlant();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('user/planthead', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function reject()
     {
         $data['title'] = 'Reject Job Order';
@@ -174,6 +203,18 @@ class User extends CI_Controller
         echo json_encode($dataAll);
     }
 
+    public function tampildatadh()
+    {
+        $dataAll = $this->model->getDh();
+        echo json_encode($dataAll);
+    }
+
+    public function tampildataph()
+    {
+        $dataAll = $this->model->getPh();
+        echo json_encode($dataAll);
+    }
+
     public function getdepthead()
     {
         $plantId = $this->input->post('id_plant');
@@ -186,6 +227,13 @@ class User extends CI_Controller
         $plantId = $this->input->post('id_plant');
         $dept_head = $this->model->getPlantHeadid($plantId);
         echo json_encode($dept_head);
+    }
+
+    public function simpanDh()
+    {
+        $nama = $this->input->post('name');
+        $nim = $this->input->post('nim');
+        $nama = $this->input->post('name');
     }
 
     public function simpandata()

@@ -10,7 +10,7 @@
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider my-0">
 
 
             <!-- QUERY MENU -->
@@ -25,23 +25,20 @@
             $menu = $this->db->query($queryMenu)->result_array();
             ?>
 
-
             <!-- LOOPING MENU -->
-            <?php foreach ($menu as $m) : ?>
+            <!--<?php foreach ($menu as $m) : ?>
                 <div class="sidebar-heading">
                     <?= $m['menu']; ?>
                 </div>
-
-                <!-- SIAPKAN SUB-MENU SESUAI MENU -->
                 <?php
-                $menuId = $m['id'];
-                $querySubMenu = "SELECT *
+                    $menuId = $m['id'];
+                    $querySubMenu = "SELECT *
                                FROM `user_sub_menu` JOIN `user_menu` 
                                  ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
                               WHERE `user_sub_menu`.`menu_id` = $menuId
                                 AND `user_sub_menu`.`is_active` = 1
                         ";
-                $subMenu = $this->db->query($querySubMenu)->result_array();
+                    $subMenu = $this->db->query($querySubMenu)->result_array();
                 ?>
 
                 <?php foreach ($subMenu as $sm) : ?>
@@ -66,14 +63,66 @@
                         <span>Logout</span></a>
                 </li>
 
-
-                <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
 
-                <!-- Sidebar Toggler (Sidebar) -->
                 <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                </div>
+                </div>-->
+
+            <!-- LOOPING MENU -->
+            <?php foreach ($menu as $m) : ?>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMenu<?= $m['id']; ?>"
+                        aria-expanded="true" aria-controls="collapseMenu<?= $m['id']; ?>">
+                        <i class="fas fa-city"></i>
+                        <span><?= $m['menu']; ?></span>
+                    </a>
+
+                    <!-- SIAPKAN SUB-MENU SESUAI MENU -->
+                    <?php
+                    $menuId = $m['id'];
+                    $querySubMenu = "SELECT *
+                         FROM `user_sub_menu` JOIN `user_menu`
+                           ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
+                        WHERE `user_sub_menu`.`menu_id` = $menuId
+                          AND `user_sub_menu`.`is_active` = 1";
+                    $subMenu = $this->db->query($querySubMenu)->result_array();
+                    ?>
+
+                    <div id="collapseMenu<?= $m['id']; ?>" class="collapse" aria-labelledby="headingMenu<?= $m['id']; ?>"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <?php foreach ($subMenu as $sm) : ?>
+                                <?php if ($title == $sm['title']) : ?>
+                                    <a class="collapse-item active" href="<?= base_url($sm['url']); ?>">
+                                    <?php else : ?>
+                                        <a class="collapse-item" href="<?= base_url($sm['url']); ?>">
+                                        <?php endif; ?>
+                                        <i class="<?= $sm['icon']; ?>"></i>
+                                        <?= $sm['title']; ?>
+                                        </a>
+                                    <?php endforeach; ?>
+                        </div>
+                    </div>
+                </li>
+
+                <hr class="sidebar-divider my-0">
+            <?php endforeach; ?>
+
+            <!-- Nav Item - Logout -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('auth/logout'); ?>">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Logout</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
         </ul>
         <!-- End  of Sidebar -->
