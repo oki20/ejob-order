@@ -233,7 +233,25 @@ class User extends CI_Controller
     {
         $nama = $this->input->post('name');
         $nim = $this->input->post('nim');
-        $nama = $this->input->post('name');
+        $departemen = $this->input->post('departemen');
+        $id_plant = $this->input->post('id_plant');
+        $whatsapp = $this->input->post('whatsapp');
+        $email = $this->input->post('email');
+
+        $data = array(
+            'name' => $nama,
+            'email' => $email,
+            'whatsapp' => $whatsapp,
+            'image' => 'default.jpg',
+            'password' => '$2y$10$RhtelfplzoMn5Z89erEU8.hLL0TB4VhaacEQCNolwOrh49CDoUfL.',
+            'role_id' => '3',
+            'is_active' => '1',
+            'nim' => $nim,
+            'departemen' => $departemen,
+            'id_plant' => $id_plant
+        );
+
+        $simpanData = $this->model->saveDh($data);
     }
 
     public function simpandata()
