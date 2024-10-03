@@ -325,6 +325,7 @@ class User extends CI_Controller
         $no_jo = $this->input->post('no_jo');
         $id_pemesan = $this->session->userdata('id');
         $lampiran = isset($_FILES['lampiran']['name']) ? $_FILES['lampiran']['name'] : null;
+        $pekerjaan = $this->input->post('pekerjaan');
 
         if (!empty($lampiran)) {
             // Specify the destination directory with spaces in the path
@@ -340,6 +341,15 @@ class User extends CI_Controller
             // Jika tidak ada PDF yang diunggah, atur path PDF ke null
             $lampiran = "";
         }
+
+        $cek_jo = $this->model->chekDuplikatJo($no_jo);
+        if ($cek_jo) {
+            echo json_encode(array('status' => 'error', 'message' => 'Nomor Job Order Sudah Terpakai.'));
+            return;
+        }
+
+        $dept_head = $this->input->post('dept_head');
+        $dept_whatsaap = $this->model->getDataWa($dept_head);
 
         $data = array(
             'no_jo' => $no_jo,
@@ -364,7 +374,24 @@ class User extends CI_Controller
 
         // Cek apakah data berhasil tersimpan
         if ($simpanData) {
-            echo json_encode(array('status' => 'success'));
+            // Generate WhatsApp URL and send message
+            $url = base_url() . 'form/formjo/' . $simpanData;
+            $shortLink = json_decode(shortenLink($url));
+            $requestBody = [
+                "target"    => '0' . substr($dept_whatsaap, 2),
+                "message"   => "*Informasi Pengajuan Job Order!* \n\n, \nBerikut Kami informasikan terkait pengajuan job order dengan Deskripsi sebagai berikut.\n\n*" . $pekerjaan . "* \n\nDetail informasi beserta persetujuan bisa klik link di bawah ini: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*",
+                "typing"    => true
+            ];
+            $send = postWhatsappApi('send', $requestBody);
+            $send = json_decode($send, true);
+
+            if ($send['status']) {
+                echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Dept. Head'));
+                return true;
+            } else {
+                echo $send['reason'];
+                die;
+            }
         } else {
             echo json_encode(array('status' => 'error'));
         }

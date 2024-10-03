@@ -47,7 +47,7 @@ function check_access($role_id, $menu_id)
 
 function postWhatsappApi($url, $requestBody)
 {
-    $token = "YBLVkhi82_9QXgMpHfF8";
+    $token = "QUifu8S_AZdvywj5HWvd";
 
     $apiEndpoint = "https://api.fonnte.com/" . $url;
     $httpHeader = array(

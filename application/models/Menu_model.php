@@ -74,6 +74,13 @@ class Menu_model extends CI_Model
             ->row_array();
     }
 
+    public function get_jo($id_jo)
+    {
+        $this->db->where('id', $id_jo);
+        $query = $this->db->get('pengajuan_job_order'); // Ganti 'job_order' dengan nama tabel yang sesuai
+        return $query->row_array(); // Mengembalikan hasil sebagai array
+    }
+
     public function getJoPerMonth()
     {
         // Mendapatkan tanggal 20 bulan ini
@@ -286,7 +293,8 @@ class Menu_model extends CI_Model
 
     public function save_data($data)
     {
-        return $this->db->insert("pengajuan_job_order", $data);
+        $this->db->insert("pengajuan_job_order", $data);
+        return $this->db->insert_id();
     }
 
     public function saveDh($data)
@@ -313,6 +321,17 @@ class Menu_model extends CI_Model
             return true; // Email exists
         } else {
             return false; // Email does not exist
+        }
+    }
+
+    public function chekDuplikatJo($no_jo)
+    {
+        $this->db->where('no_jo', $no_jo);
+        $query = $this->db->get('pengajuan_job_order'); // replace '
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -522,5 +541,19 @@ class Menu_model extends CI_Model
     {
         $this->db->where('id', $id);
         return $this->db->update('member', $data);
+    }
+
+    public function getDataWa($dept_head)
+    {
+        $this->db->select('whatsapp'); // Assuming 'whatsapp' is the column name for WhatsApp number
+        $this->db->from('user'); // Assuming 'user' is the table name
+        $this->db->where('id', $dept_head); // Match with dept_head (ID of the department head)
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->whatsapp; // Return WhatsApp number
+        } else {
+            return false; // Return false if not found
+        }
     }
 }

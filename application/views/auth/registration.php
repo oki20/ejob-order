@@ -53,11 +53,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <select class="form-control" id="role_id" name="role_id" aria-label="Default select example" style="font-size: 13px;">
-                                        <option selected>Select User</option>
-                                        <option value="2">User</option>
-                                        <option value="3">Dept. Head</option>
-                                        <option value="4">Plant Head</option>
-                                        <option value="8">Member Installation</option>
+                                        <option selected value="2">User</option>
                                     </select>
                                     <?= form_error('role_id', '<small class="text-danger pl-3">', '</small>'); ?>
                                 </div>
@@ -110,88 +106,85 @@
     const input = document.getElementById('whatsapp');
     addFormatter(input, regexPrefix(/62/, '62'));
 
-    function postWhatsappApi($url, $requestBody)
-{
-    $token = "YBLVkhi82_9QXgMpHfF8";
+    function postWhatsappApi($url, $requestBody) {
+        $token = "YBLVkhi82_9QXgMpHfF8";
 
-    $apiEndpoint = "https://api.fonnte.com/" . $url;
-    $httpHeader = array(
-        'Authorization: ' . $token
-    );
+        $apiEndpoint = "https://api.fonnte.com/".$url;
+        $httpHeader = array(
+            'Authorization: '.$token
+        );
 
-    $curl = curl_init();
+        $curl = curl_init();
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $apiEndpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => $requestBody,
-        CURLOPT_HTTPHEADER => $httpHeader,
-    ));
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $apiEndpoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $requestBody,
+            CURLOPT_HTTPHEADER => $httpHeader,
+        ));
 
-    $response = curl_exec($curl);
+        $response = curl_exec($curl);
 
-    if ($response === false) {
-        log_message('error', curl_error($curl));
+        if ($response === false) {
+            log_message('error', curl_error($curl));
 
-        return;
+            return;
+        }
+
+        log_message('info', $response);
+
+        curl_close($curl);
+
+        return $response;
     }
 
-    log_message('info', $response);
+    function shortenLink($url) {
+        $apiEndpoint = "https://shrtlnk.dev/api/v2/link";
+        $httpHeader = array(
+            'api-key: kBRzdUNhOGfYNGvEtglrD4JupxjuAp3ilDhSKY17mNMKQ',
+            'Accept: application/json',
+            'Content-Type: application/json'
+        );
 
-    curl_close($curl);
+        $curl = curl_init();
 
-    return $response;
-}
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $apiEndpoint,
+            CURLOPT_RETURNTRANSFER => true,
+            // CURLOPT_SSL_VERIFYHOST => false,
+            // CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                'url' => $url
+            )),
+            CURLOPT_HTTPHEADER => $httpHeader,
+        ));
 
-function shortenLink($url)
-{
-    $apiEndpoint = "https://shrtlnk.dev/api/v2/link";
-    $httpHeader = array(
-        'api-key: kBRzdUNhOGfYNGvEtglrD4JupxjuAp3ilDhSKY17mNMKQ',
-        'Accept: application/json',
-        'Content-Type: application/json'
-    );
+        $response = curl_exec($curl);
 
-    $curl = curl_init();
+        if ($response === false) {
+            log_message('error', curl_error($curl));
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $apiEndpoint,
-        CURLOPT_RETURNTRANSFER => true,
-        // CURLOPT_SSL_VERIFYHOST => false,
-        // CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => json_encode(array(
-            'url' => $url
-        )),
-        CURLOPT_HTTPHEADER => $httpHeader,
-    ));
+            return;
+        }
 
-    $response = curl_exec($curl);
+        log_message('info', $response);
 
-    if ($response === false) {
-        log_message('error', curl_error($curl));
+        curl_close($curl);
 
-        return;
+        return $response;
     }
-
-    log_message('info', $response);
-
-    curl_close($curl);
-
-    return $response;
-}
-
 </script>

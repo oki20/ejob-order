@@ -36,12 +36,13 @@
     </div>
 
 </div>
+</div>
 <!-- /.container-fluid -->
 
 <!-- MODAL ADD -->
 <form>
     <div class="modal fade" id="Modal_Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalRequestLabel">Form Request Job Order</h5>
@@ -327,7 +328,7 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil!',
-                                        text: 'Simpan Data Berhasil!'
+                                        text: jsonResponse.message
                                     });
 
                                 } else {
@@ -355,14 +356,14 @@
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Simpan data Gagal!',
-                                        text: 'silahkan coba lagi!'
+                                        text: jsonResponse.message
                                     });
 
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Update data Gagal!',
-                                        text: 'silahkan coba lagi!'
+                                        text: jsonResponse.message
                                     });
                                 }
                             }
