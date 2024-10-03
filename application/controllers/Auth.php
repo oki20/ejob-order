@@ -176,7 +176,8 @@ class Auth extends CI_Controller
             //script untuk simpan token ke table user_token
             $this->db->insert('user_token', $user_token);
 
-            $this->_sendWhatsapp($token, $name, 'verify');
+            //$this->_sendWhatsapp($token, $name, 'verify');
+            $this->send_email($token, $name, 'verify');
 
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created. Please activate your account</div>');
             redirect('auth');
@@ -194,7 +195,7 @@ class Auth extends CI_Controller
         }
     }
 
-    private function _sendWhatsapp($token, $name, $type)
+    /*private function _sendWhatsapp($token, $name, $type)
     {
         if ($type == 'verify') {
             $url = base_url() . 'auth/verify?whatsapp=' . $this->input->post('whatsapp') . '&token=' . urlencode($token);
@@ -222,7 +223,7 @@ class Auth extends CI_Controller
             echo $send['reason'];
             die;
         }
-    }
+    }*/
 
     public function verify()
     {
@@ -370,7 +371,7 @@ class Auth extends CI_Controller
         }
     }
     
-    public function send_email() {
+    public function send_email($token, $name, $type) {
         // Load library email
         $this->load->library('email');
 
@@ -378,7 +379,18 @@ class Auth extends CI_Controller
         $from = 'admin@instalasi.my.id'; // Ganti dengan email Anda
         $to = 'sardiko20@gmail.com'; // Tujuan pengiriman email
         $subject = 'Aktivasi Akun';
-        $message = 'Silahkan klik link dibawah ini untuk melakukan aktifasi akun';
+            if ($type == 'verify') {
+                $url = base_url() . 'auth/verify?whatsapp=' . $this->input->post('whatsapp') . '&token=' . urlencode($token);
+                $shortLink = json_decode(shortenLink($url));
+                $message  = "*Activate Your E-Job Order Account!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk melakukan aktifasi akun: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*";
+
+            } else if ($type == 'forgot') {
+                $url = base_url() . 'auth/resetpassword?whatsapp=' . $this->input->post('whatsapp') . '&token=' . urlencode($token);
+                $shortLink = json_decode(shortenLink($url));
+                $message  = "*E-Job Order Password Reset!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk mengatur ulang kata sandi baru: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*";
+
+            }
+        
 
         // Set pengaturan email
         $this->email->from($from, 'Admin');
