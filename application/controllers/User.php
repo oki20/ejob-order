@@ -238,6 +238,20 @@ class User extends CI_Controller
         $whatsapp = $this->input->post('whatsapp');
         $email = $this->input->post('email');
 
+        // Check if the NIM or Email is already registered
+        $nimExists = $this->model->checkNimExists($nim);
+        $emailExists = $this->model->checkEmailExists($email);
+
+        if ($nimExists) {
+            echo json_encode(array('status' => 'error', 'message' => 'NIP Sudah Terdaftar.'));
+            return;
+        }
+
+        if ($emailExists) {
+            echo json_encode(array('status' => 'error', 'message' => 'Email Sudah Terdaftar.'));
+            return;
+        }
+
         $data = array(
             'name' => $nama,
             'email' => $email,
@@ -246,12 +260,64 @@ class User extends CI_Controller
             'password' => '$2y$10$RhtelfplzoMn5Z89erEU8.hLL0TB4VhaacEQCNolwOrh49CDoUfL.',
             'role_id' => '3',
             'is_active' => '1',
+            'date_created' => time(),
             'nim' => $nim,
             'departemen' => $departemen,
             'id_plant' => $id_plant
         );
 
         $simpanData = $this->model->saveDh($data);
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
+    }
+
+    public function simpanPh()
+    {
+        $nama = $this->input->post('name');
+        $nim = $this->input->post('nim');
+        $id_plant = $this->input->post('id_plant');
+        $whatsapp = $this->input->post('whatsapp');
+        $email = $this->input->post('email');
+
+        // Check if the NIM or Email is already registered
+        $nimExists = $this->model->checkNimExists($nim);
+        $emailExists = $this->model->checkEmailExists($email);
+
+        if ($nimExists) {
+            echo json_encode(array('status' => 'error', 'message' => 'NIP Sudah Terdaftar.'));
+            return;
+        }
+
+        if ($emailExists) {
+            echo json_encode(array('status' => 'error', 'message' => 'Email Sudah Terdaftar.'));
+            return;
+        }
+
+        $data = array(
+            'name' => $nama,
+            'email' => $email,
+            'whatsapp' => $whatsapp,
+            'image' => 'default.jpg',
+            'password' => '$2y$10$RhtelfplzoMn5Z89erEU8.hLL0TB4VhaacEQCNolwOrh49CDoUfL.',
+            'role_id' => '4',
+            'is_active' => '1',
+            'date_created' => time(),
+            'nim' => $nim,
+            'departemen' => '',
+            'id_plant' => $id_plant
+        );
+
+        $simpanData = $this->model->saveDh($data);
+        // Cek apakah data berhasil tersimpan
+        if ($simpanData) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error'));
+        }
     }
 
     public function simpandata()

@@ -289,6 +289,33 @@ class Menu_model extends CI_Model
         return $this->db->insert("pengajuan_job_order", $data);
     }
 
+    public function saveDh($data)
+    {
+        return $this->db->insert("user", $data);
+    }
+
+    public function checkNimExists($nim)
+    {
+        $this->db->where('nim', $nim);
+        $query = $this->db->get('user'); // replace 'your_table_name' with your actual table name
+        if ($query->num_rows() > 0) {
+            return true; // NIM exists
+        } else {
+            return false; // NIM does not exist
+        }
+    }
+
+    public function checkEmailExists($email)
+    {
+        $this->db->where('email', $email);
+        $query = $this->db->get('user'); // replace 'your_table_name' with your actual table name
+        if ($query->num_rows() > 0) {
+            return true; // Email exists
+        } else {
+            return false; // Email does not exist
+        }
+    }
+
     public function update_data($id, $data)
     {
         $this->db->where('id', $id);

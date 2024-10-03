@@ -139,9 +139,9 @@
         }
 
         $('#create_job_order').on('click', function() {
-            clearField();
+            //clearField();
             method = 'add';
-            $('#modalRequestLabel').html('Form Request Job Order')
+            $('#modalRequestLabel').html('Form Data Dept. Head')
         })
 
         // Save product
@@ -262,14 +262,14 @@
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Simpan data Gagal!',
-                                        text: 'silahkan coba lagi!'
+                                        text: jsonResponse.message
                                     });
 
                                 } else {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Update data Gagal!',
-                                        text: 'silahkan coba lagi!'
+                                        text: jsonResponse.message
                                     });
                                 }
                             }
