@@ -9,6 +9,8 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
+use function PHPUnit\Framework\stringContains;
+use function PHPUnit\Framework\stringEndsWith;
 
 class Joborder extends CI_Controller
 {
@@ -79,6 +81,7 @@ class Joborder extends CI_Controller
             'tgl_terima' => $this->input->post('tgl_terima'),
             'cc_no' => $this->input->post('cc_no'),
             'pekerjaan' => $this->input->post('pekerjaan'),
+            'pelaksana' => $this->input->post('pelaksana'),
             'tujuan' => $this->input->post('tujuan'),
             'rencana' => $this->input->post('rencana'),
             'cep_no' => $this->input->post('cep_no'),
@@ -352,7 +355,7 @@ class Joborder extends CI_Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-
+-
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
         exit;
