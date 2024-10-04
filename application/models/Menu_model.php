@@ -77,6 +77,15 @@ class Menu_model extends CI_Model
     public function get_jo($id_jo)
     {
         $this->db->where('id', $id_jo);
+        $this->db->where('status', 1);
+        $query = $this->db->get('pengajuan_job_order'); // Ganti 'job_order' dengan nama tabel yang sesuai
+        return $query->row_array(); // Mengembalikan hasil sebagai array
+    }
+
+    public function get_jop($id_jo)
+    {
+        $this->db->where('id', $id_jo);
+        $this->db->where('status', 2);
         $query = $this->db->get('pengajuan_job_order'); // Ganti 'job_order' dengan nama tabel yang sesuai
         return $query->row_array(); // Mengembalikan hasil sebagai array
     }
@@ -341,6 +350,12 @@ class Menu_model extends CI_Model
         return $this->db->update('pengajuan_job_order', $data);
     }
 
+    public function receivedata($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('pengajuan_job_order', $data);
+    }
+
     public function deleteRequest($id)
     {
         $this->db->select('lampiran');
@@ -554,6 +569,58 @@ class Menu_model extends CI_Model
             return $query->row()->whatsapp; // Return WhatsApp number
         } else {
             return false; // Return false if not found
+        }
+    }
+
+    public function getIdPh($id)
+    {
+        $this->db->select('id_planthead');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pengajuan_job_order');
+        return $query->row('id_planthead'); // pastikan kolom yang diambil sesuai
+    }
+
+    public function getIdDh($nip)
+    {
+        $this->db->select('id');
+        $this->db->from('user');
+        $this->db->where('nim', $nip);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->id; // Return id
+        } else {
+            return false; // Return false if not found
+        }
+    }
+
+    public function validasiId($id_dh)
+    {
+        $this->db->select('*');
+        $this->db->from('pengajuan_job_order');
+        $this->db->where('id_depthead', $id_dh);
+        $query = $this->db->get();
+
+        // Cek apakah ada hasil yang cocok
+        if ($query->num_rows() > 0) {
+            return $query->row(); // Mengembalikan data user
+        } else {
+            return false; // Jika tidak ada user yang cocok
+        }
+    }
+
+    public function validasiIdP($id_dh)
+    {
+        $this->db->select('*');
+        $this->db->from('pengajuan_job_order');
+        $this->db->where('id_planthead', $id_dh);
+        $query = $this->db->get();
+
+        // Cek apakah ada hasil yang cocok
+        if ($query->num_rows() > 0) {
+            return $query->row(); // Mengembalikan data user
+        } else {
+            return false; // Jika tidak ada user yang cocok
         }
     }
 }

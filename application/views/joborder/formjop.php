@@ -104,12 +104,6 @@
                             <input type="hidden" name="id_jo" id="id_jo" value="<?= $jo['id']; ?>">
                             <p>Silahkan klik tombol konfirmasi, Anda bisa memberikan alasan di form saran kenapa Job Order ini di tolak.!</p>
                             <div class="form-group row">
-                                <label class="col-md-2 col-form-label">Nomor Induk Pegawai</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" placeholder="Masukkan NIP Anda" id="nip" name="nip" required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-md-2 col-form-label">Kotak Saran</label>
                                 <div class="col-md-10">
                                     <textarea class="form-control" placeholder="Masukkan Saran" id="saran" name="saran" style="height: 100px"></textarea>
@@ -155,7 +149,7 @@
                     formData.append('nip', nip);
 
                     // URL untuk menerima data
-                    var url = "<?php echo site_url() ?>form/receivedata/" + id_jo;
+                    var url = "<?php echo site_url() ?>/form/receivedatap/" + id_jo;
 
                     // Mengirim data via AJAX
                     $.ajax({
@@ -205,14 +199,12 @@
                 $('#btn_reject').on('click', function() {
                     var id_jo = $('#id_jo').val();
                     var saran = $('#saran').val();
-                    var nip = $('#nip').val();
 
                     var formData = new FormData();
                     formData.append('id_jo', id_jo);
                     formData.append('saran', saran);
-                    formData.append('nip', nip);
 
-                    var url = "<?php echo site_url() ?>form/rejectdata/" + id_jo;
+                    var url = "<?php echo site_url() ?>/form/rejectdatap/" + id_jo;
 
                     $.ajax({
                         type: "POST",
