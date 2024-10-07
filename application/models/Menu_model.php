@@ -609,11 +609,11 @@ class Menu_model extends CI_Model
         }
     }
 
-    public function validasiIdP($id_dh)
+    public function validasiIdP($id_ph)
     {
         $this->db->select('*');
         $this->db->from('pengajuan_job_order');
-        $this->db->where('id_planthead', $id_dh);
+        $this->db->where('id_planthead', $id_ph);
         $query = $this->db->get();
 
         // Cek apakah ada hasil yang cocok

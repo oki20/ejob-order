@@ -54,7 +54,7 @@ class Form extends CI_Controller
         }
 
         $this->load->view('templates/header', $data);
-        $this->load->view('joborder/formjo', $data);
+        $this->load->view('joborder/formjop', $data);
         $this->load->view('templates/footer');
     }
 
@@ -135,7 +135,7 @@ class Form extends CI_Controller
             //update data
             $updateData = $this->model->receivedata($id, $data);
             if ($updateData) {
-                echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Dept. Head'));
+                echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan Job Order ke Plant Head Instalasi'));
             } else {
                 echo json_encode(array('status' => 'error'));
             }
@@ -159,6 +159,35 @@ class Form extends CI_Controller
         if ($user) {
             $data = array(
                 'status' => 6,
+                'saran_dept' => $saran
+            );
+
+            //update data
+            $updateData = $this->model->receivedata($id, $data);
+            if ($updateData) {
+                echo json_encode(array('status' => 'success', 'message' => 'Job Order ini di tolak.'));
+            } else {
+                echo json_encode(array('status' => 'error'));
+            }
+        } else {
+            // Jika NIP tidak valid
+            echo json_encode(array('status' => 'error', 'message' => 'NIP tidak valid'));
+        }
+    }
+
+    public function rejectdatap($id)
+    {
+        //ambil nip dari input
+        $nip = $this->input->post('nip');
+        $saran = $this->input->post('saran');
+        //mendapatkan id depthead dari nip di tabel user
+        $id_ph = $this->model->getIdDh($nip);
+        //validasi id_dh dengan id_dh di pengajuan job order
+        $user = $this->model->validasiIdP($id_ph);
+
+        if ($user) {
+            $data = array(
+                'status' => 7,
                 'saran_dept' => $saran
             );
 
