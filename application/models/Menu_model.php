@@ -84,11 +84,47 @@ class Menu_model extends CI_Model
 
     public function get_jop($id_jo)
     {
-        $this->db->where('id', $id_jo);
-        $this->db->where('status', 2);
-        $query = $this->db->get('pengajuan_job_order'); // Ganti 'job_order' dengan nama tabel yang sesuai
-        return $query->row_array(); // Mengembalikan hasil sebagai array
+        // Pilih kolom yang dibutuhkan dari kedua tabel
+        $this->db->select('pengajuan_job_order.*, user.name as depthead_name');
+
+        // Lakukan join antara pengajuan_job_order dan user
+        $this->db->from('pengajuan_job_order');
+        $this->db->join('user', 'pengajuan_job_order.id_depthead = user.id', 'left');
+
+        // Tentukan kondisi berdasarkan id_jo dan status
+        $this->db->where('pengajuan_job_order.id', $id_jo);
+        $this->db->where('pengajuan_job_order.status', 2);
+
+        // Eksekusi query dan kembalikan hasilnya
+        $query = $this->db->get();
+        return $query->row_array(); // Mengembalikan hasil sebagai objek
     }
+
+    public function get_jof($id_jo)
+    {
+        // Pilih kolom dari pengajuan_job_order dan dua nama dari user untuk depthead dan planthead
+        $this->db->select('pengajuan_job_order.*, 
+    user_depthead.name as depthead_name, 
+    user_planthead.name as planthead_name');
+
+        // Dari tabel pengajuan_job_order
+        $this->db->from('pengajuan_job_order');
+
+        // Join pertama: untuk mengambil nama depthead
+        $this->db->join('user as user_depthead', 'pengajuan_job_order.id_depthead = user_depthead.id', 'left');
+
+        // Join kedua: untuk mengambil nama planthead
+        $this->db->join('user as user_planthead', 'pengajuan_job_order.id_planthead = user_planthead.id', 'left');
+
+        // Kondisi berdasarkan id dan status
+        $this->db->where('pengajuan_job_order.id', $id_jo);
+        $this->db->where('pengajuan_job_order.status', 11);
+
+        // Eksekusi query dan kembalikan hasil sebagai array
+        $query = $this->db->get();
+        return $query->row_array(); // Mengembalikan sebagai array
+    }
+
 
     public function getJoPerMonth()
     {
@@ -223,6 +259,16 @@ class Menu_model extends CI_Model
             ->select('*')
             ->from('user')
             ->join('tb_plant', 'user.id_plant = tb_plant.id_plant')
+            ->get()
+            ->result_array();
+    }
+
+    public function getLead()
+    {
+        return $this->db
+            ->select('*')
+            ->from('user')
+            ->where_in('role_id', [5, 6, 7, 8]) // Menggunakan where_in untuk mencocokkan beberapa nilai
             ->get()
             ->result_array();
     }
@@ -572,6 +618,20 @@ class Menu_model extends CI_Model
         }
     }
 
+    public function getWaFH()
+    {
+        $this->db->select('whatsapp'); // Assuming 'whatsapp' is the column name for WhatsApp number
+        $this->db->from('user'); // Assuming 'user' is the table name
+        $this->db->where('role_id', 8); // Match with dept_head (ID of the department head)
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->whatsapp; // Return WhatsApp number
+        } else {
+            return false; // Return false if not found
+        }
+    }
+
     public function getIdPh($id)
     {
         $this->db->select('id_planthead');
@@ -614,6 +674,26 @@ class Menu_model extends CI_Model
         $this->db->select('*');
         $this->db->from('pengajuan_job_order');
         $this->db->where('id_planthead', $id_ph);
+        $query = $this->db->get();
+
+        // Cek apakah ada hasil yang cocok
+        if ($query->num_rows() > 0) {
+            return $query->row(); // Mengembalikan data user
+        } else {
+            return false; // Jika tidak ada user yang cocok
+        }
+    }
+
+    public function validasiIdUser($nip)
+    {
+        if (empty($nip)) {
+            return false; // NIP kosong, tidak perlu lanjutkan query
+        }
+
+        $this->db->select('*');
+        $this->db->from('user');
+        $this->db->where('nim', $nip);
+        $this->db->where('role_id', 8);
         $query = $this->db->get();
 
         // Cek apakah ada hasil yang cocok

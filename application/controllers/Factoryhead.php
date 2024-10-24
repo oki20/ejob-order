@@ -76,11 +76,11 @@ class Factoryhead extends CI_Controller
     public function approveData()
     {
         $id = $this->input->post("id");
-        $pelaksana = $this->input->post("pelaksana");
+        // $pelaksana = $this->input->post("pelaksana");
 
         // Lakukan penyimpanan data ke database
         $data = array(
-            'pelaksana' => $pelaksana,
+            // 'pelaksana' => $pelaksana,
             'status'    => '4',
             'id_factoryhead' => $this->session->userdata('id')
         );

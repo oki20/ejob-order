@@ -52,3 +52,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = false;
+
+$route['master/tambahuser'] = 'Master/tambahUser';
+$route['master/edituser'] = 'Master/editUser';
+$route['master/updateuser'] = 'Master/updateUser';

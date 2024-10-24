@@ -199,7 +199,7 @@
                 Swal.fire({
                     type: 'warning',
                     title: 'Oops...',
-                    text: 'Nomor Whatsapp harus diisi dengan benar!'
+                    text: 'Nomor Whatsapp harus diisi dengan benar! (6280000)'
                 });
                 return false;
             }

@@ -21,7 +21,7 @@
                             <th>#</th>
                             <th>No. Job Order</th>
                             <th>Pekerjaan</th>
-                            <th>Pelaksana</th>
+                            <!-- <th>Pelaksana</th> -->
                             <th>Plant</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -39,8 +39,49 @@
 </div>
 <!-- /.container-fluid -->
 
+<!-- MODAL APPROVE -->
+<form>
+    <div class="modal fade" id="Modal_approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form JO Approve</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
+                    <div class="form-group row">
+                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
+                        <label class="col-md-2 col-form-label">Pelaksana JO</label>
+                        <div class="col-md-10">
+                            <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
+                                <option selected disabled>Select one</option>
+                                <option value="Elektrik">Elektrik</option>
+                                <option value="Mekanik">Mekanik</option>
+                                <option value="Elektrik dan Mekanik">Elektrik dan Mekanik</option>
+                            </select>
+                        </div>
 
+                    </div>
+                    <div class="form-group row">
+                        <input type="hidden" name="id_edit" id="id_edit" class="form-control">
+                        <!-- <label class="col-md-2 col-form-label">Saran JO</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" placeholder="Masukkan Detail Pekerjaan" id="saran_dept" name="saran_dept" style="height: 100px"></textarea>
+                        </div> -->
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" type="submit" id="btn_approve" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 
 <!-- MODAL ADD REJECT -->
@@ -99,11 +140,13 @@
 
         $('#btn_approve').on('click', function() {
             var id = $('#id_edit').val();
-            var saran_dept = $('#saran_dept').val();
+            // var saran_dept = $('#saran_dept').val();
+            var pelaksana = $('#pelaksana').val();
 
             var formData = new FormData();
             formData.append('id', id);
-            formData.append('saran_dept', saran_dept);
+            // formData.append('saran_dept', saran_dept);
+            formData.append('pelaksana', pelaksana);
 
             $.ajax({
                 type: "POST",
@@ -219,11 +262,12 @@
                         '<td>' + data[i].id + '</td>' +
                         '<td>' + data[i].no_jo + '</td>' +
                         '<td>' + data[i].pekerjaan + '</td>' +
-                        '<td>' + data[i].pelaksana + '</td>' +
+                        // '<td>' + data[i].pelaksana + '</td>' +
                         '<td> Plant ' + data[i].nama + '</td>' +
                         '<td>' + statusBadge + '</td>' +
                         '<td style="text-align:right;">' +
-                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        // '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
                         '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
                         '</td>' +
                         '</tr>';

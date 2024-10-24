@@ -379,7 +379,7 @@ class User extends CI_Controller
             $shortLink = json_decode(shortenLink($url));
             $requestBody = [
                 "target"    => '0' . substr($dept_whatsaap, 2),
-                "message"   => "*Informasi Pengajuan Job Order!* \n\n, \nBerikut Kami informasikan terkait pengajuan job order dengan Deskripsi sebagai berikut.\n\n*" . $pekerjaan . "* \n\nDetail informasi beserta persetujuan bisa klik link di bawah ini: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*",
+                "message"   => "*Informasi Pengajuan Job Order!* \n\n, \nBerikut Kami informasikan terkait pengajuan job order dengan Deskripsi sebagai berikut.\n\n*" . $pekerjaan . "* \n\nDetail informasi beserta persetujuan bisa klik link di bawah ini: \n\n" . $url . "\n\nCheers,\n*E-Job Administrator*",
                 "typing"    => true
             ];
             $send = postWhatsappApi('send', $requestBody);

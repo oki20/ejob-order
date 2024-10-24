@@ -75,9 +75,11 @@ class Engdepthead extends CI_Controller
     public function approveData()
     {
         $id = $this->input->post("id");
+        $pelaksana = $this->input->post("pelaksana");
 
         // Lakukan penyimpanan data ke database
         $data = array(
+            'pelaksana' => $pelaksana,
             'status' => '5',
             'id_eng_depthead' => $this->session->userdata('id')
         );

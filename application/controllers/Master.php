@@ -88,6 +88,32 @@ class Master extends CI_Controller
         }
     }
 
+    public function tambahUser()
+    {
+        $data = [
+            'name' => $this->input->post('nama'),
+            'email' => $this->input->post('email'),
+            'nim' => $this->input->post('nik'),
+            'image' => 'default.jpg',
+            'whatsapp' => $this->input->post('whatsapp'),
+            'password' => password_hash('12345', PASSWORD_DEFAULT),
+            'role_id' => $this->input->post('jabatan'),
+            'date_created' => time(),
+            'is_active' => $this->input->post('status')
+        ];
+        $this->db->insert('user', $data);
+
+        // Debug: Cek apakah query berhasil dijalankan
+        if ($this->db->affected_rows() > 0) {
+            log_message('debug', "User successfully inserted into the database.");
+            echo json_encode(['status' => 'success']);
+        } else {
+            log_message('error', "Failed to insert user.");
+            echo json_encode(['status' => 'failed']);
+        }
+    }
+
+
     public function tambahmember()
     {
         $name = $this->input->post('name');
@@ -170,6 +196,12 @@ class Master extends CI_Controller
     public function tampiluser()
     {
         $dataAll = $this->model->getUser();
+        echo json_encode($dataAll);
+    }
+
+    public function tampillead()
+    {
+        $dataAll = $this->model->getLead();
         echo json_encode($dataAll);
     }
 

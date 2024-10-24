@@ -161,7 +161,7 @@
                             type: 'success',
                             title: 'Berhasil!',
                             icon: 'success',
-                            text: 'Update Data Berhasil!'
+                            text: 'Job Order diterima, dan akan diproses Dept. Head Instalasi !'
                         });
 
                         $('[name="saran_dept"]').val("");
@@ -256,7 +256,7 @@
                     var statusBadge = '';
 
                     if (data[i].status == '3') {
-                        statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Factory Head</span>';
+                        statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Plant Head</span>';
                     }
                     html += '<tr>' +
                         '<td>' + data[i].id + '</td>' +
@@ -266,7 +266,8 @@
                         '<td> Plant ' + data[i].nama + '</td>' +
                         '<td>' + statusBadge + '</td>' +
                         '<td style="text-align:right;">' +
-                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
+                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        // '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
                         '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
                         '</td>' +
                         '</tr>';
@@ -279,56 +280,56 @@
     }
 
 
-    // function approveData(id) {
-    //     Swal.fire({
-    //         title: "Are you sure?",
-    //         text: "You won't be able to revert this!",
-    //         icon: "warning",
-    //         showCancelButton: true,
-    //         confirmButtonColor: "#3085d6",
-    //         cancelButtonColor: "#d33",
-    //         confirmButtonText: "Yes, Approve it!"
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             var formData = new FormData();
-    //             formData.append('id', id);
+    function approveData(id) {
+        Swal.fire({
+            title: "Apakah Yakin ?",
+            text: "Silahkan klik YES untuk menerima job order ini.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Approve it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', id);
 
-    //             $.ajax({
-    //                 type: "POST",
-    //                 url: "<?php echo site_url('factoryhead/approveData') ?>",
-    //                 data: formData,
-    //                 processData: false,
-    //                 contentType: false,
-    //                 success: function(response) {
-    //                     console.log(response);
-    //                     if (response == "success") {
-    //                         swal({
-    //                             type: 'success',
-    //                             title: 'Berhasil!',
-    //                             icon: 'success',
-    //                             text: 'Update Data Berhasil!'
-    //                         });
-    //                         // Reload or update data in your table
-    //                         tampildata();
-    //                     } else {
-    //                         swal({
-    //                             type: 'error',
-    //                             title: 'Update data Gagal!',
-    //                             icon: 'warning',
-    //                             text: 'Silahkan coba lagi!'
-    //                         });
-    //                     }
-    //                 },
-    //                 error: function(response) {
-    //                     swal({
-    //                         type: 'error',
-    //                         title: 'Oops!',
-    //                         icon: 'warning',
-    //                         text: 'Server error!'
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('factoryhead/approveData') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        if (response == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Update Data Berhasil!'
+                            });
+                            // Reload or update data in your table
+                            tampildata();
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+    }
 </script>

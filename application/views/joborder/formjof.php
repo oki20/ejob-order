@@ -44,14 +44,25 @@
                                     <input type="text" class="form-control" id="assignedTo" value="<?= $jo['rencana']; ?>" readonly>
                                 </div>
 
-                                <!-- Signed Information Section -->
-                                <div class="col-md-12 mt-3">
-                                    <div class="border p-3 text-center">
-                                        <strong>JO ini telah disetujui oleh:</strong>
-                                        <p>Departemen Head</p>
-                                        <br>
-                                        <div class="mt-3"></div>
-                                        <p><?= $jo['depthead_name']; ?></p> <!-- Menampilkan nama depthead -->
+                                <div class="col-12 row">
+                                    <!-- Signed Information Section for Depthead -->
+                                    <div class="col-md-3 mt-3">
+                                        <div class="border p-2 text-center">
+                                            <strong>JO ini telah disetujui oleh Departemen Head:</strong>
+                                            <br>
+                                            <div class="mt-3"></div>
+                                            <p><?= $jo['depthead_name']; ?></p> <!-- Nama Depthead -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Signed Information Section for Planthead -->
+                                    <div class="col-md-3 mt-3">
+                                        <div class="border p-2 text-center">
+                                            <strong>JO ini telah disetujui oleh Plant Head:</strong>
+                                            <br>
+                                            <div class="mt-3"></div>
+                                            <p><?= $jo['planthead_name']; ?></p> <!-- Nama Planthead -->
+                                        </div>
                                     </div>
                                 </div>
 
@@ -115,6 +126,12 @@
                             <input type="hidden" name="id_jo" id="id_jo" value="<?= $jo['id']; ?>">
                             <p>Silahkan klik tombol konfirmasi, Anda bisa memberikan alasan di form saran kenapa Job Order ini di tolak.!</p>
                             <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Nomor Induk Pegawai</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" placeholder="Masukkan NIP Anda" id="nip" name="nip" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-md-2 col-form-label">Kotak Saran</label>
                                 <div class="col-md-10">
                                     <textarea class="form-control" placeholder="Masukkan Saran" id="saran" name="saran" style="height: 100px"></textarea>
@@ -160,7 +177,7 @@
                     formData.append('nip', nip);
 
                     // URL untuk menerima data
-                    var url = "<?php echo site_url() ?>/form/receivedatap/" + id_jo;
+                    var url = "<?php echo site_url() ?>/form/receivedataf/" + id_jo;
 
                     // Mengirim data via AJAX
                     $.ajax({
@@ -215,7 +232,7 @@
                     formData.append('id_jo', id_jo);
                     formData.append('saran', saran);
 
-                    var url = "<?php echo site_url() ?>/form/rejectdatap/" + id_jo;
+                    var url = "<?php echo site_url() ?>/form/rejectdataf/" + id_jo;
 
                     $.ajax({
                         type: "POST",
