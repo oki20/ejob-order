@@ -368,15 +368,20 @@ class Leader_model extends CI_Model
     public function getReport()
     {
         $id_member = $this->session->userdata('id');
-        $this->db->select('*');
+        
+        $this->db->select('pengajuan_job_order.*, tb_report.*, GROUP_CONCAT(member_plant.nama_member ORDER BY member_plant.id SEPARATOR ", ") AS nama_tim_pekerja');
         $this->db->from('pengajuan_job_order');
         $this->db->join('tb_report', 'pengajuan_job_order.id = tb_report.id_jo');
+        $this->db->join('member_plant', 'FIND_IN_SET(member_plant.id, tb_report.tim_pekerja)', 'left');
         $this->db->where('tb_report.id_member', $id_member);
         $this->db->where('pengajuan_job_order.no_file <>', '');
-        $this->db->order_by('tb_report.id', 'DESC'); // Order by 'id' in descending order
+        $this->db->group_by('pengajuan_job_order.id, tb_report.id');
+        $this->db->order_by('tb_report.id', 'DESC');
+        
         $query = $this->db->get();
         return $query->result_array();
     }
+
 
     public function getReportInform()
     {

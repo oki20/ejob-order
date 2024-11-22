@@ -48,7 +48,9 @@
                                     <!-- Signed Information Section for Depthead -->
                                     <div class="col-md-3 mt-3">
                                         <div class="border p-2 text-center">
-                                            <strong>JO ini telah disetujui oleh Departemen Head:</strong>
+                                            <strong>JO ini telah disetujui oleh </strong>
+                                            <br>
+                                            <strong>Departemen Head:</strong>
                                             <br>
                                             <div class="mt-3"></div>
                                             <p><?= $jo['depthead_name']; ?></p> <!-- Nama Depthead -->
@@ -58,7 +60,9 @@
                                     <!-- Signed Information Section for Planthead -->
                                     <div class="col-md-3 mt-3">
                                         <div class="border p-2 text-center">
-                                            <strong>JO ini telah disetujui oleh Plant Head:</strong>
+                                            <strong>JO ini telah disetujui oleh </strong>
+                                            <br>
+                                            <strong>Plant Head:</strong>
                                             <br>
                                             <div class="mt-3"></div>
                                             <p><?= $jo['planthead_name']; ?></p> <!-- Nama Planthead -->

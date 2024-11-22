@@ -131,7 +131,7 @@ class Menu_model extends CI_Model
         // Mendapatkan tanggal 20 bulan ini
         $currentDate = date('Y-m-20');
         // Mendapatkan tanggal 20 bulan sebelumnya
-        $previousMonthDate = date('Y-m-20', strtotime('-1 month'));
+        $previousMonthDate = date('Y-m-15', strtotime('-1 month'));
 
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
@@ -259,6 +259,7 @@ class Menu_model extends CI_Model
             ->select('*')
             ->from('user')
             ->join('tb_plant', 'user.id_plant = tb_plant.id_plant')
+            ->where_in('user.role_id', [1, 2, 3, 4])
             ->get()
             ->result_array();
     }
@@ -321,7 +322,7 @@ class Menu_model extends CI_Model
             ->select('*')
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
-            ->where('pengajuan_job_order.status', '1')
+            //->where('pengajuan_job_order.status', '1')
             ->where('pengajuan_job_order.id_pemesan', $id)
             ->get()
             ->result_array();
@@ -546,7 +547,7 @@ class Menu_model extends CI_Model
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
             ->where('pengajuan_job_order.status', '3')
-            ->where('pengajuan_job_order.id_plant', $id)
+            //->where('pengajuan_job_order.id_plant', $id)
             ->get()
             ->result_array();
     }

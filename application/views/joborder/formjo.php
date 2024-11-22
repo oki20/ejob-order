@@ -182,7 +182,7 @@
                                     });
                                 }
                             } catch (e) {
-                                console.error('Error parsing server response:', e, response);
+                                console.error('Error parsing server response:', e);
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oppss!',

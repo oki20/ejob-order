@@ -123,7 +123,7 @@ class Form extends CI_Controller
                 $send = json_decode($send, true);
 
                 if ($send['status']) {
-                    echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Dept. Head'));
+                    echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Plant Head'));
                     return true;
                 } else {
                     echo $send['reason'];
@@ -149,8 +149,9 @@ class Form extends CI_Controller
         $user = $this->model->validasiIdP($id_ph);
         // Ambil nomor WhatsApp Factory Head dari table user.
         $fh_whatsapp = $this->model->getWaFH();
-
-        if ($user) {
+        
+        if ($fh_whatsapp) {
+            if ($user) {
             // Ambil pekerjaan dari field 'pekerjaan'
             $pekerjaan = $user->pekerjaan;
 
@@ -163,7 +164,7 @@ class Form extends CI_Controller
             if ($updateData) {
                 // Jika berhasil, buat pesan dan kirim via WhatsApp
                 $url = base_url() . 'form/formjof/' . $id;
-                $shortLink = json_decode(shortenLink($url));
+                //$shortLink = json_decode(shortenLink($url));
 
                 $requestBody = [
                     "target"    => '0' . substr($fh_whatsapp, 2),
@@ -187,6 +188,9 @@ class Form extends CI_Controller
         } else {
             // Jika NIP tidak valid
             echo json_encode(array('status' => 'error', 'message' => 'NIP tidak valid'));
+        }
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Factory Head Instalasi Tidak Terdaftar'));
         }
     }
 

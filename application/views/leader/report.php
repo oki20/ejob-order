@@ -225,11 +225,8 @@
                 success: function(data) {
                     var html = '';
                     var i;
-                    var no;
                     for (i = 0; i < data.length; i++) {
                         var nomor = i + 1;
-                        var statusBadge = '';
-
                         html += '<tr>' +
                             '<td class="table-cell">' + nomor + '</td>' +
                             '<td class="table-cell">' + data[i].pekerjaan + '</td>' +
@@ -240,12 +237,14 @@
                             '<td style="text-align:right;">' +
                             '<div class="button-container">' +
                             '<a href="javascript:void(0);" class="btn btn-sm btn-info" onclick="edit(' + data[i].id + ')"><i class="fas fal fa-edit"></i> Edit</a>' +
-                            '<a href="javascript:void(0);" class=" btn btn-success btn-sm item_whatsapp" data-id_jo="' + data[i].id_jo +
+                            '<a href="javascript:void(0);" class="btn btn-success btn-sm item_whatsapp" data-id_jo="' + data[i].id_jo +
                             '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan +
                             '" data-tgl_pengerjaan="' + data[i].tgl_pengerjaan + '" data-item_pekerjaan="' + data[i].item_pekerjaan +
-                            '"><i class="fab fa-whatsapp"></i> Whatsapp</a>' +
+                            '" data-progres="' + data[i].progres + '" data-nama_tim_pekerja="' + data[i].nama_tim_pekerja + '">' +
+                            '<i class="fab fa-whatsapp"></i> Whatsapp</a>' +
                             '<a href="javascript:void(0);" class="btn btn-info btn-sm item_laporan" data-id_jo="' + data[i].id_jo +
-                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '"><i class="fas fa-percentage"></i> Buat Laporan</a>' +
+                            '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan + '">' +
+                            '<i class="fas fa-percentage"></i> Buat Laporan</a>' +
                             '</div>' +
                             '</td>' +
                             '</tr>';
@@ -254,6 +253,7 @@
                 }
             });
         }
+        
         // Get data for updating record
         $('#show_data').on('click', '.item_laporan', function() {
             var id_jo = $(this).data('id_jo');
@@ -272,23 +272,28 @@
         // Get data for updating record
         $('#show_data').on('click', '.item_whatsapp', function() {
             var nomorWhatsApp = "<?php echo $this->session->userdata('no_hp'); ?>";
-
+        
             var id_jo = $(this).data('id_jo');
             var no_jo = $(this).data('no_jo');
             var pekerjaan = $(this).data('pekerjaan');
-            var tgl = $(this).data('tgl_pengerjaan'); // Perbaikan di sini
-            var item_pekerjaan = $(this).data('item_pekerjaan'); // Perbaikan di sini
-
-            var pesan = "Laporan Harian Pekerjaan Instalasi :  \nTanggal" + tgl +
-                "\n\nDeskripsi Pekerjaan : " + pekerjaan +
-                "\nNomor Job Order" + no_jo + "\n\n" +
-                "Item Pekerjaan: " + item_pekerjaan +
-                "\n\nProgres:" + progres;
-
-            // Buat URL dengan format yang sesuai untuk membuka WhatsApp dan mengirim pesan
+            var tgl = $(this).data('tgl_pengerjaan');
+            var item_pekerjaan = $(this).data('item_pekerjaan');
+            var progres = $(this).data('progres'); // Added this line
+            var nama_tim_pekerja = $(this).data('nama_tim_pekerja'); // Added this line
+            
+            console.log(nomorWhatsApp, tgl, pekerjaan, item_pekerjaan, progres, nama_tim_pekerja);
+        
+            var pesan = "Laporan Harian Pekerjaan Instalasi :  \nTanggal " + tgl +
+                "\n\nDeskripsi Pekerjaan : \n" + pekerjaan +
+                "\nNomor Job Order : *" + no_jo + "*\n\n" +
+                "Item Pekerjaan : \n" + item_pekerjaan +
+                "\n\nProgres : *" + progres + "%*\n" +
+                "Tim Pelaksana : " + nama_tim_pekerja;
+        
+            // Create the WhatsApp URL with the formatted message
             var urlWhatsApp = "https://wa.me/" + nomorWhatsApp + "?text=" + encodeURIComponent(pesan);
-
-            // Buka WhatsApp dengan URL yang sudah dibuat
+        
+            // Open WhatsApp with the generated URL
             window.open(urlWhatsApp);
         });
 

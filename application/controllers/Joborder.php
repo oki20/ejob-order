@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 use function PHPUnit\Framework\stringContains;
@@ -255,6 +256,11 @@ class Joborder extends CI_Controller
 
         // Execute query
         $query = $this->db->query($sql, array($start_date, $end_date));
+        if (!$query) {
+            // Handle query error
+            echo 'Database query error: ' . $this->db->error();
+            return;
+        }
         $data = $query->result_array();
 
         // Buat spreadsheet baru
@@ -282,19 +288,29 @@ class Joborder extends CI_Controller
         $sheet->setCellValue('A3', 'Laporan Harian');
         
         // Style header text
+        // $headerStyleArray = [
+        //     'font' => [
+        //         'bold' => true,
+        //         'size' => 14,
+        //     ],
+        //     'alignment' => [
+        //         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+        //         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+        //     ],
+        // ];
         $headerStyleArray = [
-            'font' => [
-                'bold' => true,
-                'size' => 14,
-            ],
+            'font' => ['bold' => true, 'size' => 14],
             'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
             ],
         ];
-        $sheet->getStyle('A1')->applyFromArray($headerStyleArray);
-        $sheet->getStyle('A2')->applyFromArray($headerStyleArray);
-        $sheet->getStyle('A3')->applyFromArray($headerStyleArray);
+        
+        // $sheet->getStyle('A1')->applyFromArray($headerStyleArray);
+        // $sheet->getStyle('A2')->applyFromArray($headerStyleArray);
+        // $sheet->getStyle('A3')->applyFromArray($headerStyleArray);
+        
+        $sheet->getStyle('A1:A3')->applyFromArray($headerStyleArray);
     
         // Set header tabel
         $sheet->setCellValue('A5', 'Tanggal Pengerjaan');
@@ -351,13 +367,15 @@ class Joborder extends CI_Controller
         // Save the spreadsheet to a file
         $filename = 'Laporan_Harian' . date('Ymd_His') . '.xlsx';
 
-        // Output ke browser
+        // Headers for download
+        ob_clean(); // Clear output buffer
+        flush(); // Flush system output buffer
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
--
+    
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
-        exit;
+        exit; // Terminate the script after file output
     }
 }

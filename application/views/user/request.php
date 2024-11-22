@@ -206,7 +206,15 @@
                         var statusBadge = '';
 
                         if (data[i].status == '1') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval</span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval DH</span>';
+                        } else if (data[i].status == '2') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval PH </span>';
+                        } else if (data[i].status == '11') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval FH Instalasi </span>';
+                        } else if (data[i].status == '3') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval PH Instalasi </span>';
+                        } else if (data[i].status == '3') {
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval DH Instalasi </span>';
                         }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +

@@ -383,11 +383,11 @@ class Auth extends CI_Controller
         if ($type == 'verify') {
             $url = base_url() . 'auth/verify?whatsapp=' . $this->input->post('whatsapp') . '&token=' . urlencode($token);
             $shortLink = json_decode(shortenLink($url));
-            $message  = "*Activate Your E-Job Order Account!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk melakukan aktifasi akun: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*";
+            $message  = "*Activate Your E-Job Order Account!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk melakukan aktifasi akun: \n\n" . $url . "\n\nCheers,\n*E-Job Administrator*";
         } else if ($type == 'forgot') {
             $url = base_url() . 'auth/resetpassword?whatsapp=' . $this->input->post('whatsapp') . '&token=' . urlencode($token);
             $shortLink = json_decode(shortenLink($url));
-            $message  = "*E-Job Order Password Reset!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk mengatur ulang kata sandi baru: \n\n" . $shortLink->shrtlnk . "\n\nCheers,\n*E-Job Administrator*";
+            $message  = "*E-Job Order Password Reset!* \n\nHi " . $name . ", \nSilahkan klik link dibawah ini untuk mengatur ulang kata sandi baru: \n\n" . $url . "\n\nCheers,\n*E-Job Administrator*";
         }
 
 
