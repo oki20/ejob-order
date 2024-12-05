@@ -52,6 +52,7 @@
                                         <br>
                                         <div class="mt-3"></div>
                                         <p><?= $jo['depthead_name']; ?></p> <!-- Menampilkan nama depthead -->
+                                        <p><?= $jo['last_updated_at']; ?></p>
                                     </div>
                                 </div>
 
@@ -59,6 +60,15 @@
                                 <div class="col-12 mt-2 mb-2">
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal_Edit" id="create_reject">Reject</button>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal_Add" id="create_receive">Receive</button>
+                                    <!-- Button to Open Attachment -->
+                                    <a
+                                        href="<?= isset($jo['lampiran']) && !empty($jo['lampiran']) ? base_url('assets/lampiran/' . $jo['lampiran']) : 'javascript:void(0)'; ?>"
+                                        target="<?= isset($jo['lampiran']) && !empty($jo['lampiran']) ? '_blank' : '_self'; ?>"
+                                        class="btn btn-info"
+                                        id="open_attachment"
+                                        onclick="checkAttachment('<?= isset($jo['lampiran']) && !empty($jo['lampiran']) ? '1' : ''; ?>')">
+                                        Open Attachment
+                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -260,4 +270,11 @@
                     });
                 });
             });
+        </script>
+        <script>
+            function checkAttachment(hasAttachment) {
+                if (!hasAttachment) {
+                    alert('No attachment available.');
+                }
+            }
         </script>

@@ -213,7 +213,7 @@
                             statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval FH Instalasi </span>';
                         } else if (data[i].status == '3') {
                             statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval PH Instalasi </span>';
-                        } else if (data[i].status == '3') {
+                        } else if (data[i].status == '4') {
                             statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval DH Instalasi </span>';
                         }
                         html += '<tr>' +
@@ -223,8 +223,9 @@
                             '<td> Plant ' + data[i].nama + '</td>' +
                             '<td>' + statusBadge + '</td>' +
                             '<td style="text-align:right;">' +
-                            '<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="edit(' + data[i].id + ')"><i class="fas fa-edit"></i> Edit</a> ' + ' ' +
-                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> Delete</a>' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="edit(' + data[i].id + ')"><i class="fas fa-eye"></i> </a> ' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="edit(' + data[i].id + ')"><i class="fas fa-edit"></i> </a> ' + ' ' +
+                            '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_delete" data-id="' + data[i].id + '"><i class="fas fa-trash-alt"></i> </a>' +
                             '</td>' +
                             '</tr>';
                     }

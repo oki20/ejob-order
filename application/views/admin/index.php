@@ -44,6 +44,24 @@
             </div>
         </div>
 
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Job Order Sedang Berajalan <?= date('Y'); ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totaljoprogres['total_jo']; ?></div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Job Order Masuk Menunggu Approve -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -156,6 +174,31 @@
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Data Job Order</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="jobOrderPieChart" width="400" height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -415,4 +458,60 @@
             }
         })
     }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('jobOrderPieChart').getContext('2d');
+
+        // Data dari PHP
+        const totalData = [
+            // <?= $totaljo['total_jo']; ?>, // Total Keseluruhan
+            <?= $totalyear['total_jo']; ?>, // Total Selesai
+            <?= $totaljoprogres['total_jo']; ?> // Total Sedang Berjalan
+        ];
+
+        // Label untuk chart
+        const labels = [
+            // 'Keseluruhan',
+            'JO Selesai',
+            'JO Sedang Berjalan'
+        ];
+
+        // Warna untuk tiap data
+        const backgroundColors = [
+            // 'rgba(255, 99, 132, 0.2)', // Merah
+            'rgba(54, 162, 235, 0.2)', // Biru
+            'rgba(255, 206, 86, 0.2)' // Kuning
+        ];
+
+        const borderColors = [
+            // 'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)'
+        ];
+
+        // Buat pie chart
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: totalData,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    });
 </script>

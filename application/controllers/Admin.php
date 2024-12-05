@@ -15,6 +15,7 @@ class Admin extends CI_Controller
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
         $data['totaljo'] = $this->model->getTotalJo();
+        $data['totaljoprogres'] = $this->model->getTotalJoProgres();
         $data['totalyear'] = $this->model->getTotalJoYear();
         $data['receive'] = $this->model->getWaitReceive();
         $data['finish'] = $this->model->getJoFinishPerMonth();

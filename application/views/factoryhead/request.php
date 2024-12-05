@@ -21,7 +21,6 @@
                             <th>#</th>
                             <th>No. Job Order</th>
                             <th>Pekerjaan</th>
-                            <th>Pelaksana</th>
                             <th>Plant</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -33,7 +32,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 </div>
@@ -114,6 +112,34 @@
         </div>
     </div>
 </form>
+
+<!-- Modal for Approve -->
+<div class="modal fade" id="Modal_detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Job Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Tabel untuk detail -->
+                <div id="detail_approve"></div>
+                <!-- Input hidden untuk menyimpan ID job order -->
+                <input type="hidden" id="job_order_id_approve" />
+            </div>
+            <div class="modal-footer">
+                <!-- Tombol Approval -->
+                <button class="btn btn-primary" id="btn_approve" onclick="approveDataButton()">
+                    <i class="fa fa-check-square" aria-hidden="true"></i> Approve
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -259,19 +285,18 @@
                         statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Plant Head</span>';
                     }
                     html += '<tr>' +
-                        '<td>' + data[i].id + '</td>' +
+                        '<td>' + nomor + '</td>' +
                         '<td>' + data[i].no_jo + '</td>' +
                         '<td>' + data[i].pekerjaan + '</td>' +
-                        '<td>' + data[i].pelaksana + '</td>' +
                         '<td> Plant ' + data[i].nama + '</td>' +
                         '<td>' + statusBadge + '</td>' +
                         '<td style="text-align:right;">' +
-                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
+                        '<button class="btn btn-success btn-sm" onclick="showModal(' + data[i].id + ')"><i class="fa fa-eye" aria-hidden="true"></i></button>' + ' ' +
+                        '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')"><i class="fa fa-check-square" aria-hidden="true"></i></button>' + ' ' +
                         // '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
-                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
+                        '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '"><i class="fa fa-window-close" aria-hidden="true"></i></a>' +
                         '</td>' +
                         '</tr>';
-
                 }
                 $('#show_data').html(html);
 
@@ -279,6 +304,45 @@
         });
     }
 
+    function showModal(id) {
+        var formData = new FormData();
+        formData.append('id', id);
+
+        $.ajax({
+            type: 'post',
+            url: '<?php echo site_url('factoryhead/getJobOrderDetails') ?>',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(data) {
+                console.log(data); // Debug data
+                if (data) {
+                    // Cek apakah lampiran tersedia
+                    var attachmentLink = data.lampiran ?
+                        '<a href="' + '<?php echo base_url("assets/lampiran/"); ?>' + data.lampiran + '" target="_blank" class="btn btn-info">Open Attachment</a>' :
+                        '<span class="text-muted">No Attachment</span>';
+
+                    // Mengisi tabel dengan data yang diterima
+                    var detailHtml = '<table class="table table-bordered">' +
+                        '<tr><th>No. Job Order</th><td>' + data.no_jo + '</td></tr>' +
+                        '<tr><th>Pekerjaan</th><td>' + data.pekerjaan + '</td></tr>' +
+                        '<tr><th>Plant</th><td>' + data.nama + '</td></tr>' +
+                        '<tr><th>Status</th><td>' + (data.status == '3' ? 'Wait Approval' : 'Approved') + '</td></tr>' +
+                        '<tr><th>Attachment</th><td>' + attachmentLink + '</td></tr>' +
+                        '</table>';
+                    $('#detail_approve').html(detailHtml);
+                    $('#job_order_id_approve').val(data.id); // Menyimpan ID job order dalam input hidden
+                    $('#Modal_detail').modal('show');
+                } else {
+                    console.error("Data tidak ditemukan");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error); // Debug jika terjadi kesalahan
+            }
+        });
+    }
 
     function approveData(id) {
         Swal.fire({
@@ -307,10 +371,72 @@
                                 type: 'success',
                                 title: 'Berhasil!',
                                 icon: 'success',
-                                text: 'Update Data Berhasil!'
+                                text: 'Job Order telah diterima!'
                             });
                             // Reload or update data in your table
                             tampildata();
+                            $('#Modal_detail').modal('hide'); // Menutup modal setelah approval
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Update data Gagal!',
+                                icon: 'warning',
+                                text: 'Silahkan coba lagi!'
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            type: 'error',
+                            title: 'Oops!',
+                            icon: 'warning',
+                            text: 'Server error!'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function approveDataButton() {
+        // Ambil nilai ID dari input
+        const jobOrderId = $('#job_order_id_approve').val();
+
+        // Debug untuk memastikan ID diambil dengan benar
+        console.log('ID yang dikirim untuk Approve:', jobOrderId);
+        $('#Modal_detail').modal('hide');
+
+        Swal.fire({
+            title: "Apakah Yakin ?",
+            text: "Silahkan klik YES untuk menerima job order ini.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Approve it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                formData.append('id', jobOrderId);
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('factoryhead/approveData') ?>",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        if (response == "success") {
+                            swal({
+                                type: 'success',
+                                title: 'Berhasil!',
+                                icon: 'success',
+                                text: 'Job Order telah diterima!'
+                            });
+                            // Reload or update data in your table
+                            tampildata();
+                            $('#Modal_detail').modal('hide'); // Menutup modal setelah approval
                         } else {
                             swal({
                                 type: 'error',

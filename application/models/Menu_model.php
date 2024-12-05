@@ -15,10 +15,27 @@ class Menu_model extends CI_Model
     //Dashboard Admin
     public function getTotalJo()
     {
+        $currentYear = date('Y');
+
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            //->where('status', 5)
+            ->where("YEAR(tgl_terima) =", $currentYear)
+            ->get()
+            ->row_array();
+    }
+
+    //Dashboard Admin
+    public function getTotalJoProgres()
+    {
+        $currentYear = date('Y');
+
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
             ->from('pengajuan_job_order')
             ->where('status', 5)
+            ->where("YEAR(tgl_terima) =", $currentYear)
             ->get()
             ->row_array();
     }
@@ -31,7 +48,7 @@ class Menu_model extends CI_Model
         return $this->db
             ->select('COUNT(no_jo) as total_jo')
             ->from('pengajuan_job_order')
-            ->where('status', 5)
+            ->where('status', 10)
             ->where("YEAR(tgl_terima) =", $currentYear)
             ->get()
             ->row_array();
@@ -84,12 +101,16 @@ class Menu_model extends CI_Model
 
     public function get_jop($id_jo)
     {
-        // Pilih kolom yang dibutuhkan dari kedua tabel
-        $this->db->select('pengajuan_job_order.*, user.name as depthead_name');
+        // Pilih kolom yang dibutuhkan dari tabel pengajuan_job_order, user, dan dh_update_log
+        $this->db->select('
+        pengajuan_job_order.*, 
+        user.name as depthead_name, 
+        dh_update_log.updated_at as last_updated_at');
 
-        // Lakukan join antara pengajuan_job_order dan user
+        // Lakukan join antara pengajuan_job_order, user, dan dh_update_log
         $this->db->from('pengajuan_job_order');
         $this->db->join('user', 'pengajuan_job_order.id_depthead = user.id', 'left');
+        $this->db->join('dh_update_log', 'pengajuan_job_order.id = dh_update_log.id_job_order', 'left');
 
         // Tentukan kondisi berdasarkan id_jo dan status
         $this->db->where('pengajuan_job_order.id', $id_jo);
@@ -97,15 +118,20 @@ class Menu_model extends CI_Model
 
         // Eksekusi query dan kembalikan hasilnya
         $query = $this->db->get();
-        return $query->row_array(); // Mengembalikan hasil sebagai objek
+        return $query->row_array(); // Mengembalikan hasil sebagai array
     }
+
 
     public function get_jof($id_jo)
     {
-        // Pilih kolom dari pengajuan_job_order dan dua nama dari user untuk depthead dan planthead
-        $this->db->select('pengajuan_job_order.*, 
-    user_depthead.name as depthead_name, 
-    user_planthead.name as planthead_name');
+        // Pilih kolom dari pengajuan_job_order dan nama dari user untuk depthead dan planthead, serta log update
+        $this->db->select('
+        pengajuan_job_order.*, 
+        user_depthead.name as depthead_name, 
+        user_planthead.name as planthead_name,
+        dh_log.updated_at as last_updated_at,
+        ph_log.updated_at as ph_last_updated_at
+    ');
 
         // Dari tabel pengajuan_job_order
         $this->db->from('pengajuan_job_order');
@@ -116,6 +142,12 @@ class Menu_model extends CI_Model
         // Join kedua: untuk mengambil nama planthead
         $this->db->join('user as user_planthead', 'pengajuan_job_order.id_planthead = user_planthead.id', 'left');
 
+        // Join ketiga: untuk log update depthead
+        $this->db->join('dh_update_log as dh_log', 'pengajuan_job_order.id = dh_log.id_job_order', 'left');
+
+        // Join keempat: untuk log update planthead
+        $this->db->join('dh_update_log as ph_log', 'pengajuan_job_order.id = ph_log.id_job_order', 'left');
+
         // Kondisi berdasarkan id dan status
         $this->db->where('pengajuan_job_order.id', $id_jo);
         $this->db->where('pengajuan_job_order.status', 11);
@@ -124,7 +156,6 @@ class Menu_model extends CI_Model
         $query = $this->db->get();
         return $query->row_array(); // Mengembalikan sebagai array
     }
-
 
     public function getJoPerMonth()
     {
@@ -560,7 +591,7 @@ class Menu_model extends CI_Model
             ->from('pengajuan_job_order')
             ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant')
             ->where('pengajuan_job_order.status', '4')
-            ->where('pengajuan_job_order.id_plant', $id)
+            //->where('pengajuan_job_order.id_plant', $id)
             ->get()
             ->result_array();
     }
@@ -703,5 +734,27 @@ class Menu_model extends CI_Model
         } else {
             return false; // Jika tidak ada user yang cocok
         }
+    }
+
+    //record waktu approval dari DH
+    public function dhStatusLog($data)
+    {
+        return $this->db->insert('dh_update_log', $data);
+    }
+
+    public function phStatusLog($data)
+    {
+        return $this->db->insert('ph_update_log', $data);
+    }
+
+    public function getJobOrderById($id)
+    {
+        return $this->db
+            ->select('pengajuan_job_order.*, tb_plant.nama') // Pilih kolom spesifik
+            ->from('pengajuan_job_order')
+            ->join('tb_plant', 'pengajuan_job_order.id_plant = tb_plant.id_plant', 'left') // Left join jika data tidak wajib ada
+            ->where('pengajuan_job_order.id', $id)
+            ->get()
+            ->result_array(); // Ambil sebagai array
     }
 }

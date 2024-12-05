@@ -109,6 +109,14 @@ class Form extends CI_Controller
             $updateData = $this->model->receivedata($id, $data);
 
             if ($updateData) {
+                // Rekam waktu update status di tabel baru
+                $logData = [
+                    'id_job_order' => $id,
+                    'status' => 2,
+                    'updated_at' => date('Y-m-d') // Waktu sekarang
+                ];
+                $this->model->dhStatusLog($logData); // Tambahkan fungsi ini di model Anda
+
                 // Jika berhasil, buat pesan dan kirim via WhatsApp
                 $url = base_url() . 'form/formjop/' . $id;
                 $shortLink = json_decode(shortenLink($url));
@@ -149,46 +157,55 @@ class Form extends CI_Controller
         $user = $this->model->validasiIdP($id_ph);
         // Ambil nomor WhatsApp Factory Head dari table user.
         $fh_whatsapp = $this->model->getWaFH();
-        
+
         if ($fh_whatsapp) {
             if ($user) {
-            // Ambil pekerjaan dari field 'pekerjaan'
-            $pekerjaan = $user->pekerjaan;
+                // Ambil pekerjaan dari field 'pekerjaan'
+                $pekerjaan = $user->pekerjaan;
 
-            $data = array(
-                'status' => 11 //Job order akan di kirim ke factory head instalasi
-            );
+                $data = array(
+                    'status' => 11 //Job order akan di kirim ke factory head instalasi
+                );
 
-            //update data
-            $updateData = $this->model->receivedata($id, $data);
-            if ($updateData) {
-                // Jika berhasil, buat pesan dan kirim via WhatsApp
-                $url = base_url() . 'form/formjof/' . $id;
-                //$shortLink = json_decode(shortenLink($url));
+                //update data
+                $updateData = $this->model->receivedata($id, $data);
+                if ($updateData) {
+                    // Rekam waktu update status di tabel baru
+                    $logData = [
+                        'id_job_order' => $id,
+                        'status' => 11,
+                        'updated_at' => date('Y-m-d') // Waktu sekarang
+                    ];
+                    $this->model->phStatusLog($logData); // Tambahkan fungsi ini di model Anda
 
-                $requestBody = [
-                    "target"    => '0' . substr($fh_whatsapp, 2),
-                    "message"   => "*Informasi Pengajuan Job Order!* \n\n, \nBerikut Kami informasikan terkait pengajuan job order dengan Deskripsi sebagai berikut.\n\n*" . $pekerjaan . "* \n\nDetail informasi beserta persetujuan bisa klik link di bawah ini: \n\n" . $url . "\n\nCheers,\n*E-Job Administrator*",
-                    "typing"    => true
-                ];
 
-                $send = postWhatsappApi('send', $requestBody);
-                $send = json_decode($send, true);
+                    // Jika berhasil, buat pesan dan kirim via WhatsApp
+                    $url = base_url() . 'form/formjof/' . $id;
+                    //$shortLink = json_decode(shortenLink($url));
 
-                if ($send['status']) {
-                    echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Factory Head Instalasi'));
-                    return true;
+                    $requestBody = [
+                        "target"    => '0' . substr($fh_whatsapp, 2),
+                        "message"   => "*Informasi Pengajuan Job Order!* \n\n, \nBerikut Kami informasikan terkait pengajuan job order dengan Deskripsi sebagai berikut.\n\n*" . $pekerjaan . "* \n\nDetail informasi beserta persetujuan bisa klik link di bawah ini: \n\n" . $url . "\n\nCheers,\n*E-Job Administrator*",
+                        "typing"    => true
+                    ];
+
+                    $send = postWhatsappApi('send', $requestBody);
+                    $send = json_decode($send, true);
+
+                    if ($send['status']) {
+                        echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan ke Factory Head Instalasi'));
+                        return true;
+                    } else {
+                        echo $send['reason'];
+                        die;
+                    }
                 } else {
-                    echo $send['reason'];
-                    die;
+                    echo json_encode(array('status' => 'error'));
                 }
             } else {
-                echo json_encode(array('status' => 'error'));
+                // Jika NIP tidak valid
+                echo json_encode(array('status' => 'error', 'message' => 'NIP tidak valid'));
             }
-        } else {
-            // Jika NIP tidak valid
-            echo json_encode(array('status' => 'error', 'message' => 'NIP tidak valid'));
-        }
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'Factory Head Instalasi Tidak Terdaftar'));
         }

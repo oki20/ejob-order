@@ -9,12 +9,19 @@ class User extends CI_Controller
         is_logged_in();
         $this->load->model('menu_model', 'model');
         $this->load->model('leader_model', 'lead_model');
+        $this->load->model('jo_model', 'jomodel');
     }
 
     public function index()
     {
         $data['title'] = 'My Profile';
         $data['user'] = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+        $data['plant'] = $this->jomodel->getDataPlant();
+
+        //chart
+        $data['totaljo'] = $this->model->getTotalJo();
+        $data['totaljoprogres'] = $this->model->getTotalJoProgres();
+        $data['totalyear'] = $this->model->getTotalJoYear();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

@@ -115,4 +115,15 @@ class Factoryhead extends CI_Controller
             echo "error";
         }
     }
+
+    public function getJobOrderDetails()
+    {
+        $id = $this->input->post('id');
+        $data = $this->model->getJobOrderById($id);
+        if ($data) {
+            echo json_encode($data[0]); // Hanya mengembalikan data pertama (array ke objek tunggal)
+        } else {
+            echo json_encode([]); // Kembalikan array kosong jika data tidak ditemukan
+        }
+    }
 }

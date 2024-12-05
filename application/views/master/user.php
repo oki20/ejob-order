@@ -105,7 +105,7 @@
                         <label for="jabatan">Jabatan</label>
                         <select class="form-control" id="jabatan" name="jabatan">
                             <option value="5">Plant Head Instalasi</option>
-                            <option value="6">Depth. Head Instalasi</option>
+                            <option value="6">Dept. Head Instalasi</option>
                             <option value="7">Admin Instalasi</option>
                             <option value="8">Factory Head Instalasi</option>
                         </select>

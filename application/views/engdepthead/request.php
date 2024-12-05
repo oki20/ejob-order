@@ -45,17 +45,42 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form JO Approve</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Informasi Job Order</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Nomor Job Order</label>
+                        <div class="col-md-8">
+                            <input type="text" name="no_jo" id="no_jo" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Deskripsi Pekerjaan</label>
+                        <div class="col-md-8">
+                            <input type="text" name="pekerjaan" id="pekerjaan" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Plant</label>
+                        <div class="col-md-8">
+                            <input type="text" name="nama" id="nama" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Lampiran</label>
+                        <div class="col-md-8">
+                            <a href="#" id="attachment_link" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-file-alt"></i> Lihat Lampiran
+                            </a>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
-                        <label class="col-md-2 col-form-label">Pelaksana JO</label>
-                        <div class="col-md-10">
+                        <label class="col-md-4 col-form-label">Pelaksana JO</label>
+                        <div class="col-md-8">
                             <select id="pelaksana" name="pelaksana" class="form-control custom-select" value="">
                                 <option selected disabled>Select one</option>
                                 <option value="Elektrik">Elektrik</option>
@@ -63,8 +88,8 @@
                                 <option value="Elektrik dan Mekanik">Elektrik dan Mekanik</option>
                             </select>
                         </div>
-
                     </div>
+
                     <div class="form-group row">
                         <input type="hidden" name="id_edit" id="id_edit" class="form-control">
                         <!-- <label class="col-md-2 col-form-label">Saran JO</label>
@@ -120,13 +145,31 @@
         tampildata();
         $('#mydata').dataTable();
 
-
-
         // Get data for updating record
         $('#show_data').on('click', '.item_approve', function() {
             var id = $(this).data('id');
+            var no_jo = $(this).data('no_jo');
+            var pekerjaan = $(this).data('pekerjaan');
+            var nama = $(this).data('nama');
+            var attachment = $(this).data('attachment');
+
             $('#Modal_approve').modal('show');
             $('[name="id_edit"]').val(id);
+            $('[name="no_jo"]').val(no_jo);
+            $('[name="pekerjaan"]').val(pekerjaan);
+            $('[name="nama"]').val(nama);
+
+            if (attachment) {
+                // Buat URL lengkap untuk file attachment
+                var attachmentUrl = "<?php echo base_url(); ?>" + "assets/lampiran/" + attachment;
+
+                // Debugging untuk melihat URL yang terbentuk
+                console.log("Attachment URL:", attachmentUrl);
+
+                $('#attachment_link').attr('href', attachmentUrl).show();
+            } else {
+                $('#attachment_link').hide();
+            }
         });
 
         $('#show_data').on('click', '.item_reject', function() {
@@ -259,7 +302,7 @@
                         statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Eng Dept.Head</span>';
                     }
                     html += '<tr>' +
-                        '<td>' + data[i].id + '</td>' +
+                        '<td>' + nomor + '</td>' +
                         '<td>' + data[i].no_jo + '</td>' +
                         '<td>' + data[i].pekerjaan + '</td>' +
                         // '<td>' + data[i].pelaksana + '</td>' +
@@ -267,11 +310,13 @@
                         '<td>' + statusBadge + '</td>' +
                         '<td style="text-align:right;">' +
                         // '<button class="btn btn-primary btn-sm" onclick="approveData(' + data[i].id + ')">Approve</button>' + ' ' +
-                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id + '">Approve</a>' + ' ' +
+                        '<a href="javascript:void(0);" class="btn btn-info btn-sm item_approve" data.-toggle="modal" data-target="#Modal_approve" data-id="' + data[i].id +
+                        '" data-no_jo="' + data[i].no_jo + '" data-pekerjaan="' + data[i].pekerjaan +
+                        '" data-attachment="' + data[i].lampiran +
+                        '" data-nama="' + data[i].nama + '">Approve</a>' + ' ' +
                         '<a href="javascript:void(0);" class="btn btn-danger btn-sm item_reject" data.-toggle="modal" data-target="#Modal_reject" data-id="' + data[i].id + '">Reject</a>' +
                         '</td>' +
                         '</tr>';
-
                 }
                 $('#show_data').html(html);
 
