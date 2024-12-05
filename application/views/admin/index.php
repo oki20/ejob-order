@@ -465,28 +465,28 @@
         const ctx = document.getElementById('jobOrderPieChart').getContext('2d');
 
         // Data dari PHP
-        const totalData = [
-            // <?= $totaljo['total_jo']; ?>, // Total Keseluruhan
-            <?= $totalyear['total_jo']; ?>, // Total Selesai
-            <?= $totaljoprogres['total_jo']; ?> // Total Sedang Berjalan
-        ];
+        const totalKeseluruhan = <?= $totaljo['total_jo']; ?>; // Total Keseluruhan
+        const totalSelesai = <?= $totalyear['total_jo']; ?>; // Total Selesai
+        const totalBerjalan = <?= $totaljoprogres['total_jo']; ?>; // Total Sedang Berjalan
 
-        // Label untuk chart
+        // Hitung persentase
+        const selesaiPercentage = ((totalSelesai / totalKeseluruhan) * 100).toFixed(2);
+        const berjalanPercentage = ((totalBerjalan / totalKeseluruhan) * 100).toFixed(2);
+
+        // Data untuk chart
+        const totalData = [totalSelesai, totalBerjalan];
         const labels = [
-            // 'Keseluruhan',
-            'JO Selesai',
-            'JO Sedang Berjalan'
+            `JO Selesai (${selesaiPercentage}%)`,
+            `JO Sedang Berjalan (${berjalanPercentage}%)`
         ];
 
         // Warna untuk tiap data
         const backgroundColors = [
-            // 'rgba(255, 99, 132, 0.2)', // Merah
             'rgba(54, 162, 235, 0.2)', // Biru
             'rgba(255, 206, 86, 0.2)' // Kuning
         ];
 
         const borderColors = [
-            // 'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)'
         ];
@@ -509,6 +509,16 @@
                     legend: {
                         display: true,
                         position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const index = context.dataIndex;
+                                const value = context.raw;
+                                const percentage = ((value / totalKeseluruhan) * 100).toFixed(2);
+                                return `${context.label}: ${value} (${percentage}%)`;
+                            }
+                        }
                     }
                 }
             }
