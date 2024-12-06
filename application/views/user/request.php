@@ -206,15 +206,15 @@
                         var statusBadge = '';
 
                         if (data[i].status == '1') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval DH</span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Dept Head</span>';
                         } else if (data[i].status == '2') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval PH </span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Plat Head </span>';
                         } else if (data[i].status == '11') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval FH Instalasi </span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Factory Head Inst </span>';
                         } else if (data[i].status == '3') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval PH Instalasi </span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Plant Head Inst </span>';
                         } else if (data[i].status == '4') {
-                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval DH Instalasi </span>';
+                            statusBadge = '<span class="badge badge-warning"><i class="fas fa-info-circle"></i> Wait Approval Dept Head Inst </span>';
                         }
                         html += '<tr>' +
                             '<td>' + nomor + '</td>' +
