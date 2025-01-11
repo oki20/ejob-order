@@ -5,31 +5,28 @@
     <h1 class="h3 mb-2 text-gray-800"><?= $title; ?></h1>
 
     <!-- Begin Page Content -->
-    <div class="container-fluid">
-
-        <div class="card shadow mb-4 mt-2">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Job Order </h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>No. Job Order</th>
-                                <th>Pekerjaan</th>
-                                <th>No. File</th>
-                                <th>Tgl Terima Jo</th>
-                                <th>Pelaksana</th>
-                                <th>Progresss Elektrik</th>
-                                <th>Progress Mekanik</th>
-                            </tr>
-                        </thead>
-                        <tbody id="show_data">
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card shadow mb-4 mt-2">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Job Order </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="mydata" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>No. Job Order</th>
+                            <th>Pekerjaan</th>
+                            <th>No. File</th>
+                            <th>Tgl Terima Jo</th>
+                            <th>Pelaksana</th>
+                            <th>Progresss Elektrik</th>
+                            <th>Progress Mekanik</th>
+                        </tr>
+                    </thead>
+                    <tbody id="show_data">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -47,7 +44,7 @@
         function tampildata() {
             $.ajax({
                 type: 'post',
-                url: '<?php echo site_url('leader/tampiljouser'); ?>',
+                url: '<?php echo site_url('leader/monitoring'); ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {

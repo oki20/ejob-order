@@ -79,7 +79,7 @@ class Leader extends CI_Controller
         $this->load->view('leader/informasi', $data);
         $this->load->view('templates/footer');
     }
-    
+
     public function reportinformasi()
     {
         $data['title'] = 'Laporan Informasi';
@@ -114,7 +114,13 @@ class Leader extends CI_Controller
 
     public function tampiljouser()
     {
-        $dataAll = $this->model->getJoUser();
+        $dataAll = $this->model->getInformasi();
+        echo json_encode($dataAll);
+    }
+
+    public function monitoring()
+    {
+        $dataAll = $this->model->getMonitoring();
         echo json_encode($dataAll);
     }
 
@@ -146,7 +152,7 @@ class Leader extends CI_Controller
         $dataAll = $this->model->getReport();
         echo json_encode($dataAll);
     }
-    
+
     public function tampilreportinformasi()
     {
         $dataAll = $this->model->getReportInform();
@@ -283,7 +289,7 @@ class Leader extends CI_Controller
             echo "error";
         }
     }
-    
+
     public function createinform()
     {
         $bagian = $this->session->userdata('bagian');

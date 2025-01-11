@@ -81,6 +81,20 @@ class Menu_model extends CI_Model
         return $result;
     }
 
+    //Dashboard admin menampilkan jumlah JO tahun sebelumnya
+    public function getTotJoBefore()
+    {
+        $currentYear = date('Y', strtotime('-1 year'));
+
+        return $this->db
+            ->select('COUNT(no_jo) as total_jo')
+            ->from('pengajuan_job_order')
+            ->where('status', 5)
+            ->where("YEAR(tgl_terima) =", $currentYear)
+            ->get()
+            ->row_array();
+    }
+
     public function getWaitingApproveJo()
     {
         return $this->db
@@ -428,7 +442,7 @@ class Menu_model extends CI_Model
         return $this->db->update('pengajuan_job_order', $data);
     }
 
-    public function receivedata($id, $data)
+    public function receiveData($id, $data)
     {
         $this->db->where('id', $id);
         return $this->db->update('pengajuan_job_order', $data);

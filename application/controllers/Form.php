@@ -106,7 +106,7 @@ class Form extends CI_Controller
             );
 
             // Update data
-            $updateData = $this->model->receivedata($id, $data);
+            $updateData = $this->model->receiveData($id, $data);
 
             if ($updateData) {
                 // Rekam waktu update status di tabel baru
@@ -168,7 +168,7 @@ class Form extends CI_Controller
                 );
 
                 //update data
-                $updateData = $this->model->receivedata($id, $data);
+                $updateData = $this->model->receiveData($id, $data);
                 if ($updateData) {
                     // Rekam waktu update status di tabel baru
                     $logData = [
@@ -224,7 +224,7 @@ class Form extends CI_Controller
             );
 
             //update data
-            $updateData = $this->model->receivedata($id, $data);
+            $updateData = $this->model->receiveData($id, $data);
             if ($updateData) {
                 echo json_encode(array('status' => 'success', 'message' => 'Berhasil mengirimkan Pengajuan Job Order ke Plant Head Instalasi'));
             } else {

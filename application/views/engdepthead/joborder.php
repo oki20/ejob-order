@@ -47,7 +47,7 @@
         function tampildata() {
             $.ajax({
                 type: 'post',
-                url: '<?php echo site_url('leader/tampiljouser'); ?>',
+                url: '<?php echo site_url('leader/monitoring'); ?>',
                 async: false,
                 dataType: 'json',
                 success: function(data) {

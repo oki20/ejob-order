@@ -34,52 +34,157 @@ class Leader_model extends CI_Model
     public function getInformasi()
     {
         // Fetch the member data based on session ID
-        $data = $this->db->get_where('member', ['id' => $this->session->userdata('id')])->row_array();
-        $plant_string = $data['plant']; // Get the plant string from the logged-in member data
+        $data = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+        $id_plant = $data['id_plant']; // Get the plant string from the logged-in member data
 
-        // Convert the plant string to an array
-        $plant_array = explode(',', $plant_string);
-
-        // Latest report subquery
+        // Subquery for the latest report
         $latest_report_sql = "
     SELECT 
-        tri.id_info,
-        tri.id_member,
-        tri.tgl_pengerjaan,
-        tri.progres,
+        tr.id_jo,
+        tr.id_member,
+        tr.tgl_pengerjaan,
+        tr.progres,
         m.bagian,
-        ROW_NUMBER() OVER (PARTITION BY tri.id_info, m.bagian ORDER BY tri.tgl_pengerjaan DESC, tri.id DESC) AS row_num
+        ROW_NUMBER() OVER (PARTITION BY tr.id_jo, m.bagian ORDER BY tr.tgl_pengerjaan DESC, tr.id DESC) AS row_num
     FROM 
-        tb_report_informasi tri
+        tb_report tr
     JOIN 
-        member m ON tri.id_member = m.id
-";
+        member m ON tr.id_member = m.id
+    ";
 
         // Main query
         $sql = "
-    SELECT
-        ti.id AS informasi_id,
-        ti.no_info,
-        ti.pekerjaan,
+    SELECT 
+        pjo.id AS job_order_id,
+        pjo.no_jo,
+        pjo.tgl_terima,
+        pjo.pekerjaan,
+        pjo.pelaksana,
+        pjo.no_file,
+        pjo.golongan,
+        pjo.status,
         COALESCE(lr_mekanik.progres, 0) AS progres_mekanik,
         COALESCE(lr_elektrik.progres, 0) AS progres_elektrik
-    FROM
-        tb_informasi ti
+    FROM 
+        pengajuan_job_order pjo
     LEFT JOIN 
-        (SELECT id_info, progres FROM ($latest_report_sql) lr WHERE bagian = 'Mekanik' AND row_num = 1) lr_mekanik ON ti.id = lr_mekanik.id_info
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Mekanik' AND row_num = 1) lr_mekanik ON pjo.id = lr_mekanik.id_jo
     LEFT JOIN 
-        (SELECT id_info, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON ti.id = lr_elektrik.id_info
-    WHERE
-        ti.id_plant IN (" . implode(',', array_map('intval', $plant_array)) . ")
-        AND ti.pelaksana LIKE '%" . $data['bagian'] . "%'
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON pjo.id = lr_elektrik.id_jo
+    WHERE 
+        pjo.id_plant IN ($id_plant)
+        AND pjo.status = 5
+        AND pjo.no_file <> ''
     ORDER BY 
-        ti.id
-";
+        pjo.id
+    ";
 
         // Execute query
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+
+    public function MonitoringDash()
+    {
+        // Subquery for the latest report
+        $latest_report_sql = "
+    SELECT 
+        tr.id_jo,
+        tr.id_member,
+        tr.tgl_pengerjaan,
+        tr.progres,
+        m.bagian,
+        ROW_NUMBER() OVER (PARTITION BY tr.id_jo, m.bagian ORDER BY tr.tgl_pengerjaan DESC, tr.id DESC) AS row_num
+    FROM 
+        tb_report tr
+    JOIN 
+        member m ON tr.id_member = m.id
+    ";
+
+        // Main query
+        $sql = "
+    SELECT 
+        pjo.id AS job_order_id,
+        pjo.no_jo,
+        pjo.tgl_terima,
+        pjo.pekerjaan,
+        pjo.pelaksana,
+        pjo.no_file,
+        pjo.golongan,
+        pjo.status,
+        COALESCE(lr_mekanik.progres, 0) AS progres_mekanik,
+        COALESCE(lr_elektrik.progres, 0) AS progres_elektrik
+    FROM 
+        pengajuan_job_order pjo
+    LEFT JOIN 
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Mekanik' AND row_num = 1) lr_mekanik ON pjo.id = lr_mekanik.id_jo
+    LEFT JOIN 
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON pjo.id = lr_elektrik.id_jo
+    WHERE 
+        pjo.status = 5
+        AND pjo.no_file <> ''
+    ORDER BY 
+        pjo.id
+    ";
+
+        // Execute query
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+
+    public function getMonitoring()
+    {
+        // Fetch the member data based on session ID
+        $data = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
+        $id_plant = $data['id_plant']; // Get the plant string from the logged-in member data
+
+        // Subquery for the latest report
+        $latest_report_sql = "
+    SELECT 
+        tr.id_jo,
+        tr.id_member,
+        tr.tgl_pengerjaan,
+        tr.progres,
+        m.bagian,
+        ROW_NUMBER() OVER (PARTITION BY tr.id_jo, m.bagian ORDER BY tr.tgl_pengerjaan DESC, tr.id DESC) AS row_num
+    FROM 
+        tb_report tr
+    JOIN 
+        member m ON tr.id_member = m.id
+    ";
+
+        // Main query
+        $sql = "
+    SELECT 
+        pjo.id AS job_order_id,
+        pjo.no_jo,
+        pjo.tgl_terima,
+        pjo.pekerjaan,
+        pjo.pelaksana,
+        pjo.no_file,
+        pjo.golongan,
+        pjo.status,
+        COALESCE(lr_mekanik.progres, 0) AS progres_mekanik,
+        COALESCE(lr_elektrik.progres, 0) AS progres_elektrik
+    FROM 
+        pengajuan_job_order pjo
+    LEFT JOIN 
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Mekanik' AND row_num = 1) lr_mekanik ON pjo.id = lr_mekanik.id_jo
+    LEFT JOIN 
+        (SELECT id_jo, progres FROM ($latest_report_sql) lr WHERE bagian = 'Elektrik' AND row_num = 1) lr_elektrik ON pjo.id = lr_elektrik.id_jo
+    WHERE 
+        pjo.status = 5
+        AND pjo.no_file <> ''
+    ORDER BY 
+        pjo.id
+    ";
+
+        // Execute query
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
 
     public function getJo()
     {
@@ -368,7 +473,7 @@ class Leader_model extends CI_Model
     public function getReport()
     {
         $id_member = $this->session->userdata('id');
-        
+
         $this->db->select('pengajuan_job_order.*, tb_report.*, GROUP_CONCAT(member_plant.nama_member ORDER BY member_plant.id SEPARATOR ", ") AS nama_tim_pekerja');
         $this->db->from('pengajuan_job_order');
         $this->db->join('tb_report', 'pengajuan_job_order.id = tb_report.id_jo');
@@ -377,7 +482,7 @@ class Leader_model extends CI_Model
         $this->db->where('pengajuan_job_order.no_file <>', '');
         $this->db->group_by('pengajuan_job_order.id, tb_report.id');
         $this->db->order_by('tb_report.id', 'DESC');
-        
+
         $query = $this->db->get();
         return $query->result_array();
     }
